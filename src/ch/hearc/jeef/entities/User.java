@@ -62,7 +62,7 @@ public class User implements Serializable {
     private String email;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Post post;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Role role;
 
