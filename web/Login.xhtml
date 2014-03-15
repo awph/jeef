@@ -12,16 +12,18 @@
         <ui:define name="content">
             <h:form id="signin" class="pure-form">
                 <fieldset class="pure-group">
-                    <h:inputText id="username" value="#{auth.username}" title="#{localization.CreateUserTitle_username}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_username}" p:placeholder="#{localization.CreateUserLabel_username}" class="pure-input-1" />
-                    <h:inputSecret id="password" value="#{auth.password}" title="#{localization.CreateUserTitle_password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.CreateUserLabel_password}" class="pure-input-1" />
+                    <h:inputText id="username" value="#{loginBean.username}" title="#{localization.CreateUserTitle_username}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_username}" p:placeholder="#{localization.CreateUserLabel_username}" class="pure-input-1" />
+                    <h:inputSecret id="password" value="#{loginBean.password}" title="#{localization.CreateUserTitle_password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.CreateUserLabel_password}" class="pure-input-1" />
                 </fieldset>
-            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 <br />
-                <h:commandButton action="#{auth.login}" value="#{localization.Signin}" class="pure-button pure-input-1 pure-button-primary"/>
+                <h:commandButton action="#{loginBean.login}" value="#{localization.Signin}" class="pure-button pure-input-1 pure-button-primary"/>
                 <br />
                 <br />
-                <form><button type="submit" formaction="Signup.xhtml" class="pure-button pure-input-1 pure-button-primary">Sign up</button></form>
             </h:form>
+            <form class="pure-form">
+                <button type="submit" formaction="Signup.xhtml" class="pure-button pure-input-1 pure-button-primary">Sign up</button>
+            </form>
         </ui:define>
     </ui:composition>
 

@@ -9,6 +9,7 @@ import ch.hearc.jeef.controller.UserController;
 import ch.hearc.jeef.entities.User;
 import ch.hearc.jeef.facade.UserFacade;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -17,13 +18,14 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.RequestDispatcher;
+
 /**
  *
  * @author Alexandre
  */
 @ManagedBean
 @SessionScoped
-public class LoginBean {
+public class LoginBean implements Serializable {
 
     private User user;
     private String username;
