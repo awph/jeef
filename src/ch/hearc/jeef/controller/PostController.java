@@ -1,10 +1,7 @@
 package ch.hearc.jeef.controller;
 
-import ch.hearc.jeef.facade.UserFacade;
-import ch.hearc.jeef.entities.Role;
-import ch.hearc.jeef.entities.User;
-import ch.hearc.jeef.facade.RoleFacade;
-import ch.hearc.jeef.util.HashUtil;
+import ch.hearc.jeef.facade.PostFacade;
+import ch.hearc.jeef.entities.Post;
 import ch.hearc.jeef.util.JsfUtil;
 import ch.hearc.jeef.util.PaginationHelper;
 
@@ -21,32 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@Named("userController")
+@Named("postController")
 @SessionScoped
-public class UserController implements Serializable {
+public class PostController implements Serializable {
 
-    @EJB
-    private RoleFacade roleFacade;
-
-    private User current;
+    private Post current;
     private DataModel items = null;
     @EJB
-    private ch.hearc.jeef.facade.UserFacade ejbFacade;
+    private ch.hearc.jeef.facade.PostFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public UserController() {
+    public PostController() {
     }
 
-    public User getSelected() {
+    public Post getSelected() {
         if (current == null) {
-            current = new User();
+            current = new Post();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private UserFacade getFacade() {
+    private PostFacade getFacade() {
         return ejbFacade;
     }
 
@@ -74,20 +68,22 @@ public class UserController implements Serializable {
     }
 
     public String prepareView() {
-        current = (User) getItems().getRowData();
+        current = (Post) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-    
+
+    public String prepareCreate() {
+        current = new Post();
+        selectedItemIndex = -1;
+        return "Create";
+    }
+
     public String create() {
         try {
-            Role role = roleFacade.find(3);
-            current.setRole(role);
-            current.setSalt(HashUtil.generateSalt(128));
-            current.setPassword(HashUtil.hashSHA512(current.getPassword().concat(current.getSalt())));
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("UserCreated"));
-            return "Login";
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("PostCreated"));
+            return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
             return null;
@@ -95,7 +91,7 @@ public class UserController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (User) getItems().getRowData();
+        current = (Post) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -103,7 +99,7 @@ public class UserController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("UserUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("PostUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
@@ -112,7 +108,7 @@ public class UserController implements Serializable {
     }
 
     public String destroy() {
-        current = (User) getItems().getRowData();
+        current = (Post) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -120,10 +116,23 @@ public class UserController implements Serializable {
         return "List";
     }
 
+    public String destroyAndView() {
+        performDestroy();
+        recreateModel();
+        updateCurrentItem();
+        if (selectedItemIndex >= 0) {
+            return "View";
+        } else {
+            // all items were removed - go back to list
+            recreateModel();
+            return "List";
+        }
+    }
+
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("UserDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("PostDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
         }
@@ -179,21 +188,21 @@ public class UserController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public User getUser(java.lang.Integer id) {
+    public Post getPost(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = User.class)
-    public static class UserControllerConverter implements Converter {
+    @FacesConverter(forClass = Post.class)
+    public static class PostControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            UserController controller = (UserController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "userController");
-            return controller.getUser(getKey(value));
+            PostController controller = (PostController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "postController");
+            return controller.getPost(getKey(value));
         }
 
         java.lang.Integer getKey(String value) {
@@ -213,11 +222,11 @@ public class UserController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof User) {
-                User o = (User) object;
+            if (object instanceof Post) {
+                Post o = (Post) object;
                 return getStringKey(o.getId());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + User.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Post.class.getName());
             }
         }
 

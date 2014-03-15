@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{localization.ViewTopicTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="content">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{localization.ViewTopicLabel_id}"/>
+                    <h:outputText value="#{topicController.selected.id}" title="#{localization.ViewTopicTitle_id}"/>
+                    <h:outputText value="#{localization.ViewTopicLabel_title}"/>
+                    <h:outputText value="#{topicController.selected.title}" title="#{localization.ViewTopicTitle_title}"/>
+                    <h:outputText value="#{localization.ViewTopicLabel_date}"/>
+                    <h:outputText value="#{topicController.selected.date}" title="#{localization.ViewTopicTitle_date}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{localization.ViewTopicLabel_locked}"/>
+                    <h:outputText value="#{topicController.selected.locked}" title="#{localization.ViewTopicTitle_locked}"/>
+                    <h:outputText value="#{localization.ViewTopicLabel_pinned}"/>
+                    <h:outputText value="#{topicController.selected.pinned}" title="#{localization.ViewTopicTitle_pinned}"/>
+                    <h:outputText value="#{localization.ViewTopicLabel_categoryId}"/>
+                    <h:outputText value="#{topicController.selected.categoryId}" title="#{localization.ViewTopicTitle_categoryId}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{topicController.destroyAndView}" value="#{localization.ViewTopicDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{localization.ViewTopicEditLink}"/>
+                <br />
+                <h:commandLink action="#{topicController.prepareCreate}" value="#{localization.ViewTopicCreateLink}" />
+                <br />
+                <h:commandLink action="#{topicController.prepareList}" value="#{localization.ViewTopicShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{localization.ViewTopicIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="fr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <h:outputStylesheet library="css" name="pure-min.css" />
+        <h:outputStylesheet library="css" name="side-menu.css" />
+        <!--<h:outputStylesheet library="css" name="normalize.css" />-->
+        <title><ui:insert name="title">Default Title</ui:insert></title>
+    </h:head>
+
+    <h:body>
+        <c:set var="user" value="#{loginBean.user}" />
+        <div id="layout">
+            <!-- Menu toggle -->
+            <a href="#menu" id="menuLink" class="menu-link">
+                <!-- Hamburger icon -->
+                <span></span>
+            </a>
+            <div id="menu">
+                <ui:include src="/_menu.xhtml" />
+            </div>
+            <div id="main">
+                <div class="header">
+                    <h1>
+                        <ui:insert name="title">Default Title</ui:insert>
+                    </h1>
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages globalOnly="true" errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                </div>
+                <div class="content">
+                    <ui:insert name="content">Default content</ui:insert>
+                </div>
+            </div>
+        </div>
+        <!--<h:outputScript library="js" name="yui-min.js" />-->
+        <h:outputScript library="js" name="ui.js" />
+    </h:body>
+
+</html>

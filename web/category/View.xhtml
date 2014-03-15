@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{categoryController.selected.name}"/>
+        </ui:define>
+        <ui:define name="content">
+            <h:form>
+                <h:commandLink action="#{categoryController.prepareList}" value="#{localization.ViewCategoryShowAllLink}"/>
+                <br />
+                <h:link outcome="#{topicController.prepareCreate(categoryController.selected)}" value="#{localization.CreateTopicTitle}"/>
+                <br />
+                <h:outputText escape="false" value="#{localization.ListTopicEmpty}" rendered="#{categoryController.selected.topicCollectionCount == 0}"/>
+                <h:panelGroup rendered="#{categoryController.selected.topicCollectionCount > 0}">
+                    <h:commandLink action="#{topicController.previous}" value="#{localization.Previous} #{topicController.pagination.pageSize}" rendered="#{topicController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{topicController.next}" value="#{localization.Next} #{topicController.pagination.pageSize}" rendered="#{topicController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{categoryController.selected.topicCollection}" var="topic" border="0" cellpadding="2" cellspacing="0" rules="all" class="pure-table pure-table-horizontal">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListTopicTitle_title}"/>
+                            </f:facet>
+                            <h:commandLink action="#{topicController.prepareView}" value="#{topic.title}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListTopicTitle_date}"/>
+                            </f:facet>
+                            <h:outputText value="#{topic.date}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListTopicTitle_locked}"/>
+                            </f:facet>
+                            <h:outputText value="#{topic.locked}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListTopicTitle_pinned}"/>
+                            </f:facet>
+                            <h:outputText value="#{topic.pinned}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{topicController.pin}" value="#{localization.Pin}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{topicController.lock}" value="#{localization.Lock}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{topicController.destroy}" value="#{localization.ListTopicDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

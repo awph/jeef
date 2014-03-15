@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{localization.ViewPostTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="content">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{localization.ViewPostLabel_id}"/>
+                    <h:outputText value="#{postController.selected.id}" title="#{localization.ViewPostTitle_id}"/>
+                    <h:outputText value="#{localization.ViewPostLabel_content}"/>
+                    <h:outputText value="#{postController.selected.content}" title="#{localization.ViewPostTitle_content}"/>
+                    <h:outputText value="#{localization.ViewPostLabel_createdDate}"/>
+                    <h:outputText value="#{postController.selected.createdDate}" title="#{localization.ViewPostTitle_createdDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{localization.ViewPostLabel_editedDate}"/>
+                    <h:outputText value="#{postController.selected.editedDate}" title="#{localization.ViewPostTitle_editedDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{localization.ViewPostLabel_topicId}"/>
+                    <h:outputText value="#{postController.selected.topicId}" title="#{localization.ViewPostTitle_topicId}"/>
+                    <h:outputText value="#{localization.ViewPostLabel_lastEditorId}"/>
+                    <h:outputText value="#{postController.selected.lastEditorId}" title="#{localization.ViewPostTitle_lastEditorId}"/>
+                    <h:outputText value="#{localization.ViewPostLabel_creatorId}"/>
+                    <h:outputText value="#{postController.selected.creatorId}" title="#{localization.ViewPostTitle_creatorId}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{postController.destroyAndView}" value="#{localization.ViewPostDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{localization.ViewPostEditLink}"/>
+                <br />
+                <h:commandLink action="#{postController.prepareCreate}" value="#{localization.ViewPostCreateLink}" />
+                <br />
+                <h:commandLink action="#{postController.prepareList}" value="#{localization.ViewPostShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{localization.ViewPostIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

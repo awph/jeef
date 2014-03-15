@@ -29,13 +29,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Alexandre
  */
 @Entity
-@Table(name = "role")
+@Table(name = "category")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
-    @NamedQuery(name = "Role.findById", query = "SELECT r FROM Role r WHERE r.id = :id"),
-    @NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE r.name = :name")})
-public class Role implements Serializable {
+    @NamedQuery(name = "Category.findAll", query = "SELECT c FROM Category c"),
+    @NamedQuery(name = "Category.findById", query = "SELECT c FROM Category c WHERE c.id = :id"),
+    @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name")})
+public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,17 +47,17 @@ public class Role implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
-    private Collection<User> userCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    private Collection<Topic> topicCollection;
 
-    public Role() {
+    public Category() {
     }
 
-    public Role(Integer id) {
+    public Category(Integer id) {
         this.id = id;
     }
 
-    public Role(Integer id, String name) {
+    public Category(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -79,12 +79,16 @@ public class Role implements Serializable {
     }
 
     @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public Collection<Topic> getTopicCollection() {
+        return topicCollection;
+    }
+    
+    public Integer getTopicCollectionCount() {
+        return topicCollection.size();
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setTopicCollection(Collection<Topic> topicCollection) {
+        this.topicCollection = topicCollection;
     }
 
     @Override
@@ -97,10 +101,10 @@ public class Role implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Role)) {
+        if (!(object instanceof Category)) {
             return false;
         }
-        Role other = (Role) object;
+        Category other = (Category) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -109,7 +113,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return name;
+        return "ch.hearc.jeef.entities.Category[ id=" + id + " ]";
     }
     
 }

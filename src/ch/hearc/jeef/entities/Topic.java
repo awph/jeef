@@ -7,6 +7,7 @@
 package ch.hearc.jeef.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -15,19 +16,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author diego
+ * @author Alexandre
  */
 @Entity
 @Table(name = "topic")
@@ -64,8 +68,11 @@ public class Topic implements Serializable {
     @NotNull
     @Column(name = "pinned")
     private boolean pinned;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "topic")
-    private Post post;
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Category category;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topicId")
+    private Collection<Post> postCollection;
 
     public Topic() {
     }
@@ -122,12 +129,21 @@ public class Topic implements Serializable {
         this.pinned = pinned;
     }
 
-    public Post getPost() {
-        return post;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @XmlTransient
+    public Collection<Post> getPostCollection() {
+        return postCollection;
+    }
+
+    public void setPostCollection(Collection<Post> postCollection) {
+        this.postCollection = postCollection;
     }
 
     @Override
@@ -152,7 +168,7 @@ public class Topic implements Serializable {
 
     @Override
     public String toString() {
-        return "ch.hearc.jeef.entities.Topic[ id=" + id + " ]";
+        return "ch.hearc.jeef.entities.Topic[ id=" + id + " title=" + title + " date=" + date + " locked=" + locked + " pinned=" + pinned + " category=" + category.getName() + " ]";
     }
     
 }

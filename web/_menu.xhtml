@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <div class="pure-menu pure-menu-open" id="menu-items">
+        
+        <h:outputLink class="pure-menu-heading" value="#{request.contextPath}">Jeef</h:outputLink>
+        <ul>
+            <li>
+                <a href="#">Categories</a>
+                <ul id="categories-items">
+                    <li><a href="#">Horoscopes</a></li>
+                    <li><a href="#">Games</a></li>
+                    <li><a href="#">Jobs</a></li>
+                    <li><a href="#">OMG</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Search</a></li>
+            <li class="pure-menu-heading"><h:outputText rendered="#{user == null}" value="Profile" /><h:outputText rendered="#{user != null}" value="Welcome #{user.username}" /></li>
+            <li><h:link rendered="#{user == null}" value="Login" outcome="/Login.xhtml"/></li>
+            <li><h:link rendered="#{user != null}" value="Edit profile" outcome="/user/Edit.xhtml"/></li>
+            <li><h:form><h:commandLink rendered="#{user != null}" action="#{loginBean.logout()}" value="Logout" /></h:form></li>
+        </ul>
+    </div>
+</ui:composition>

@@ -16,9 +16,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author diego
+ * @author Alexandre
  */
 @Entity
 @Table(name = "post")
@@ -61,12 +61,15 @@ public class Post implements Serializable {
     @Column(name = "edited_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date editedDate;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Topic topic;
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private User user;
+    @JoinColumn(name = "topic_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Topic topicId;
+    @JoinColumn(name = "last_editor_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private User lastEditorId;
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private User creatorId;
 
     public Post() {
     }
@@ -114,20 +117,28 @@ public class Post implements Serializable {
         this.editedDate = editedDate;
     }
 
-    public Topic getTopic() {
-        return topic;
+    public Topic getTopicId() {
+        return topicId;
     }
 
-    public void setTopic(Topic topic) {
-        this.topic = topic;
+    public void setTopicId(Topic topicId) {
+        this.topicId = topicId;
     }
 
-    public User getUser() {
-        return user;
+    public User getLastEditorId() {
+        return lastEditorId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setLastEditorId(User lastEditorId) {
+        this.lastEditorId = lastEditorId;
+    }
+
+    public User getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(User creatorId) {
+        this.creatorId = creatorId;
     }
 
     @Override

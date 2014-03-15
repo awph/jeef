@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package ch.hearc.jeef.facades;
+package ch.hearc.jeef.facade;
 
 import java.util.List;
 import javax.persistence.EntityManager;

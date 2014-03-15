@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package ch.hearc.jeef.facades;
+package ch.hearc.jeef.facade;
 
-import ch.hearc.jeef.entities.Post;
+import ch.hearc.jeef.entities.Category;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
  * @author Alexandre
  */
 @Stateless
-public class PostFacade extends AbstractFacade<Post> {
+public class CategoryFacade extends AbstractFacade<Category> {
     @PersistenceContext(unitName = "jeefPU")
     private EntityManager em;
 
@@ -25,8 +25,8 @@ public class PostFacade extends AbstractFacade<Post> {
         return em;
     }
 
-    public PostFacade() {
-        super(Post.class);
+    public CategoryFacade() {
+        super(Category.class);
     }
     
 }

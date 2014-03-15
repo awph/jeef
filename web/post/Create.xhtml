@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{localization.CreatePostTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="content">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{localization.CreatePostLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{postController.selected.id}" title="#{localization.CreatePostTitle_id}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_id}"/>
+                    <h:outputLabel value="#{localization.CreatePostLabel_content}" for="content" />
+                    <h:inputTextarea rows="4" cols="30" id="content" value="#{postController.selected.content}" title="#{localization.CreatePostTitle_content}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_content}"/>
+                    <h:outputLabel value="#{localization.CreatePostLabel_createdDate}" for="createdDate" />
+                    <h:inputText id="createdDate" value="#{postController.selected.createdDate}" title="#{localization.CreatePostTitle_createdDate}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_createdDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{localization.CreatePostLabel_editedDate}" for="editedDate" />
+                    <h:inputText id="editedDate" value="#{postController.selected.editedDate}" title="#{localization.CreatePostTitle_editedDate}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_editedDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{localization.CreatePostLabel_topicId}" for="topicId" />
+                    <h:selectOneMenu id="topicId" value="#{postController.selected.topicId}" title="#{localization.CreatePostTitle_topicId}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_topicId}">
+                        <f:selectItems value="#{topicController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{localization.CreatePostLabel_lastEditorId}" for="lastEditorId" />
+                    <h:selectOneMenu id="lastEditorId" value="#{postController.selected.lastEditorId}" title="#{localization.CreatePostTitle_lastEditorId}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_lastEditorId}">
+                        <f:selectItems value="#{userController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{localization.CreatePostLabel_creatorId}" for="creatorId" />
+                    <h:selectOneMenu id="creatorId" value="#{postController.selected.creatorId}" title="#{localization.CreatePostTitle_creatorId}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_creatorId}">
+                        <f:selectItems value="#{userController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{postController.create}" value="#{localization.CreatePostSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{postController.prepareList}" value="#{localization.CreatePostShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{localization.CreatePostIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

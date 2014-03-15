@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{localization.ListPostTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="content">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:outputText escape="false" value="#{localization.ListPostEmpty}" rendered="#{postController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{postController.items.rowCount > 0}">
+                    <h:outputText value="#{postController.pagination.pageFirstItem + 1}..#{postController.pagination.pageLastItem + 1}/#{postController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{postController.previous}" value="#{localization.Previous} #{postController.pagination.pageSize}" rendered="#{postController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{postController.next}" value="#{localization.Next} #{postController.pagination.pageSize}" rendered="#{postController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{postController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListPostTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListPostTitle_content}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.content}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListPostTitle_createdDate}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.createdDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListPostTitle_editedDate}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.editedDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListPostTitle_topicId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.topicId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListPostTitle_lastEditorId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lastEditorId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.ListPostTitle_creatorId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.creatorId}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{postController.prepareView}" value="#{localization.ListPostViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{postController.prepareEdit}" value="#{localization.ListPostEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{postController.destroy}" value="#{localization.ListPostDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{postController.prepareCreate}" value="#{localization.ListPostCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{localization.ListPostIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

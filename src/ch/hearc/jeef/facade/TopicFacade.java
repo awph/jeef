@@ -4,12 +4,15 @@
  * and open the template in the editor.
  */
 
-package ch.hearc.jeef.facades;
+package ch.hearc.jeef.facade;
 
+import ch.hearc.jeef.entities.Category;
 import ch.hearc.jeef.entities.Topic;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +30,13 @@ public class TopicFacade extends AbstractFacade<Topic> {
 
     public TopicFacade() {
         super(Topic.class);
+    }
+
+    public List<Topic> findRangeForCategory(int[] range, Category category) {
+        Query query = em.createNamedQuery("Topic.findByCategory").setParameter("category_id", category.getId());
+        query.setMaxResults(range[1] - range[0] + 1);
+        query.setFirstResult(range[0]);
+        return query.getResultList();
     }
     
 }
