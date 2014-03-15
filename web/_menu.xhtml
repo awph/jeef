@@ -6,7 +6,7 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets">
     <div class="pure-menu pure-menu-open" id="menu-items">
-        
+
         <h:outputLink class="pure-menu-heading" value="#{request.contextPath}">Jeef</h:outputLink>
         <ul>
             <li>
@@ -19,10 +19,18 @@
                 </ul>
             </li>
             <li><a href="#">Search</a></li>
-            <li class="pure-menu-heading"><h:outputText rendered="#{user == null}" value="Profile" /><h:outputText rendered="#{user != null}" value="Welcome #{user.username}" /></li>
-            <li><h:link rendered="#{user == null}" value="Login" outcome="/Login.xhtml"/></li>
-            <li><h:link rendered="#{user != null}" value="Edit profile" outcome="/user/Edit.xhtml"/></li>
-            <li><h:form><h:commandLink rendered="#{user != null}" action="#{loginBean.logout()}" value="Logout" /></h:form></li>
+            <h:panelGroup rendered="#{admin}">
+                <li class="pure-menu-heading"><h:outputText value="Administration" /></li>
+                <li><h:link value="Users" outcome="/user/List.xhtml"/></li>                
+            </h:panelGroup>
+            <li class="pure-menu-heading"><h:outputText rendered="#{user == null}" value="Profile" /><h:outputText rendered="#{user != null}" value="#{user.username}" /></li>
+            <h:panelGroup rendered="#{user == null}">
+                <li><h:link value="Login" outcome="/Login.xhtml"/></li>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{user != null}">
+                <li><h:link value="Edit profile" outcome="/user/Edit.xhtml"/></li>
+                <li><h:form><h:commandLink action="#{loginBean.logout()}" value="Logout" /></h:form></li>
+            </h:panelGroup>
         </ul>
     </div>
 </ui:composition>
