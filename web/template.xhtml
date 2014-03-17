@@ -16,6 +16,8 @@
 
     <h:body>
         <c:set var="user" value="#{loginBean.user}" />
+        <c:set rendered="#{user != null}" var="admin" value="#{loginBean.user.role.id == 1}" />
+        <c:set rendered="#{user != null}" var="moderator" value="#{loginBean.user.role.id == 2}" />
         <div id="layout">
             <!-- Menu toggle -->
             <a href="#menu" id="menuLink" class="menu-link">

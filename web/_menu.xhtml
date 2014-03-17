@@ -10,13 +10,10 @@
         <h:outputLink class="pure-menu-heading" value="#{request.contextPath}">Jeef</h:outputLink>
         <ul>
             <li>
-                <a href="#">Categories</a>
-                <ul id="categories-items">
-                    <li><a href="#">Horoscopes</a></li>
-                    <li><a href="#">Games</a></li>
-                    <li><a href="#">Jobs</a></li>
-                    <li><a href="#">OMG</a></li>
-                </ul>
+                <li><h:link value="Categories" outcome="/category/List.xhtml"/></li>
+                <!--<ul id="categories-items">
+                    <li><a href="#">Cat1</a></li>
+                </ul>-->
             </li>
             <li><a href="#">Search</a></li>
             <h:panelGroup rendered="#{admin}">
