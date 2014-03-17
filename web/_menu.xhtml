@@ -18,7 +18,7 @@
             <li><a href="#">Search</a></li>
             <h:panelGroup rendered="#{admin}">
                 <li class="pure-menu-heading"><h:outputText value="Administration" /></li>
-                <li><h:link value="Users" outcome="/user/List.xhtml"/></li>                
+                <li><h:link outcome="/user/List.xhtml" value="#{localization.ListUser}"/></li>
             </h:panelGroup>
             <li class="pure-menu-heading"><h:outputText rendered="#{user == null}" value="Profile" /><h:outputText rendered="#{user != null}" value="#{user.username}" /></li>
             <h:panelGroup rendered="#{user == null}">

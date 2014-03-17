@@ -12,8 +12,8 @@
         <ui:define name="content">
             <h:form id="signin" class="pure-form">
                 <fieldset class="pure-group">
-                    <h:inputText id="username" value="#{loginBean.username}" title="#{localization.CreateUserTitle_username}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_username}" p:placeholder="#{localization.CreateUserLabel_username}" class="pure-input-1" />
-                    <h:inputSecret id="password" value="#{loginBean.password}" title="#{localization.CreateUserTitle_password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.CreateUserLabel_password}" class="pure-input-1" />
+                    <h:inputText id="username" value="#{loginBean.username}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_username}" p:placeholder="#{localization.Username}" class="pure-input-1" />
+                    <h:inputSecret id="password" value="#{loginBean.password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.Password}" class="pure-input-1" />
                 </fieldset>
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 <br />

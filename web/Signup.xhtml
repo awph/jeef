@@ -13,11 +13,11 @@
         <ui:define name="content">
             <h:form id="signup" class="pure-form">
                 <fieldset class="pure-group">
-                    <h:inputText id="username" value="#{userController.selected.username}" title="#{localization.CreateUserTitle_username}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_username}" p:placeholder="#{localization.CreateUserLabel_username}" class="pure-input-1">
+                    <h:inputText id="username" value="#{userController.selected.username}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_username}" p:placeholder="#{localization.Username}" class="pure-input-1">
                         <f:ajax event="blur" render="messageUsername" />
                         <f:validator binding="#{uniqueUsernameValidator}" />
                     </h:inputText>       
-                    <h:inputText id="email" value="#{userController.selected.email}" title="#{localization.CreateUserTitle_email}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_email}" p:placeholder="#{localization.CreateUserLabel_email}" class="pure-input-1">
+                    <h:inputText id="email" value="#{userController.selected.email}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_email}" p:placeholder="#{localization.Email}" class="pure-input-1">
                         <f:ajax event="blur" render="messageEmail" />
                         <f:validator binding="#{uniqueEmailValidator}" />
                     </h:inputText>
@@ -25,10 +25,10 @@
                 <h:messages id="messageUsername" errorStyle="color: red" for="username"/>     
                 <h:messages id="messageEmail" errorStyle="color: red" for="email"/>     
                 <fieldset class="pure-group">
-                    <h:inputSecret id="password" value="#{userController.selected.password}" binding="#{password}" title="#{localization.CreateUserTitle_password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.CreateUserLabel_password}" class="pure-input-1">
+                    <h:inputSecret id="password" value="#{userController.selected.password}" binding="#{password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.Password}" class="pure-input-1">
                         <f:ajax event="blur" render="messagePassword" />
                     </h:inputSecret>
-                    <h:inputSecret id="confirm" value="#{userController.selected.password}" title="#{localization.CreateUserTitle_password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.CreateUserLabel_confirm}" class="pure-input-1">
+                    <h:inputSecret id="confirm" value="#{userController.selected.password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.Confirm}" class="pure-input-1">
                         <f:ajax event="blur" render="messageConfirm" />
                         <f:attribute name="password" value="#{password}" />
                         <f:validator binding="#{samePasswordValidator}" />

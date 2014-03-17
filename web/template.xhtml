@@ -4,20 +4,22 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <h:outputStylesheet library="css" name="pure-min.css" />
         <h:outputStylesheet library="css" name="side-menu.css" />
-        <!--<h:outputStylesheet library="css" name="normalize.css" />-->
+        <h:outputStylesheet library="css" name="normalize.css" />
+        <h:outputStylesheet library="css" name="jeef.css" />
         <title><ui:insert name="title">Default Title</ui:insert></title>
     </h:head>
 
     <h:body>
         <c:set var="user" value="#{loginBean.user}" />
         <c:set rendered="#{user != null}" var="admin" value="#{loginBean.user.role.id == 1}" />
-        <c:set rendered="#{user != null}" var="moderator" value="#{loginBean.user.role.id == 2}" />
+        <c:set rendered="#{user != null}" var="moderator" value="#{loginBean.user.role.id == 1 || loginBean.user.role.id == 2}" />
         <div id="layout">
             <!-- Menu toggle -->
             <a href="#menu" id="menuLink" class="menu-link">
@@ -37,6 +39,7 @@
                     </h:panelGroup>
                 </div>
                 <div class="content">
+                    <br />
                     <ui:insert name="content">Default content</ui:insert>
                 </div>
             </div>
