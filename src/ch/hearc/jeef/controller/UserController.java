@@ -193,19 +193,7 @@ public class UserController implements Serializable {
             }
             UserController controller = (UserController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "userController");
-            return controller.getUser(getKey(value));
-        }
-
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
-            return key;
-        }
-
-        String getStringKey(java.lang.Integer value) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(value);
-            return sb.toString();
+            return controller.getUser(Integer.valueOf(value));
         }
 
         @Override
@@ -215,7 +203,7 @@ public class UserController implements Serializable {
             }
             if (object instanceof User) {
                 User o = (User) object;
-                return getStringKey(o.getId());
+                return String.valueOf(o.getId());
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + User.class.getName());
             }

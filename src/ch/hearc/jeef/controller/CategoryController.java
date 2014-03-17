@@ -6,10 +6,11 @@ import ch.hearc.jeef.util.JsfUtil;
 import ch.hearc.jeef.util.PaginationHelper;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -25,7 +26,7 @@ public class CategoryController implements Serializable {
     private Category current;
     private DataModel items = null;
     @EJB
-    private ch.hearc.jeef.facade.CategoryFacade ejbFacade;
+    private CategoryFacade categoryFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -33,7 +34,12 @@ public class CategoryController implements Serializable {
     }
 
     public Category getSelected() {
-        if (current == null) {
+        Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        final String ID_KEY = "id";
+        if (parameterMap.containsKey(ID_KEY)) {
+            current = getCategory(Integer.valueOf(parameterMap.get(ID_KEY)));
+        }
+        else if (current == null) {
             current = new Category();
             selectedItemIndex = -1;
         }
@@ -41,7 +47,7 @@ public class CategoryController implements Serializable {
     }
 
     private CategoryFacade getFacade() {
-        return ejbFacade;
+        return categoryFacade;
     }
 
     public PaginationHelper getPagination() {
@@ -65,12 +71,6 @@ public class CategoryController implements Serializable {
     public String prepareList() {
         recreateModel();
         return "List";
-    }
-
-    public String prepareView() {
-        current = (Category) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
     }
 
     public String prepareCreate() {
@@ -181,15 +181,15 @@ public class CategoryController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(categoryFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(categoryFacade.findAll(), true);
     }
 
     public Category getCategory(java.lang.Integer id) {
-        return ejbFacade.find(id);
+        return categoryFacade.find(id);
     }
 
     @FacesConverter(forClass = Category.class)
@@ -202,19 +202,7 @@ public class CategoryController implements Serializable {
             }
             CategoryController controller = (CategoryController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "categoryController");
-            return controller.getCategory(getKey(value));
-        }
-
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
-            return key;
-        }
-
-        String getStringKey(java.lang.Integer value) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(value);
-            return sb.toString();
+            return controller.getCategory(Integer.valueOf(value));
         }
 
         @Override
@@ -224,7 +212,7 @@ public class CategoryController implements Serializable {
             }
             if (object instanceof Category) {
                 Category o = (Category) object;
-                return getStringKey(o.getId());
+                return String.valueOf(o.getId());
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Category.class.getName());
             }
