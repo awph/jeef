@@ -79,7 +79,7 @@ public class TopicController implements Serializable {
         current = new Topic();
         current.setCategory(category);
         selectedItemIndex = -1;
-        return "../Topic/Create";
+        return "/topic/Create";
     }
 
     public String create() {
@@ -96,33 +96,20 @@ public class TopicController implements Serializable {
         }
     }
 
-    public String prepareEdit() {
-        current = (Topic) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
-    }
-
-    public String update() {
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicUpdated"));
-            return "View";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-            return null;
-        }
-    }
-
     public String pin() {
         current = (Topic) getItems().getRowData();
         current.setPinned(!current.getPinned());
-        return "List";
+        getFacade().edit(current);
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicUpdated"));
+        return null;
     }
 
     public String lock() {
         current = (Topic) getItems().getRowData();
         current.setLocked(!current.getLocked());
-        return "List";
+        getFacade().edit(current);
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicUpdated"));
+        return null;
     }
 
     public String destroy() {
@@ -191,7 +178,7 @@ public class TopicController implements Serializable {
                 return null;
             }
         };
-        
+
         return new ListDataModel(getFacade().findRangeForCategory(new int[]{pagination.getPageFirstItem(), pagination.getPageFirstItem() + pagination.getPageSize()}, category));
     }
 
@@ -237,19 +224,7 @@ public class TopicController implements Serializable {
             }
             TopicController controller = (TopicController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "topicController");
-            return controller.getTopic(getKey(value));
-        }
-
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
-            return key;
-        }
-
-        String getStringKey(java.lang.Integer value) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(value);
-            return sb.toString();
+            return controller.getTopic(Integer.valueOf(value));
         }
 
         @Override
@@ -259,7 +234,7 @@ public class TopicController implements Serializable {
             }
             if (object instanceof Topic) {
                 Topic o = (Topic) object;
-                return getStringKey(o.getId());
+                return String.valueOf(o.getId());
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Topic.class.getName());
             }
