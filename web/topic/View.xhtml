@@ -10,9 +10,6 @@
             <h:outputText value="#{localization.ViewTopicTitle}"></h:outputText>
         </ui:define>
         <ui:define name="content">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
             <h:form>
                 <h:panelGrid columns="2">
                     <h:outputText value="#{localization.ViewTopicLabel_id}"/>
@@ -28,7 +25,7 @@
                     <h:outputText value="#{localization.ViewTopicLabel_pinned}"/>
                     <h:outputText value="#{topicController.selected.pinned}" title="#{localization.ViewTopicTitle_pinned}"/>
                     <h:outputText value="#{localization.ViewTopicLabel_categoryId}"/>
-                    <h:outputText value="#{topicController.selected.categoryId}" title="#{localization.ViewTopicTitle_categoryId}"/>
+                    <h:outputText value="#{topicController.selected.category}" title="#{localization.ViewTopicTitle_categoryId}"/>
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{topicController.destroyAndView}" value="#{localization.ViewTopicDestroyLink}"/>

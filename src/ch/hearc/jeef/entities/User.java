@@ -67,6 +67,10 @@ public class User implements Serializable {
     @Size(min = 1, max = 254)
     @Column(name = "email")
     private String email;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "banned")
+    private boolean banned;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lastEditorId")
     private Collection<Post> postCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creatorId")
@@ -129,6 +133,15 @@ public class User implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public boolean getBanned() {
+        return banned;
+    }
+
+    public void setBanned(boolean banned) {
+        this.banned = banned;
+    }
+
 
     @XmlTransient
     public Collection<Post> getPostCollection() {

@@ -12,40 +12,39 @@
         <ui:define name="content">
             <h:outputText escape="false" value="#{localization.ListUserEmpty}" rendered="#{userController.items.rowCount == 0}"/>
             <h:panelGroup rendered="#{userController.items.rowCount > 0}">
-                <h:dataTable value="#{userController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rules="all" style="border:solid 1px" class="pure-table pure-table-horizontal">
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{localization.ListUserTitle_username}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.username}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{localization.ListUserTitle_email}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.email}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="#{localization.ListUserTitle_role}"/>
-                        </f:facet>
-                        <h:outputText value="#{item.role.name}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">
-                            <h:outputText value="&nbsp;"/>
-                        </f:facet>
-                        <h:commandLink action="#{userController.prepareView}" value="#{localization.ListUserViewLink}"/>
-                        <h:outputText value=" "/>
-                        <h:commandLink action="#{userController.prepareEdit}" value="#{localization.ListUserEditLink}"/>
-                        <h:outputText value=" "/>
-                        <h:commandLink action="#{userController.destroy}" value="#{localization.ListUserDestroyLink}"/>
-                    </h:column>
-                </h:dataTable>
-                <ul class="pure-paginator">
-                    <li><h:commandLink action="#{userController.previous}" value="#{localization.Previous}" rendered="#{userController.pagination.hasPreviousPage}"  class="pure-button prev"/></li>
-                    <li><h:commandLink action="#{userController.next}" value="#{localization.Next}" rendered="#{userController.pagination.hasNextPage}"  class="pure-button next"/></li>
-                </ul>
+                <h:form>
+                    <h:dataTable value="#{userController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rules="all" style="border:solid 1px" class="pure-table pure-table-horizontal">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.Username}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.username}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.Email}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{localization.Role}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.role.name}"/>
+                        </h:column>
+                        <h:column>
+                            <h:link outcome="/user/View.xhtml?id=#{item.id}" value="#{localization.View}" />
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{userController.prepareEdit}" value="#{localization.Edit}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{userController.destroy}" value="#{localization.Delete}"/>
+                        </h:column>
+                    </h:dataTable>
+                    <ul class="pure-paginator">
+                        <li><h:commandLink action="#{userController.previous}" value="#{localization.Previous}" rendered="#{userController.pagination.hasPreviousPage}"  class="pure-button prev"/></li>
+                        <li><h:commandLink action="#{userController.next}" value="#{localization.Next}" rendered="#{userController.pagination.hasNextPage}"  class="pure-button next"/></li>
+                    </ul>
+                </h:form>
             </h:panelGroup>
         </ui:define>
     </ui:composition>

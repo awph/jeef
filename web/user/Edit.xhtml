@@ -10,33 +10,21 @@
             <h:outputText value="#{localization.EditUserTitle}"></h:outputText>
         </ui:define>
         <ui:define name="content">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{localization.EditUserLabel_id}" for="id" />
-                    <h:inputText id="id" value="#{userController.selected.id}" title="#{localization.EditUserTitle_id}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_id}"/>
                     <h:outputLabel value="#{localization.EditUserLabel_username}" for="username" />
                     <h:inputText id="username" value="#{userController.selected.username}" title="#{localization.EditUserTitle_username}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_username}"/>
-                    <h:outputLabel value="#{localization.EditUserLabel_password}" for="password" />
-                    <h:inputTextarea rows="4" cols="30" id="password" value="#{userController.selected.password}" title="#{localization.EditUserTitle_password}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_password}"/>
                     <h:outputLabel value="#{localization.EditUserLabel_email}" for="email" />
-                    <h:inputTextarea rows="4" cols="30" id="email" value="#{userController.selected.email}" title="#{localization.EditUserTitle_email}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_email}"/>
+                    <h:inputText id="email" value="#{userController.selected.email}" title="#{localization.EditUserTitle_email}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_email}"/>
                     <h:outputLabel value="#{localization.EditUserLabel_roleId}" for="roleId" />
-                    <h:selectOneMenu id="roleId" value="#{userController.selected.roleId}" title="#{localization.EditUserTitle_roleId}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_roleId}">
+                    <h:selectOneMenu id="roleId" value="#{userController.selected.role}" title="#{localization.EditUserTitle_roleId}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_roleId}">
                         <f:selectItems value="#{roleController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
-                <h:commandLink action="#{userController.update}" value="#{localization.EditUserSaveLink}"/>
+                <h:commandLink action="#{userController.update}" value="#{localization.Save}"/>
                 <br />
-                <br />
-                <h:link outcome="View" value="#{localization.EditUserViewLink}"/>
                 <br />
                 <h:commandLink action="#{userController.prepareList}" value="#{localization.EditUserShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{localization.EditUserIndexLink}" />
             </h:form>
         </ui:define>
     </ui:composition>

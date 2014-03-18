@@ -2,6 +2,7 @@ package ch.hearc.jeef.controller;
 
 import ch.hearc.jeef.facade.UserFacade;
 import ch.hearc.jeef.entities.Role;
+import ch.hearc.jeef.entities.Topic;
 import ch.hearc.jeef.entities.User;
 import ch.hearc.jeef.facade.RoleFacade;
 import ch.hearc.jeef.util.HashUtil;
@@ -9,6 +10,7 @@ import ch.hearc.jeef.util.JsfUtil;
 import ch.hearc.jeef.util.PaginationHelper;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -39,7 +41,12 @@ public class UserController implements Serializable {
     }
 
     public User getSelected() {
-        if (current == null) {
+        Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        final String ID_KEY = "id";
+        if (parameterMap.containsKey(ID_KEY)) {
+            current = getUser(Integer.valueOf(parameterMap.get(ID_KEY)));
+        }
+        else if (current == null) {
             current = new User();
             selectedItemIndex = -1;
         }
@@ -61,7 +68,7 @@ public class UserController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageLastItem()}));
                 }
             };
         }
@@ -119,6 +126,14 @@ public class UserController implements Serializable {
         recreateModel();
         return "List";
     }
+    
+    public String block() {
+        current = (User) getItems().getRowData();
+        current.setBanned(!current.getBanned());
+        getFacade().edit(current);
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("UserUpdated"));
+        return null;
+    }
 
     private void performDestroy() {
         try {
@@ -126,21 +141,6 @@ public class UserController implements Serializable {
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("UserDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-        }
-    }
-
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
