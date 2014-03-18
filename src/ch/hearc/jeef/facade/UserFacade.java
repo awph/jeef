@@ -45,15 +45,14 @@ public class UserFacade extends AbstractFacade<User> {
     }
 
     public User find(String username, String password) {
-        User userDB = (User) em.createNamedQuery("User.findByUsername").setParameter("username", username).getResultList().get(0);
         try {
+            User userDB = (User) em.createNamedQuery("User.findByUsername").setParameter("username", username).getResultList().get(0);
             password = HashUtil.hashSHA512(password.concat(userDB.getSalt()));
             
             if (userDB.getPassword().equals(password)) {
                 return userDB;
             }
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
-            Logger.getLogger(UserFacade.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | ArrayIndexOutOfBoundsException ex) {
             return null;
         }
         return null;
