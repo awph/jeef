@@ -7,16 +7,16 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{localization.EditUserTitle}"></h:outputText>
+            <h:outputText rendered="#{userController.selected != null}" value="#{userController.selected.username}"/>
         </ui:define>
         <ui:define name="content">
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{localization.EditUserLabel_username}" for="username" />
+                    <h:outputLabel value="#{localization.Username}#{localization.Conlon}" for="username" />
                     <h:inputText id="username" value="#{userController.selected.username}" title="#{localization.EditUserTitle_username}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_username}"/>
-                    <h:outputLabel value="#{localization.EditUserLabel_email}" for="email" />
+                    <h:outputLabel value="#{localization.Email}#{localization.Conlon}" for="email" />
                     <h:inputText id="email" value="#{userController.selected.email}" title="#{localization.EditUserTitle_email}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_email}"/>
-                    <h:outputLabel value="#{localization.EditUserLabel_roleId}" for="roleId" />
+                    <h:outputLabel value="#{localization.Role}#{localization.Conlon}" for="roleId" />
                     <h:selectOneMenu id="roleId" value="#{userController.selected.role}" title="#{localization.EditUserTitle_roleId}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_roleId}">
                         <f:selectItems value="#{roleController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>

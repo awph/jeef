@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{localization.ListUser}"></h:outputText>
+            <h:outputText value="#{localization.Users}"></h:outputText>
         </ui:define>
         <ui:define name="content">
             <h:outputText escape="false" value="#{localization.ListUserEmpty}" rendered="#{userController.items.rowCount == 0}"/>
