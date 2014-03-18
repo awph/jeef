@@ -18,7 +18,7 @@
                     <h:inputText id="email" value="#{userController.selected.email}" title="#{localization.EditUserTitle_email}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_email}"/>
                     <h:outputLabel value="#{localization.Role}#{localization.Conlon}" for="roleId" />
                     <h:selectOneMenu id="roleId" value="#{userController.selected.role}" title="#{localization.EditUserTitle_roleId}" required="true" requiredMessage="#{localization.EditUserRequiredMessage_roleId}">
-                        <f:selectItems value="#{roleController.itemsAvailableSelectOne}"/>
+                        <f:selectItems value="#{roleController.itemsAvailableSelectMany}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
                 <h:commandLink action="#{userController.update}" value="#{localization.Save}"/>

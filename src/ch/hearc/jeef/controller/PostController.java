@@ -180,12 +180,8 @@ public class PostController implements Serializable {
         return "List";
     }
 
-    public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
-    }
-
-    public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    public SelectItem[] getItemsAvailableSelect() {
+        return JsfUtil.getSelectItems(ejbFacade.findAll());
     }
 
     public Post getPost(java.lang.Integer id) {
