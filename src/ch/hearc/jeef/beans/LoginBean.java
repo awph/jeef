@@ -31,6 +31,9 @@ public class LoginBean implements Serializable {
     private String password;
     private String originalURL;
 
+    @EJB
+    private UserFacade userFacade;
+
     @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -46,9 +49,6 @@ public class LoginBean implements Serializable {
             }
         }
     }
-
-    @EJB
-    private UserFacade userFacade;
 
     public void login() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();

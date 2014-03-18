@@ -61,7 +61,7 @@ public class CategoryController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageLastItem()}));
                 }
             };
         }
@@ -70,13 +70,13 @@ public class CategoryController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "List";
+        return "/category/List";
     }
 
     public String prepareCreate() {
         current = new Category();
         selectedItemIndex = -1;
-        return "Create";
+        return "/category/Create";
     }
 
     public String create() {
@@ -93,14 +93,14 @@ public class CategoryController implements Serializable {
     public String prepareEdit() {
         current = (Category) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
+        return "/category/Edit";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("CategoryUpdated"));
-            return "View";
+            return "/category/View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
             return null;
@@ -113,20 +113,7 @@ public class CategoryController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "List";
-    }
-
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "View";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "List";
-        }
+        return "/category/List";
     }
 
     private void performDestroy() {
@@ -135,21 +122,6 @@ public class CategoryController implements Serializable {
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("CategoryDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-        }
-    }
-
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -171,13 +143,13 @@ public class CategoryController implements Serializable {
     public String next() {
         getPagination().nextPage();
         recreateModel();
-        return "List";
+        return "/category/List";
     }
 
     public String previous() {
         getPagination().previousPage();
         recreateModel();
-        return "List";
+        return "/category/List";
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
