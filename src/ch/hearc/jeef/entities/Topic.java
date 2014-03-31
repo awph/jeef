@@ -7,8 +7,10 @@
 package ch.hearc.jeef.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -71,7 +73,7 @@ public class Topic implements Serializable {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Category category;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topicId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topic")
     private Collection<Post> postCollection;
 
     public Topic() {
@@ -136,7 +138,7 @@ public class Topic implements Serializable {
     public void setCategory(Category category) {
         this.category = category;
     }
-
+    
     @XmlTransient
     public Collection<Post> getPostCollection() {
         return postCollection;

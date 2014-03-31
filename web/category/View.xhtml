@@ -10,10 +10,12 @@
         </ui:define>
         <ui:define name="content">
             <h:panelGroup rendered="#{categoryController.selected == null}"><h:outputText value="The category you requested does not exist." /></h:panelGroup>
-            <form class="pure-form">
-                <button type="submit" formaction="#{topicController.prepareCreate(categoryController.selected)}.xhtml" class="pure-button pure-input-1 pure-button-primary">#{localization.CreateTopicTitle}</button>
-            </form>
-            <br />
+            <h:panelGroup rendered="#{categoryController.selected != null}">
+                <form class="pure-form">
+                    <button type="submit" formaction="#{topicController.prepareCreate(categoryController.selected)}.xhtml" class="pure-button pure-input-1 pure-button-primary">#{localization.CreateTopicTitle}</button>
+                </form>
+                <br />
+            </h:panelGroup>
             <h:outputText escape="false" value="#{localization.ListTopicEmpty}" rendered="#{categoryController.selected.topicCollectionCount == 0}"/>
             <h:panelGroup rendered="#{categoryController.selected.topicCollectionCount > 0}">
                 <h:form rendered="#{categoryController.selected != null}">

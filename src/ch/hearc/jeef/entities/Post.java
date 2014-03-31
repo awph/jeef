@@ -63,13 +63,13 @@ public class Post implements Serializable {
     private Date editedDate;
     @JoinColumn(name = "topic_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Topic topicId;
+    private Topic topic;
     @JoinColumn(name = "last_editor_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private User lastEditorId;
+    private User lastEditor;
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private User creatorId;
+    private User creator;
 
     public Post() {
     }
@@ -117,28 +117,28 @@ public class Post implements Serializable {
         this.editedDate = editedDate;
     }
 
-    public Topic getTopicId() {
-        return topicId;
+    public Topic getTopic() {
+        return topic;
     }
 
-    public void setTopicId(Topic topicId) {
-        this.topicId = topicId;
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
-    public User getLastEditorId() {
-        return lastEditorId;
+    public User getLastEditor() {
+        return lastEditor;
     }
 
-    public void setLastEditorId(User lastEditorId) {
-        this.lastEditorId = lastEditorId;
+    public void setLastEditor(User lastEditor) {
+        this.lastEditor = lastEditor;
     }
 
-    public User getCreatorId() {
-        return creatorId;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setCreatorId(User creatorId) {
-        this.creatorId = creatorId;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     @Override
@@ -163,7 +163,7 @@ public class Post implements Serializable {
 
     @Override
     public String toString() {
-        return "ch.hearc.jeef.entities.Post[ id=" + id + " ]";
+        return "ch.hearc.jeef.entities.Post[ id=" + id + " content=" + content + " createdDate=" + createdDate + " editedDate=" + editedDate + " topic=" + topic + " creator=" + creator + " ]";
     }
     
 }

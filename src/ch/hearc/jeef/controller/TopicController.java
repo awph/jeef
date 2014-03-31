@@ -1,49 +1,82 @@
 package ch.hearc.jeef.controller;
 
+import ch.hearc.jeef.beans.LoginBean;
 import ch.hearc.jeef.facade.TopicFacade;
 import ch.hearc.jeef.entities.Category;
+import ch.hearc.jeef.entities.Post;
 import ch.hearc.jeef.entities.Topic;
+import ch.hearc.jeef.entities.User;
+import ch.hearc.jeef.facade.PostFacade;
 import ch.hearc.jeef.util.JsfUtil;
 import ch.hearc.jeef.util.PaginationHelper;
+import java.io.IOException;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
 @Named("topicController")
 @SessionScoped
 public class TopicController implements Serializable {
 
+    private Post firstPost;
     private Topic current;
     private DataModel items = null;
     @EJB
-    private ch.hearc.jeef.facade.TopicFacade ejbFacade;
+    private ch.hearc.jeef.facade.TopicFacade topicFacade;
+    @EJB
+    private ch.hearc.jeef.facade.PostFacade postFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    
+    @Inject
+    private LoginBean loginBean;
 
     public TopicController() {
     }
 
     public Topic getSelected() {
-        if (current == null) {
+        Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        final String ID_KEY = "id";
+        if (parameterMap.containsKey(ID_KEY)) {
+            current = getTopic(Integer.valueOf(parameterMap.get(ID_KEY)));
+        }
+        else if (current == null) {
             current = new Topic();
             selectedItemIndex = -1;
         }
         return current;
     }
+    
+    public Post getFirstPost() {
+        if(firstPost == null){
+            firstPost = new Post();
+        }
+        return firstPost;
+    }
 
-    private TopicFacade getFacade() {
-        return ejbFacade;
+    private TopicFacade getTopicFacade() {
+        return topicFacade;
+    }
+
+    private PostFacade getPostFacade() {
+        return postFacade;
     }
 
     public PaginationHelper getPagination() {
@@ -52,12 +85,12 @@ public class TopicController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getTopicFacade().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageLastItem()}));
+                    return new ListDataModel(getTopicFacade().findRange(new int[]{getPageFirstItem(), getPageLastItem()}));
                 }
             };
         }
@@ -69,10 +102,13 @@ public class TopicController implements Serializable {
         return "List";
     }
 
-    public String prepareView() {
-        current = (Topic) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
+    public void view(Topic topic) {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            context.redirect(context.getRequestContextPath() + "View.xhtml?id=" + Integer.toString(topic.getId()));
+        } catch (IOException ex) {
+            Logger.getLogger(TopicController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String prepareCreate(Category category) {
@@ -87,10 +123,21 @@ public class TopicController implements Serializable {
             current.setDate(new java.util.Date());
             current.setLocked(false);
             current.setPinned(false);
-            getFacade().create(current);
+            getTopicFacade().create(current);
+            User user = loginBean.getUser();
+            firstPost.setTopic(current);
+            firstPost.setCreator(user);
+            firstPost.setLastEditor(user);
+            firstPost.setCreatedDate(new Date());
+            firstPost.setEditedDate(new Date());
+            getPostFacade().create(firstPost);
+            new CategoryController().recreateModel();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicCreated"));
-            return prepareCreate(current.getCategory());
+            view(current);
+            return null;
         } catch (Exception e) {
+            //Logger.getLogger(TopicController.class.getName()).log(Level.SEVERE, ee.getCause().getMessage(), ee.getCause().getCause());
+            Logger.getLogger(TopicController.class.getName()).log(Level.SEVERE, firstPost.toString(), e);
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
             return null;
         }
@@ -99,7 +146,7 @@ public class TopicController implements Serializable {
     public String pin() {
         current = (Topic) getItems().getRowData();
         current.setPinned(!current.getPinned());
-        getFacade().edit(current);
+        getTopicFacade().edit(current);
         JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicUpdated"));
         return null;
     }
@@ -107,7 +154,7 @@ public class TopicController implements Serializable {
     public String lock() {
         current = (Topic) getItems().getRowData();
         current.setLocked(!current.getLocked());
-        getFacade().edit(current);
+        getTopicFacade().edit(current);
         JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicUpdated"));
         return null;
     }
@@ -136,7 +183,7 @@ public class TopicController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getTopicFacade().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
@@ -144,7 +191,7 @@ public class TopicController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getTopicFacade().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -154,7 +201,7 @@ public class TopicController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getTopicFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -170,7 +217,7 @@ public class TopicController implements Serializable {
 
             @Override
             public int getItemsCount() {
-                return getFacade().count();
+                return getTopicFacade().count();
             }
 
             @Override
@@ -179,7 +226,7 @@ public class TopicController implements Serializable {
             }
         };
 
-        return new ListDataModel(getFacade().findRangeForCategory(new int[]{pagination.getPageFirstItem(), pagination.getPageFirstItem() + pagination.getPageSize()}, category));
+        return new ListDataModel(getTopicFacade().findRangeForCategory(new int[]{pagination.getPageFirstItem(), pagination.getPageFirstItem() + pagination.getPageSize()}, category));
     }
 
     private void recreateModel() {
@@ -203,11 +250,11 @@ public class TopicController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelect() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll());
+        return JsfUtil.getSelectItems(getTopicFacade().findAll());
     }
 
     public Topic getTopic(java.lang.Integer id) {
-        return ejbFacade.find(id);
+        return getTopicFacade().find(id);
     }
 
     @FacesConverter(forClass = Topic.class)
