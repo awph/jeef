@@ -28,7 +28,7 @@ public class SamePasswordValidator implements Validator {
         UIInput passwordInput = (UIInput) component.getAttributes().get("password");
         String password = (String) passwordInput.getValue();
         String confirm = (String) value;
-        if (!password.equals(confirm)) {
+        if (password == null || !password.equals(confirm)) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "The passwords doesn't match", null));
         }
     }
