@@ -9,14 +9,12 @@ import ch.hearc.jeef.entities.User;
 import ch.hearc.jeef.facade.UserFacade;
 import java.io.IOException;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.servlet.RequestDispatcher;
 
 /**
  *
@@ -34,22 +32,6 @@ public class LoginBean implements Serializable {
     @EJB
     private UserFacade userFacade;
 
-    @PostConstruct
-    public void init() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        originalURL = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
-
-        if (originalURL == null) {
-            originalURL = externalContext.getRequestContextPath() + "/";
-        } else {
-            String originalQuery = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_QUERY_STRING);
-
-            if (originalQuery != null) {
-                originalURL += "?" + originalQuery;
-            }
-        }
-    }
-
     public void login() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
@@ -57,7 +39,7 @@ public class LoginBean implements Serializable {
         if (user != null) {
             externalContext.redirect(originalURL);
         } else {
-            context.addMessage(null, new FacesMessage("Unknown login"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown login", null));
         }
     }
 
@@ -86,6 +68,10 @@ public class LoginBean implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public void setOriginalURL(String originalURL) {
+        this.originalURL = originalURL;
     }
 
 }
