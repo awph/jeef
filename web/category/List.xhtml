@@ -1,52 +1,46 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{localization.ProjectName}"></h:outputText>
-        </ui:define>
-        <ui:define name="content">
-            <h:panelGroup rendered="#{admin}">
-                <form class="pure-form">
-                    <button type="submit" formaction="#{categoryController.prepareCreate()}.xhtml" class="pure-button pure-input-1 pure-button-primary">#{localization.ListCategoryCreateLink}</button>
-                </form>
-                <br />
-            </h:panelGroup>
-            <h:outputText escape="false" value="#{localization.ListCategoryEmpty}" rendered="#{categoryController.items.rowCount == 0}"/>
-            <h:panelGroup rendered="#{categoryController.items.rowCount > 0}">
-                <h:form id="categories">
-                    <table class="pure-table pure-u-1 pure-table-horizontal">
-                        <thead>
+<ui:composition template="/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:define name="title">
+        <h:outputText value="#{localization.ProjectName}"></h:outputText>
+    </ui:define>
+    <ui:define name="content">
+        <h:panelGroup rendered="#{admin}">
+            <form class="pure-form">
+                <button type="submit" formaction="#{categoryController.prepareCreate()}.xhtml" class="pure-button pure-input-1 pure-button-primary">#{localization.ListCategoryCreateLink}</button>
+            </form>
+            <br />
+        </h:panelGroup>
+        <h:outputText escape="false" value="#{localization.ListCategoryEmpty}" rendered="#{categoryController.items.rowCount == 0}"/>
+        <h:panelGroup rendered="#{categoryController.items.rowCount > 0}">
+            <h:form id="categories">
+                <table class="pure-table pure-u-1 pure-table-horizontal">
+                    <thead>
+                        <tr>
+                            <th style="width: 100%"><h:outputText value="#{localization.Categories}"/></th>
+                            <h:panelGroup rendered="#{admin}"><th><h:outputText value="#{localization.Manage}"/></th></h:panelGroup>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{categoryController.items}" var="cat">
                             <tr>
-                                <th style="width: 100%"><h:outputText value="#{localization.Categories}"/></th>
-                                <h:panelGroup rendered="#{admin}"><th><h:outputText value="#{localization.Manage}"/></th></h:panelGroup>
+                                <td><h:link outcome="/category/View.xhtml?id=#{cat.id}" value="#{cat.name}" /></td>
+                                <h:panelGroup rendered="#{admin}">
+                                    <td>
+                                        <h:commandLink action="#{categoryController.prepareEdit}" value="#{localization.Edit}"/>
+                                        <h:outputText value=" "/>
+                                        <h:commandLink action="#{categoryController.destroy}" value="#{localization.Delete}"/>
+                                    </td>
+                                </h:panelGroup>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <ui:repeat value="#{categoryController.items}" var="cat">
-                                <tr>
-                                    <td><h:link outcome="/category/View.xhtml?id=#{cat.id}" value="#{cat.name}" /></td>
-                                    <h:panelGroup rendered="#{admin}">
-                                        <td>
-                                            <h:commandLink action="#{categoryController.prepareEdit}" value="#{localization.Edit}"/>
-                                            <h:outputText value=" "/>
-                                            <h:commandLink action="#{categoryController.destroy}" value="#{localization.Delete}"/>
-                                        </td>
-                                    </h:panelGroup>
-                                </tr>
-                            </ui:repeat>
-                        </tbody>
-                    </table>
-                    <ul class="pure-paginator" style="text-align:center;">
-                        <li><h:commandLink action="#{categoryController.previous}" value="#{localization.Previous}" rendered="#{categoryController.pagination.hasPreviousPage}"  class="pure-button prev"/></li>
-                        <li><h:commandLink action="#{categoryController.next}" value="#{localization.Next}" rendered="#{categoryController.pagination.hasNextPage}"  class="pure-button next"/></li>
-                    </ul>
-                </h:form>
-            </h:panelGroup>
-        </ui:define>
-    </ui:composition>
-
-</html>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+                <ul class="pure-paginator" style="text-align:center;">
+                    <li><h:commandLink action="#{categoryController.previous}" value="#{localization.Previous}" rendered="#{categoryController.pagination.hasPreviousPage}"  class="pure-button prev"/></li>
+                    <li><h:commandLink action="#{categoryController.next}" value="#{localization.Next}" rendered="#{categoryController.pagination.hasNextPage}"  class="pure-button next"/></li>
+                </ul>
+            </h:form>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

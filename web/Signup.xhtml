@@ -1,44 +1,39 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
-
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{localization.Signup}"></h:outputText>
-        </ui:define>
-        <ui:define name="content">
-            <h:form id="signup" class="pure-form">
-                <fieldset class="pure-group">
-                    <h:inputText id="username" value="#{userController.selected.username}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_username}" p:placeholder="#{localization.Username}" class="pure-input-1">
-                        <f:ajax event="blur" render="messageUsername" />
-                        <f:validator binding="#{uniqueUsernameValidator}" />
-                    </h:inputText>       
-                    <h:inputText id="email" value="#{userController.selected.email}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_email}" p:placeholder="#{localization.Email}" class="pure-input-1">
-                        <f:ajax event="blur" render="messageEmail" />
-                        <f:validator binding="#{uniqueEmailValidator}" />
-                    </h:inputText>
-                </fieldset>
-                <h:messages id="messageUsername" errorStyle="color: red" for="username"/>     
-                <h:messages id="messageEmail" errorStyle="color: red" for="email"/>     
-                <fieldset class="pure-group">
-                    <h:inputSecret id="password" value="#{userController.selected.password}" binding="#{password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.Password}" class="pure-input-1">
-                        <f:ajax event="blur" render="messagePassword" />
-                    </h:inputSecret>
-                    <h:inputSecret id="confirm" value="#{userController.selected.password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.Confirm}" class="pure-input-1">
-                        <f:ajax event="blur" render="messageConfirm" />
-                        <f:attribute name="password" value="#{password}" />
-                        <f:validator binding="#{samePasswordValidator}" />
-                    </h:inputSecret>  
-                </fieldset>
-                <h:messages id="messagePassword" errorStyle="color: red" for="password"/>
-                <h:messages id="messageConfirm" errorStyle="color: red" for="confirm"/>   
-                <h:commandButton action="#{userController.create}" value="#{localization.Signup}" class="pure-button pure-input-1 pure-button-primary"/>
-            </h:form>
-        </ui:define>
-    </ui:composition>
-
-</html>
+<ui:composition template="/template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="title">
+        <h:outputText value="#{localization.Signup}"></h:outputText>
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="signup" class="pure-form">
+            <fieldset class="pure-group">
+                <h:inputText id="username" value="#{userController.selected.username}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_username}" p:placeholder="#{localization.Username}" class="pure-input-1">
+                    <f:ajax event="blur" render="messageUsername" />
+                    <f:validator binding="#{uniqueUsernameValidator}" />
+                </h:inputText>       
+                <h:inputText id="email" value="#{userController.selected.email}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_email}" p:placeholder="#{localization.Email}" class="pure-input-1">
+                    <f:ajax event="blur" render="messageEmail" />
+                    <f:validator binding="#{uniqueEmailValidator}" />
+                </h:inputText>
+            </fieldset>
+            <h:messages id="messageUsername" errorStyle="color: red" for="username"/>     
+            <h:messages id="messageEmail" errorStyle="color: red" for="email"/>     
+            <fieldset class="pure-group">
+                <h:inputSecret id="password" value="#{userController.selected.password}" binding="#{password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.Password}" class="pure-input-1">
+                    <f:ajax event="blur" render="messagePassword" />
+                </h:inputSecret>
+                <h:inputSecret id="confirm" value="#{userController.selected.password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.Confirm}" class="pure-input-1">
+                    <f:ajax event="blur" render="messageConfirm" />
+                    <f:attribute name="password" value="#{password}" />
+                    <f:validator binding="#{samePasswordValidator}" />
+                </h:inputSecret>  
+            </fieldset>
+            <h:messages id="messagePassword" errorStyle="color: red" for="password"/>
+            <h:messages id="messageConfirm" errorStyle="color: red" for="confirm"/>   
+            <h:commandButton action="#{userController.create}" value="#{localization.Signup}" class="pure-button pure-input-1 pure-button-primary"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

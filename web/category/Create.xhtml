@@ -1,22 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
-
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{localization.CreateCategoryTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="content">
-            <h:form class="pure-form pure-u-1" style="text-align: center;">
-                <h:inputText value="#{categoryController.selected.name}" p:placeholder="#{localization.Name}" required="true" requiredMessage="#{localization.RequiredMessage_name}"/>
-                &nbsp;<h:commandLink action="#{categoryController.create}" value="#{localization.Create}" class="button-success pure-button"/>
-                <br />
-                <br />
-                <h:commandLink action="#{categoryController.prepareList}" value="#{localization.EditCategoryShowAllLink}" class="pure-button pure-button-primary" immediate="true"/>
-            </h:form>
-        </ui:define>
-    </ui:composition>
-</html>
+<ui:composition template="/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="title">
+        <h:outputText value="#{localization.CreateCategoryTitle}"></h:outputText>
+    </ui:define>
+    <ui:define name="content">
+        <h:form class="pure-form pure-u-1" style="text-align: center;">
+            <h:inputText value="#{categoryController.selected.name}" p:placeholder="#{localization.Name}" required="true" requiredMessage="#{localization.RequiredMessage_name}"/>
+            &nbsp;<h:commandLink action="#{categoryController.create}" value="#{localization.Create}" class="button-success pure-button"/>
+            <br />
+            <br />
+            <h:commandLink action="#{categoryController.prepareList}" value="#{localization.EditCategoryShowAllLink}" class="pure-button pure-button-primary" immediate="true"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

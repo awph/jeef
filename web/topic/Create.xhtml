@@ -1,28 +1,22 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+<ui:composition template="/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="title">
+        <h:outputText value="#{localization.CreateTopicTitle}"></h:outputText>
+    </ui:define>
+    <ui:define name="content">
+        <h:form class="pure-form pure-u-1" style="text-align: center;">
+            <h:inputText value="#{topicController.selected.title}" p:placeholder="#{localization.Title}" required="true" requiredMessage="#{localization.RequiredMessage_title}"/>
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{localization.CreateTopicTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="content">
-            <h:form class="pure-form pure-u-1" style="text-align: center;">
-                <h:inputText value="#{topicController.selected.title}" p:placeholder="#{localization.Title}" required="true" requiredMessage="#{localization.RequiredMessage_title}"/>
+            <h:inputTextarea value="#{topicController.firstPost.content}" p:placeholder="#{localization.Content}" required="true" requiredMessage="#{localization.RequiredMessage_content}"/>
 
-                <h:inputTextarea value="#{topicController.firstPost.content}" p:placeholder="#{localization.Content}" required="true" requiredMessage="#{localization.RequiredMessage_content}"/>
-
-                &nbsp;<h:commandLink action="#{topicController.create}" value="#{localization.Create}" class="button-success pure-button"/>
-            </h:form>
-            <!--<br />
-            <br />
-            <form class="pure-form pure-u-1" style="text-align: center;">
-                <button type="submit" formaction="Signup.xhtml" class="pure-button pure-button-primary pure-u-1-2">#{localization.Back}</button>
-            </form>-->
-        </ui:define>
-    </ui:composition>
-
-</html>
+            &nbsp;<h:commandLink action="#{topicController.create}" value="#{localization.Create}" class="button-success pure-button"/>
+        </h:form>
+        <!--<br />
+        <br />
+        <form class="pure-form pure-u-1" style="text-align: center;">
+            <button type="submit" formaction="Signup.xhtml" class="pure-button pure-button-primary pure-u-1-2">#{localization.Back}</button>
+        </form>-->
+    </ui:define>
+</ui:composition>
