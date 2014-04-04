@@ -7,14 +7,13 @@
 package ch.hearc.jeef.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -73,7 +72,7 @@ public class Topic implements Serializable {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Category category;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topic")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topic", fetch = FetchType.EAGER)
     private Collection<Post> postCollection;
 
     public Topic() {

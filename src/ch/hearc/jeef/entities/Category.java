@@ -8,10 +8,13 @@ package ch.hearc.jeef.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,7 +50,7 @@ public class Category implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.EAGER)
     private Collection<Topic> topicCollection;
 
     public Category() {
@@ -84,6 +87,7 @@ public class Category implements Serializable {
     }
     
     public Integer getTopicCollectionCount() {
+        Logger.getLogger(Category.class.getName()).log(Level.SEVERE, topicCollection.getClass().getName(), topicCollection);
         return topicCollection.size();
     }
 

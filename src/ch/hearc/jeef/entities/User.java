@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -71,9 +72,9 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "banned")
     private boolean banned;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lastEditor")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lastEditor", fetch = FetchType.EAGER)
     private Collection<Post> postCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator", fetch = FetchType.EAGER)
     private Collection<Post> postCollection1;
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @ManyToOne(optional = false)

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,6 +35,7 @@ public class CategoryController implements Serializable {
     }
 
     public Category getSelected() {
+        recreateModel();
         Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         final String ID_KEY = "id";
         if (parameterMap.containsKey(ID_KEY)) {
@@ -132,7 +134,7 @@ public class CategoryController implements Serializable {
         return items;
     }
 
-    private void recreateModel() {
+    public void recreateModel() {
         items = null;
     }
 
@@ -152,12 +154,8 @@ public class CategoryController implements Serializable {
         return "/category/List";
     }
 
-    public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(categoryFacade.findAll(), false);
-    }
-
-    public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(categoryFacade.findAll(), true);
+    public SelectItem[] getItemsAvailableSelect() {
+        return JsfUtil.getSelectItems(categoryFacade.findAll());
     }
 
     public Category getCategory(java.lang.Integer id) {
