@@ -4,6 +4,24 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    <filter>
+        <description>Admin pages limitation</description>
+        <filter-name>AdministrationFilter</filter-name>
+        <filter-class>ch.hearc.jeef.filters.AdministrationFilter</filter-class>
+    </filter>
+    <filter>
+        <description>Logged pages limitation</description>
+        <filter-name>LoggedFilter</filter-name>
+        <filter-class>ch.hearc.jeef.filters.LoggedFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdministrationFilter</filter-name>
+        <url-pattern>/user/List.xhtml</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoggedFilter</filter-name>
+        <url-pattern>/topic/Create.xhtml</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
