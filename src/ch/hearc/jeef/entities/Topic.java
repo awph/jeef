@@ -72,7 +72,7 @@ public class Topic implements Serializable {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Category category;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topic", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topic")
     private Collection<Post> postCollection;
 
     public Topic() {

@@ -72,9 +72,9 @@ public class User implements Serializable {
     @NotNull
     @Column(name = "banned")
     private boolean banned;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lastEditor", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lastEditor")
     private Collection<Post> postCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator")
     private Collection<Post> postCollection1;
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @ManyToOne(optional = false)

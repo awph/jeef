@@ -50,7 +50,7 @@ public class Category implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
     private Collection<Topic> topicCollection;
 
     public Category() {
@@ -87,7 +87,6 @@ public class Category implements Serializable {
     }
     
     public Integer getTopicCollectionCount() {
-        Logger.getLogger(Category.class.getName()).log(Level.SEVERE, topicCollection.getClass().getName(), topicCollection);
         return topicCollection.size();
     }
 

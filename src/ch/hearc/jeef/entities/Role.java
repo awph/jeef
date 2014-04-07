@@ -48,7 +48,7 @@ public class Role implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "role")
     private Collection<User> userCollection;
 
     public Role() {
