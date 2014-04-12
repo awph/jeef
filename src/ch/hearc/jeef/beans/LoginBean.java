@@ -24,6 +24,8 @@ import javax.inject.Named;
 @SessionScoped
 public class LoginBean implements Serializable {
 
+    private static final String LOGIN_PAGE_URL = "/Login.xhtml";
+
     private User user;
     private String username;
     private String password;
@@ -37,7 +39,7 @@ public class LoginBean implements Serializable {
         ExternalContext externalContext = context.getExternalContext();
         user = userFacade.find(username, password);
         if (user != null) {
-            externalContext.redirect(originalURL);
+            externalContext.redirect(getOriginalURL());
         } else {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown login", null));
         }
@@ -47,7 +49,7 @@ public class LoginBean implements Serializable {
         user = null;
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.invalidateSession();
-        externalContext.redirect(externalContext.getRequestContextPath() + "/Login.xhtml");
+        externalContext.redirect(externalContext.getRequestContextPath() + LOGIN_PAGE_URL);
     }
 
     public User getUser() {
@@ -69,9 +71,17 @@ public class LoginBean implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public void setOriginalURL(String originalURL) {
         this.originalURL = originalURL;
+    }
+
+    public String getOriginalURL() {
+        if (originalURL == null || originalURL.equals(LOGIN_PAGE_URL)) {
+            return "/";
+        } else {
+            return originalURL;
+        }
     }
 
 }

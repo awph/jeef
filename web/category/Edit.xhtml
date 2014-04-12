@@ -9,7 +9,7 @@
     <ui:define name="content">
         <h:form class="pure-form pure-u-1" style="text-align: center;">
             <h:inputText value="#{categoryController.selected.name}" p:placeholder="#{localization.Name}" required="true" requiredMessage="#{localization.RequiredMessage_name}"/>
-            &nbsp;<h:commandLink action="#{categoryController.update}" value="#{localization.Edit}" class="button-success pure-button"/>
+            <h:commandLink action="#{categoryController.update}" value="#{localization.Edit}" class="button-success pure-button"/>
             <br />
             <br />
             <h:commandLink action="#{categoryController.prepareList}" value="#{localization.EditCategoryShowAllLink}" class="pure-button pure-button-primary" immediate="true"/>
