@@ -1,5 +1,7 @@
 package ch.hearc.jeef.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.model.DataModel;
 
 public abstract class PaginationHelper {
@@ -41,6 +43,10 @@ public abstract class PaginationHelper {
         }
     }
 
+    public void setPage(int page) {
+        this.page = page - 1;
+    }
+
     public boolean isHasPreviousPage() {
         return page > 0;
     }
@@ -51,8 +57,31 @@ public abstract class PaginationHelper {
         }
     }
 
+    public int getNumberPages() {
+        return (int) Math.ceil(getItemsCount() / (double) getPageSize());
+    }
+
     public int getPageSize() {
         return pageSize;
     }
 
+    public List<Integer> getPreviousPages() {
+        List<Integer> pages = new ArrayList<Integer>();
+        for (int i = 0, j = 0; i < page && j < 5; ++i, ++j) {
+            pages.add(i + 1);
+        }
+        return pages;
+    }
+
+    public int getCurrentPage() {
+        return page + 1;
+    }
+
+    public List<Integer> getNextPages() {
+        List<Integer> pages = new ArrayList<Integer>();
+        for (int i = page + 1, j = 0; i < getNumberPages() && j < 5; ++i, ++j) {
+            pages.add(i + 1);
+        }
+        return pages;
+    }
 }

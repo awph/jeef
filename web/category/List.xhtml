@@ -27,7 +27,7 @@
                                 <td><h:link outcome="/category/View.xhtml?id=#{cat.id}" value="#{cat.name}" /></td>
                                 <h:panelGroup rendered="#{admin}">
                                     <td>
-                                        <h:commandLink action="#{categoryController.prepareEdit}" value="#{localization.Edit}"/>
+                                        <h:link outcome="/category/Edit.xhtml?id=#{cat.id}" value="#{localization.Edit}" />
                                         <h:outputText value=" "/>
                                         <h:commandLink action="#{categoryController.destroy}" value="#{localization.Delete}"/>
                                     </td>
@@ -37,8 +37,15 @@
                     </tbody>
                 </table>
                 <ul class="pure-paginator" style="text-align:center;">
-                    <li><h:commandLink action="#{categoryController.previous}" value="#{localization.Previous}" rendered="#{categoryController.pagination.hasPreviousPage}"  class="pure-button prev"/></li>
-                    <li><h:commandLink action="#{categoryController.next}" value="#{localization.Next}" rendered="#{categoryController.pagination.hasNextPage}"  class="pure-button next"/></li>
+                    <li><h:commandLink action="#{categoryController.previous}" value="#{localization.Previous}" class="prev pure-button pure-button-primary #{categoryController.pagination.hasPreviousPage ? '' : 'pure-button-disabled'}"/></li>
+                    <ui:repeat value="#{categoryController.pagination.previousPages}" var="page_number">
+                        <li><h:commandLink action="#{categoryController.setPage(page_number)}" value="#{page_number}" class="pure-button pure-button-primary" /></li>
+                    </ui:repeat>
+                    <li><h:outputText value="#{categoryController.pagination.currentPage}" class="pure-button pure-button-active pure-button-primary" /></li>
+                    <ui:repeat value="#{categoryController.pagination.nextPages}" var="page_number">
+                        <li><h:commandLink action="#{categoryController.setPage(page_number)}" value="#{page_number}" class="pure-button pure-button-primary" /></li>
+                    </ui:repeat>
+                    <li><h:commandLink action="#{categoryController.next}" value="#{localization.Next}" class="next pure-button pure-button-primary #{categoryController.pagination.hasNextPage ? '' : 'pure-button-disabled'}"/></li>
                 </ul>
             </h:form>
         </h:panelGroup>
