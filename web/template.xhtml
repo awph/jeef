@@ -15,10 +15,10 @@
     </h:head>
 
     <h:body>
-        <c:set var="user" value="#{loginBean.user}" />
-        <c:set var="logged" value="#{loginBean.user != null}" />
-        <c:set rendered="#{logged}" var="admin" value="#{loginBean.user.role.id == 1}" />
-        <c:set rendered="#{logged}" var="moderator" value="#{loginBean.user.role.id == 1 || loginBean.user.role.id == 2}" />
+        <c:set var="current_user" value="#{loginBean.user}" />
+        <c:set var="logged" value="#{current_user != null}" />
+        <c:set rendered="#{logged}" var="admin" value="#{current_user.role.id == 1}" />
+        <c:set rendered="#{logged}" var="moderator" value="#{current_user.role.id == 1 || current_user.role.id == 2}" />
         <div id="layout">
             <!-- Menu toggle -->
             <a href="#menu" id="menuLink" class="menu-link">

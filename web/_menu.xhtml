@@ -18,11 +18,14 @@
                 <li class="pure-menu-heading"><h:outputText value="Administration" /></li>
                 <li><h:link outcome="/user/List.xhtml" value="#{localization.Users}"/></li>
             </h:panelGroup>
-            <li class="pure-menu-heading"><h:outputText rendered="#{user == null}" value="Profile" /><h:outputText rendered="#{user != null}" value="#{user.username}" /></li>
-            <h:panelGroup rendered="#{user == null}">
+            <li class="pure-menu-heading">
+                <h:outputText rendered="#{current_user == null}" value="Profile" />
+                <h:outputText rendered="#{current_user != null}" value="#{current_user.username}" />
+            </li>
+            <h:panelGroup rendered="#{current_user == null}">
                 <li><h:link value="Login" outcome="/Login.xhtml"/></li>
             </h:panelGroup>
-            <h:panelGroup rendered="#{user != null}">
+            <h:panelGroup rendered="#{current_user != null}">
                 <li><h:link value="Edit profile" outcome="/user/Edit.xhtml"/></li>
                 <li><h:form><h:commandLink action="#{loginBean.logout()}" value="Logout" /></h:form></li>
             </h:panelGroup>
