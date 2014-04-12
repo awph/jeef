@@ -1,14 +1,16 @@
 package ch.hearc.jeef.controller;
 
-import ch.hearc.jeef.facade.PostFacade;
+import ch.hearc.jeef.beans.LoginBean;
 import ch.hearc.jeef.entities.Post;
+import ch.hearc.jeef.entities.Topic;
+import ch.hearc.jeef.entities.User;
+import ch.hearc.jeef.facade.PostFacade;
 import ch.hearc.jeef.util.JsfUtil;
 import ch.hearc.jeef.util.PaginationHelper;
-
 import java.io.Serializable;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -17,6 +19,8 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 @Named("postController")
 @SessionScoped
@@ -28,6 +32,9 @@ public class PostController implements Serializable {
     private ch.hearc.jeef.facade.PostFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    
+    @Inject
+    private LoginBean loginBean;
 
     public PostController() {
     }
@@ -79,11 +86,17 @@ public class PostController implements Serializable {
         return "Create";
     }
 
-    public String create() {
+    public String create(Topic topic) {
         try {
+            User user = loginBean.getUser();
+            current.setTopic(topic);
+            current.setCreator(user);
+            current.setLastEditor(user);
+            current.setCreatedDate(new Date());
+            current.setEditedDate(new Date());
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("PostCreated"));
-            return prepareCreate();
+            return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
             return null;
