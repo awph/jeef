@@ -2,7 +2,6 @@ package ch.hearc.jeef.controller;
 
 import ch.hearc.jeef.facade.UserFacade;
 import ch.hearc.jeef.entities.Role;
-import ch.hearc.jeef.entities.Topic;
 import ch.hearc.jeef.entities.User;
 import ch.hearc.jeef.facade.RoleFacade;
 import ch.hearc.jeef.util.HashUtil;

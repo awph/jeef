@@ -32,7 +32,7 @@ public class PostController implements Serializable {
     private ch.hearc.jeef.facade.PostFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-    
+
     @Inject
     private LoginBean loginBean;
 
@@ -51,18 +51,18 @@ public class PostController implements Serializable {
         return ejbFacade;
     }
 
-    public PaginationHelper getPagination() {
+    public PaginationHelper getPagination(final Topic topic) {
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getFacade().countForTopic(topic);
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageLastItem()}));
+                    return new ListDataModel(getFacade().findRangeForTopic(new int[]{getPageFirstItem(), getPageLastItem()}, topic));
                 }
             };
         }
@@ -74,16 +74,9 @@ public class PostController implements Serializable {
         return "List";
     }
 
-    public String prepareView() {
-        current = (Post) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
-    }
-
-    public String prepareCreate() {
+    public void prepareCreate() {
         current = new Post();
         selectedItemIndex = -1;
-        return "Create";
     }
 
     public String create(Topic topic) {
@@ -95,17 +88,18 @@ public class PostController implements Serializable {
             current.setCreatedDate(new Date());
             current.setEditedDate(new Date());
             getFacade().create(current);
+            prepareCreate();
+            getPagination(topic).lastPage();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("PostCreated"));
-            return null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-            return null;
         }
+        return topicViewFullURL(topic);
     }
 
-    public String prepareEdit() {
-        current = (Post) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+    public String prepareEdit(Topic topic) {
+        current = (Post) getItems(topic).getRowData();
+        selectedItemIndex = getPagination(topic).getPageFirstItem() + getItems(topic).getRowIndex();
         return "Edit";
     }
 
@@ -120,19 +114,19 @@ public class PostController implements Serializable {
         }
     }
 
-    public String destroy() {
-        current = (Post) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+    public String destroy(Topic topic) {
+        current = (Post) getItems(topic).getRowData();
+        selectedItemIndex = getPagination(topic).getPageFirstItem() + getItems(topic).getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
         return "List";
     }
 
-    public String destroyAndView() {
+    public String destroyAndView(Topic topic) {
         performDestroy();
         recreateModel();
-        updateCurrentItem();
+        updateCurrentItem(topic);
         if (selectedItemIndex >= 0) {
             return "View";
         } else {
@@ -151,14 +145,14 @@ public class PostController implements Serializable {
         }
     }
 
-    private void updateCurrentItem() {
+    private void updateCurrentItem(Topic topic) {
         int count = getFacade().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
             // go to previous page if last page disappeared:
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
+            if (getPagination(topic).getPageFirstItem() >= count) {
+                getPagination(topic).previousPage();
             }
         }
         if (selectedItemIndex >= 0) {
@@ -166,9 +160,9 @@ public class PostController implements Serializable {
         }
     }
 
-    public DataModel getItems() {
+    public DataModel<Post> getItems(Topic topic) {
         if (items == null) {
-            items = getPagination().createPageDataModel();
+            items = getPagination(topic).createPageDataModel();
         }
         return items;
     }
@@ -181,16 +175,22 @@ public class PostController implements Serializable {
         pagination = null;
     }
 
-    public String next() {
-        getPagination().nextPage();
+    public String next(Topic topic) {
+        getPagination(topic).nextPage();
         recreateModel();
-        return "List";
+        return topicViewFullURL(topic);
     }
 
-    public String previous() {
-        getPagination().previousPage();
+    public String previous(Topic topic) {
+        getPagination(topic).previousPage();
         recreateModel();
-        return "List";
+        return topicViewFullURL(topic);
+    }
+
+    public String setPage(int page, Topic topic) {
+        getPagination(topic).setPage(page);
+        recreateModel();
+        return topicViewFullURL(topic);
     }
 
     public SelectItem[] getItemsAvailableSelect() {
@@ -199,6 +199,10 @@ public class PostController implements Serializable {
 
     public Post getPost(java.lang.Integer id) {
         return ejbFacade.find(id);
+    }
+
+    private String topicViewFullURL(Topic topic) {
+        return "/topic/View.xhtml?id=" + Integer.toString(topic.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }
 
     @FacesConverter(forClass = Post.class)

@@ -36,8 +36,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Post.findAll", query = "SELECT p FROM Post p"),
     @NamedQuery(name = "Post.findById", query = "SELECT p FROM Post p WHERE p.id = :id"),
+    @NamedQuery(name = "Post.findByTopic", query = "SELECT p FROM Post p WHERE p.topic = :topic"),
     @NamedQuery(name = "Post.findByCreatedDate", query = "SELECT p FROM Post p WHERE p.createdDate = :createdDate"),
-    @NamedQuery(name = "Post.findByEditedDate", query = "SELECT p FROM Post p WHERE p.editedDate = :editedDate")})
+    @NamedQuery(name = "Post.findByEditedDate", query = "SELECT p FROM Post p WHERE p.editedDate = :editedDate"),
+    @NamedQuery(name = "Post.countByTopic", query = "SELECT COUNT(p) FROM Post p WHERE p.topic = :topic")})
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
