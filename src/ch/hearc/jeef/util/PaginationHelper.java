@@ -57,6 +57,10 @@ public abstract class PaginationHelper {
         }
     }
 
+    public void lastPage() {
+        page = getNumberPages() - 1;
+    }
+
     public int getNumberPages() {
         return (int) Math.ceil(getItemsCount() / (double) getPageSize());
     }
@@ -66,7 +70,7 @@ public abstract class PaginationHelper {
     }
 
     public List<Integer> getPreviousPages() {
-        List<Integer> pages = new ArrayList<Integer>();
+        List<Integer> pages = new ArrayList<>();
         for (int i = 0, j = 0; i < page && j < 5; ++i, ++j) {
             pages.add(i + 1);
         }
@@ -78,7 +82,7 @@ public abstract class PaginationHelper {
     }
 
     public List<Integer> getNextPages() {
-        List<Integer> pages = new ArrayList<Integer>();
+        List<Integer> pages = new ArrayList<>();
         for (int i = page + 1, j = 0; i < getNumberPages() && j < 5; ++i, ++j) {
             pages.add(i + 1);
         }
