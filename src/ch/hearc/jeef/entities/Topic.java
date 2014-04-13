@@ -42,7 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Topic.findByTitle", query = "SELECT t FROM Topic t WHERE t.title = :title"),
     @NamedQuery(name = "Topic.findByDate", query = "SELECT t FROM Topic t WHERE t.date = :date"),
     @NamedQuery(name = "Topic.findByLocked", query = "SELECT t FROM Topic t WHERE t.locked = :locked"),
-    @NamedQuery(name = "Topic.findByPinned", query = "SELECT t FROM Topic t WHERE t.pinned = :pinned")})
+    @NamedQuery(name = "Topic.findByPinned", query = "SELECT t FROM Topic t WHERE t.pinned = :pinned"),
+    @NamedQuery(name = "Topic.findByCategory", query = "SELECT t FROM Topic t WHERE t.category = :category"),
+    @NamedQuery(name = "Topic.countByCategory", query = "SELECT COUNT(t) FROM Topic t WHERE t.category = :category")})
 public class Topic implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

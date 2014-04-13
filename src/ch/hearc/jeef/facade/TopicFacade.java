@@ -33,10 +33,15 @@ public class TopicFacade extends AbstractFacade<Topic> {
     }
 
     public List<Topic> findRangeForCategory(int[] range, Category category) {
-        Query query = em.createNamedQuery("Topic.findByCategory").setParameter("category_id", category.getId());
+        Query query = em.createNamedQuery("Topic.findByCategory").setParameter("category", category);
         query.setMaxResults(range[1] - range[0] + 1);
         query.setFirstResult(range[0]);
         return query.getResultList();
+    }
+
+    public int countForCategory(Category category) {
+        Query query = getEntityManager().createNamedQuery("Topic.countByCategory").setParameter("category", category);
+        return ((Long) query.getSingleResult()).intValue();
     }
     
 }
