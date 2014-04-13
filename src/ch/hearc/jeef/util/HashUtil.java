@@ -12,7 +12,21 @@ public class HashUtil {
      * http://stackoverflow.com/a/11009612/2648956
      *
      * @param string the string to hash
-     * @return the string hashed
+     * @return the string hashed (MD5)
+     * @throws NoSuchAlgorithmException
+     * @throws UnsupportedEncodingException
+     */
+    public static final String hashMD5(String string) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest digest = MessageDigest.getInstance("MD5");
+        byte[] hash = digest.digest(string.getBytes("UTF-8"));
+        return bytesToString(hash);
+    }
+
+    /**
+     * http://stackoverflow.com/a/11009612/2648956
+     *
+     * @param string the string to hash
+     * @return the string hashed (SHA512)
      * @throws NoSuchAlgorithmException
      * @throws UnsupportedEncodingException
      */

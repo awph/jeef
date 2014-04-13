@@ -5,8 +5,13 @@
  */
 package ch.hearc.jeef.entities;
 
+import ch.hearc.jeef.util.HashUtil;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -142,7 +147,19 @@ public class User implements Serializable {
     public void setBanned(boolean banned) {
         this.banned = banned;
     }
+    
+    public String getMD5EMail() {
+        try {
+            return HashUtil.hashMD5(getEmail());
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            return null;
+        }
+    }
 
+    public String getGravatarURL(int size) {
+        String gravatarPatern = "http://www.gravatar.com/avatar/%s?s=%d";
+        return String.format(gravatarPatern, getMD5EMail(), size);
+    }
 
     @XmlTransient
     public Collection<Post> getPostCollection() {
