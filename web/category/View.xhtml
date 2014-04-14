@@ -40,11 +40,11 @@
                                 <td><h:outputText value="#{topic.pinned}"/></td>
                                 <h:panelGroup rendered="#{moderator}">
                                     <td>
-                                        <h:commandLink action="#{topicController.pin}" value="#{localization.Pin}"/>
+                                        <h:commandLink action="#{topicController.pin(categoryController.selected)}" value="#{localization.Pin}"/>
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{topicController.lock}" value="#{localization.Lock}"/>
+                                        <h:commandLink action="#{topicController.lock(categoryController.selected)}" value="#{localization.Lock}"/>
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{topicController.destroy}" value="#{localization.Delete}"/>
+                                        <h:commandLink action="#{topicController.destroy(categoryController.selected)}" value="#{localization.Delete}"/>
                                     </td>
                                 </h:panelGroup>
                             </tr>

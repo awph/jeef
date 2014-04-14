@@ -31,6 +31,7 @@ public class PostController implements Serializable {
     @EJB
     private ch.hearc.jeef.facade.PostFacade ejbFacade;
     private PaginationHelper pagination;
+    private Topic topic; // Need for Pagination
     private int selectedItemIndex;
 
     @Inject
@@ -52,6 +53,10 @@ public class PostController implements Serializable {
     }
 
     public PaginationHelper getPagination(final Topic topic) {
+        if (this.topic == null || !this.topic.equals(topic)) {
+            pagination = null;
+            this.topic = topic;
+        }
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
@@ -94,7 +99,7 @@ public class PostController implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
         }
-        return topicViewFullURL(topic);
+        return TopicController.topicViewFullURL(topic);
     }
 
     public String prepareEdit(Topic topic) {
@@ -161,9 +166,7 @@ public class PostController implements Serializable {
     }
 
     public DataModel<Post> getItems(Topic topic) {
-        if (items == null) {
-            items = getPagination(topic).createPageDataModel();
-        }
+        items = getPagination(topic).createPageDataModel();
         return items;
     }
 
@@ -178,19 +181,19 @@ public class PostController implements Serializable {
     public String next(Topic topic) {
         getPagination(topic).nextPage();
         recreateModel();
-        return topicViewFullURL(topic);
+        return TopicController.topicViewFullURL(topic);
     }
 
     public String previous(Topic topic) {
         getPagination(topic).previousPage();
         recreateModel();
-        return topicViewFullURL(topic);
+        return TopicController.topicViewFullURL(topic);
     }
 
     public String setPage(int page, Topic topic) {
         getPagination(topic).setPage(page);
         recreateModel();
-        return topicViewFullURL(topic);
+        return TopicController.topicViewFullURL(topic);
     }
 
     public SelectItem[] getItemsAvailableSelect() {
@@ -199,10 +202,6 @@ public class PostController implements Serializable {
 
     public Post getPost(java.lang.Integer id) {
         return ejbFacade.find(id);
-    }
-
-    private String topicViewFullURL(Topic topic) {
-        return "/topic/View.xhtml?id=" + Integer.toString(topic.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }
 
     @FacesConverter(forClass = Post.class)

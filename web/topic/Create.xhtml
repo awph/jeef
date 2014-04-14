@@ -11,7 +11,7 @@
 
             <h:inputTextarea value="#{topicController.firstPost.content}" p:placeholder="#{localization.Content}" required="true" requiredMessage="#{localization.RequiredMessage_content}"/>
 
-            <h:commandLink action="#{topicController.create}" value="#{localization.Create}" class="button-success pure-button"/>
+            <h:commandLink action="#{topicController.create(categoryController.selected)}" value="#{localization.Create}" class="button-success pure-button"/>
         </h:form>
         <!--<br />
         <br />
