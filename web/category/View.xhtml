@@ -13,8 +13,8 @@
             </form>
             <br />
         </h:panelGroup>
-        <h:outputText escape="false" value="#{localization.ListTopicEmpty}" rendered="#{categoryController.selected.topicCollectionCount == 0}"/>
-        <h:panelGroup rendered="#{categoryController.selected.topicCollectionCount > 0}">
+        <h:outputText escape="false" value="#{localization.ListTopicEmpty}" rendered="#{categoryController.selected.isEmpty()}"/>
+        <h:panelGroup rendered="#{not categoryController.selected.isEmpty()}">
             <h:form rendered="#{categoryController.selected != null}">
                 <table class="pure-table pure-u-1 pure-table-horizontal">
                     <thead>
@@ -49,11 +49,11 @@
                                 <td><h:outputText value="#{topic.pinned}"/></td>
                                 <h:panelGroup rendered="#{moderator}">
                                     <td>
-                                        <h:commandLink action="#{topicController.pin(categoryController.selected)}" value="#{localization.Pin}"/>
+                                        <h:commandLink action="#{topicController.pin(topic)}" value="#{localization.Pin}"/>
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{topicController.lock(categoryController.selected)}" value="#{localization.Lock}"/>
+                                        <h:commandLink action="#{topicController.lock(topic)}" value="#{localization.Lock}"/>
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{topicController.destroy(categoryController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
+                                        <h:commandLink action="#{topicController.destroy(topic)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
                                                     return false"/>
                                     </td>
                                 </h:panelGroup>
@@ -61,8 +61,7 @@
                         </ui:repeat>
                     </tbody>
                 </table>
-                <br />
-                <br />
+                <br /><br />
                 <h:form>
                     <ul class="pure-paginator" style="text-align:center;">
                         <li><h:commandLink action="#{topicController.previous(categoryController.selected)}" value="#{localization.Previous}" class="prev pure-button pure-button-primary #{topicController.getPagination(categoryController.selected).hasPreviousPage ? '' : 'pure-button-disabled'}"/></li>

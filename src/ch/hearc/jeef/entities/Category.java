@@ -78,6 +78,10 @@ public class Category implements Serializable {
         this.name = name;
     }
     
+    public Boolean isEmpty() {
+        return getTopicQuantity() == 0;
+    }
+    
     public Integer getTopicQuantity() {
         return topicCollection.size();
     }

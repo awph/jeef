@@ -79,11 +79,6 @@ public class PostController implements Serializable {
         return pagination;
     }
 
-    public String prepareList() {
-        recreateModel();
-        return "List";
-    }
-
     public void prepareCreate() {
         current = new Post();
         selectedItemIndex = -1;
@@ -212,7 +207,7 @@ public class PostController implements Serializable {
     }
     
     public boolean canEdit(Post post) {
-        return post.getCreator().equals(loginBean.getUser()) || loginBean.getUser().isModerator();
+        return post.getCreator().equals(loginBean.getUser()) || (loginBean.getUser() != null && loginBean.getUser().isModerator());
     }
 
     public static String postEditFullURL(Post post) {

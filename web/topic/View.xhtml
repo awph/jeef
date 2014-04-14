@@ -48,15 +48,15 @@
                 </tbody>
             </table>
         </ui:repeat>
-
         <h:form rendered="#{logged}">
+            <br /><br />
             <h:panelGrid columns="3">
                 <h:outputLabel value="#{localization.Content}" for="content" />
                 <h:inputTextarea rows="4" cols="30" id="content" value="#{postController.selected.content}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_content}"/>
                 <h:commandLink action="#{postController.create(topicController.selected)}" value="#{localization.Post}" class="button-success pure-button"/>
             </h:panelGrid>
         </h:form>
-
+        <br /><br />
         <h:form>
             <ul class="pure-paginator" style="text-align:center;">
                 <li><h:commandLink action="#{postController.previous(topicController.selected)}" value="#{localization.Previous}" class="prev pure-button pure-button-primary #{postController.getPagination(topicController.selected).hasPreviousPage ? '' : 'pure-button-disabled'}"/></li>

@@ -101,11 +101,6 @@ public class TopicController implements Serializable {
         return pagination;
     }
 
-    public String prepareList() {
-        recreateModel();
-        return "List";
-    }
-
     public void view(Topic topic) {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
@@ -146,51 +141,28 @@ public class TopicController implements Serializable {
         }
     }
 
-    public String pin(Category category) {
-        current = (Topic) getItems(category).getRowData();
-        current.setPinned(!current.getPinned());
-        getTopicFacade().edit(current);
+    public String pin(Topic topic) {
+        Category category = topic.getCategory();
+        topic.setPinned(!topic.getPinned());
+        getTopicFacade().edit(topic);
         JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicUpdated"));
         return CategoryController.categoryViewFullURL(category);
     }
 
-    public String lock(Category category) {
-        current = (Topic) getItems(category).getRowData();
-        current.setLocked(!current.getLocked());
-        getTopicFacade().edit(current);
+    public String lock(Topic topic) {
+        Category category = topic.getCategory();
+        topic.setLocked(!topic.getLocked());
+        getTopicFacade().edit(topic);
         JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicUpdated"));
         return CategoryController.categoryViewFullURL(category);
     }
 
-    public String destroy(Category category) {
-        current = (Topic) getItems(category).getRowData();
+    public String destroy(Topic topic) {
+        Category category = topic.getCategory();
         selectedItemIndex = getPagination(category).getPageFirstItem() + getItems(category).getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
+        getTopicFacade().remove(topic);
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicDeleted"));
         return CategoryController.categoryViewFullURL(category);
-    }
-
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "View";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "List";
-        }
-    }
-
-    private void performDestroy() {
-        try {
-            getTopicFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-        }
     }
 
     private void updateCurrentItem() {
@@ -224,13 +196,19 @@ public class TopicController implements Serializable {
     public String next(Category category) {
         getPagination(category).nextPage();
         recreateModel();
-        return "List";
+        return CategoryController.categoryViewFullURL(category);
     }
 
     public String previous(Category category) {
         getPagination(category).previousPage();
         recreateModel();
-        return "List";
+        return CategoryController.categoryViewFullURL(category);
+    }
+
+    public String setPage(int page, Category category) {
+        getPagination(category).setPage(page);
+        recreateModel();
+        return CategoryController.categoryViewFullURL(category);
     }
 
     public SelectItem[] getItemsAvailableSelect() {
