@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -43,8 +42,9 @@ public class TopicController implements Serializable {
     @EJB
     private ch.hearc.jeef.facade.PostFacade postFacade;
     private PaginationHelper pagination;
+    private Category category; // Need for Pagination
     private int selectedItemIndex;
-    
+
     @Inject
     private LoginBean loginBean;
 
@@ -56,16 +56,15 @@ public class TopicController implements Serializable {
         final String ID_KEY = "id";
         if (parameterMap.containsKey(ID_KEY)) {
             current = getTopic(Integer.valueOf(parameterMap.get(ID_KEY)));
-        }
-        else if (current == null) {
+        } else if (current == null) {
             current = new Topic();
             selectedItemIndex = -1;
         }
         return current;
     }
-    
+
     public Post getFirstPost() {
-        if(firstPost == null){
+        if (firstPost == null) {
             firstPost = new Post();
         }
         return firstPost;
@@ -79,21 +78,26 @@ public class TopicController implements Serializable {
         return postFacade;
     }
 
-    public PaginationHelper getPagination() {
+    public PaginationHelper getPagination(final Category category) {
+        if (this.category == null || !this.category.equals(category)) {
+            pagination = null;
+            this.category = category;
+        }
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
                 @Override
                 public int getItemsCount() {
-                    return getTopicFacade().count();
+                    return getTopicFacade().countForCategory(category);
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getTopicFacade().findRange(new int[]{getPageFirstItem(), getPageLastItem()}));
+                    return new ListDataModel(getTopicFacade().findRangeForCategory(new int[]{getPageFirstItem(), getPageLastItem()}, category));
                 }
             };
         }
+
         return pagination;
     }
 
@@ -118,8 +122,9 @@ public class TopicController implements Serializable {
         return "/topic/Create";
     }
 
-    public String create() {
+    public String create(Category category) {
         try {
+            current.setCategory(category);
             current.setDate(new java.util.Date());
             current.setLocked(false);
             current.setPinned(false);
@@ -131,41 +136,39 @@ public class TopicController implements Serializable {
             firstPost.setCreatedDate(new Date());
             firstPost.setEditedDate(new Date());
             getPostFacade().create(firstPost);
-            new CategoryController().recreateModel();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicCreated"));
             view(current);
             return null;
         } catch (Exception e) {
-            //Logger.getLogger(TopicController.class.getName()).log(Level.SEVERE, ee.getCause().getMessage(), ee.getCause().getCause());
-            Logger.getLogger(TopicController.class.getName()).log(Level.SEVERE, firstPost.toString(), e);
+            Logger.getLogger(TopicController.class.getName()).log(Level.SEVERE, null, e);
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-            return null;
+            return CategoryController.categoryViewFullURL(current.getCategory());
         }
     }
 
-    public String pin() {
-        current = (Topic) getItems().getRowData();
+    public String pin(Category category) {
+        current = (Topic) getItems(category).getRowData();
         current.setPinned(!current.getPinned());
         getTopicFacade().edit(current);
         JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicUpdated"));
-        return null;
+        return CategoryController.categoryViewFullURL(category);
     }
 
-    public String lock() {
-        current = (Topic) getItems().getRowData();
+    public String lock(Category category) {
+        current = (Topic) getItems(category).getRowData();
         current.setLocked(!current.getLocked());
         getTopicFacade().edit(current);
         JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("TopicUpdated"));
-        return null;
+        return CategoryController.categoryViewFullURL(category);
     }
 
-    public String destroy() {
-        current = (Topic) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+    public String destroy(Category category) {
+        current = (Topic) getItems(category).getRowData();
+        selectedItemIndex = getPagination(category).getPageFirstItem() + getItems(category).getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "List";
+        return CategoryController.categoryViewFullURL(category);
     }
 
     public String destroyAndView() {
@@ -205,28 +208,9 @@ public class TopicController implements Serializable {
         }
     }
 
-    public DataModel getItems() {
-        if (items == null) {
-            items = getPagination().createPageDataModel();
-        }
+    public DataModel<Topic> getItems(Category category) {
+        items = getPagination(category).createPageDataModel();
         return items;
-    }
-
-    public DataModel getItems(Category category) {
-        PaginationHelper pagination = new PaginationHelper(10) {
-
-            @Override
-            public int getItemsCount() {
-                return getTopicFacade().count();
-            }
-
-            @Override
-            public DataModel createPageDataModel() {
-                return null;
-            }
-        };
-
-        return new ListDataModel(getTopicFacade().findRangeForCategory(new int[]{pagination.getPageFirstItem(), pagination.getPageFirstItem() + pagination.getPageSize()}, category));
     }
 
     private void recreateModel() {
@@ -237,14 +221,14 @@ public class TopicController implements Serializable {
         pagination = null;
     }
 
-    public String next() {
-        getPagination().nextPage();
+    public String next(Category category) {
+        getPagination(category).nextPage();
         recreateModel();
         return "List";
     }
 
-    public String previous() {
-        getPagination().previousPage();
+    public String previous(Category category) {
+        getPagination(category).previousPage();
         recreateModel();
         return "List";
     }
@@ -255,6 +239,10 @@ public class TopicController implements Serializable {
 
     public Topic getTopic(java.lang.Integer id) {
         return getTopicFacade().find(id);
+    }
+
+    public static String topicViewFullURL(Topic topic) {
+        return "/topic/View.xhtml?id=" + Integer.toString(topic.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }
 
     @FacesConverter(forClass = Topic.class)
