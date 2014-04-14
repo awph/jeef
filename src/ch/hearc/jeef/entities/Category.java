@@ -77,14 +77,14 @@ public class Category implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public Integer getTopicQuantity() {
+        return topicCollection.size();
+    }
 
     @XmlTransient
     public Collection<Topic> getTopicCollection() {
         return topicCollection;
-    }
-    
-    public Integer getTopicCollectionCount() {
-        return topicCollection.size();
     }
 
     public void setTopicCollection(Collection<Topic> topicCollection) {

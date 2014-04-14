@@ -18,6 +18,7 @@
                     <thead>
                         <tr>
                             <th style="width: 100%"><h:outputText value="#{localization.Categories}"/></th>
+                            <th style="width: 100%"><h:outputText value="#{localization.Topics}"/></th>
                             <h:panelGroup rendered="#{admin}"><th><h:outputText value="#{localization.Manage}"/></th></h:panelGroup>
                         </tr>
                     </thead>
@@ -25,6 +26,7 @@
                         <ui:repeat value="#{categoryController.items}" var="cat">
                             <tr>
                                 <td><h:link outcome="/category/View.xhtml?id=#{cat.id}" value="#{cat.name}" /></td>
+                                <td><h:outputText value="#{cat.topicQuantity}"/></td>
                                 <h:panelGroup rendered="#{admin}">
                                     <td>
                                         <h:link outcome="/category/Edit.xhtml?id=#{cat.id}" value="#{localization.Edit}" />
@@ -36,6 +38,7 @@
                         </ui:repeat>
                     </tbody>
                 </table>
+                <br /><br />
                 <ul class="pure-paginator" style="text-align:center;">
                     <li><h:commandLink action="#{categoryController.previous}" value="#{localization.Previous}" class="prev pure-button pure-button-primary #{categoryController.pagination.hasPreviousPage ? '' : 'pure-button-disabled'}"/></li>
                     <ui:repeat value="#{categoryController.pagination.previousPages}" var="page_number">
