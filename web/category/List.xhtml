@@ -7,7 +7,7 @@
     <ui:define name="content">
         <h:panelGroup rendered="#{admin}">
             <form class="pure-form">
-                <button type="submit" formaction="#{categoryController.prepareCreate()}.xhtml" class="pure-button pure-input-1 pure-button-primary">#{localization.ListCategoryCreateLink}</button>
+                <button type="submit" formaction="#{categoryController.categoryCreateFullURL()}" class="pure-button pure-input-1 pure-button-primary">#{localization.CategoryCreate}</button>
             </form>
             <br />
         </h:panelGroup>

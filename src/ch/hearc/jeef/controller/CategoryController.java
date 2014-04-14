@@ -1,17 +1,13 @@
 package ch.hearc.jeef.controller;
 
-import ch.hearc.jeef.facade.CategoryFacade;
 import ch.hearc.jeef.entities.Category;
+import ch.hearc.jeef.facade.CategoryFacade;
 import ch.hearc.jeef.util.JsfUtil;
 import ch.hearc.jeef.util.PaginationHelper;
-
 import java.io.Serializable;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.bean.ManagedBean;
-import javax.inject.Named;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -19,6 +15,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Named;
 
 @Named("categoryController")
 @SessionScoped
@@ -36,10 +33,10 @@ public class CategoryController implements Serializable {
 
     public Category getSelected() {
         recreateModel();
-        Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         final String ID_KEY = "id";
-        if (parameterMap.containsKey(ID_KEY)) {
-            current = getCategory(Integer.valueOf(parameterMap.get(ID_KEY)));
+        String id = JsfUtil.getRequestParameter(ID_KEY);
+        if (id != null) {
+            current = getCategory(Integer.valueOf(id));
         }
         else if (current == null) {
             current = new Category();
@@ -75,37 +72,35 @@ public class CategoryController implements Serializable {
         return "/category/List";
     }
 
-    public String prepareCreate() {
+    public void prepareEdit() {
+        current = null;
+        selectedItemIndex = -1;
+    }
+
+    public void prepareCreate() {
         current = new Category();
         selectedItemIndex = -1;
-        return "/category/Create";
     }
 
     public String create() {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("CategoryCreated"));
-            return prepareCreate();
+            return categoryViewFullURL(current);
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
             return null;
         }
     }
 
-    public String prepareEdit() {
-        current = (Category) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "/category/Edit";
-    }
-
     public String update() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("CategoryUpdated"));
-            return "/category/View";
+            return categoryViewFullURL(current);
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-            return null;
+            return "/category/Edit.xhtml?id=" + Integer.toString(current.getId());
         }
     }
 
@@ -154,12 +149,30 @@ public class CategoryController implements Serializable {
         return "/category/List";
     }
 
+    public String setPage(int page) {
+        getPagination().setPage(page);
+        recreateModel();
+        return "/category/List";
+    }
+
     public SelectItem[] getItemsAvailableSelect() {
         return JsfUtil.getSelectItems(categoryFacade.findAll());
     }
 
     public Category getCategory(java.lang.Integer id) {
         return categoryFacade.find(id);
+    }
+
+    public static String categoryCreateFullURL() {
+        return "/category/Create.xhtml";
+    }
+
+    public static String categoryViewFullURL(Category category) {
+        return "/category/View.xhtml?id=" + Integer.toString(category.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
+    }
+
+    public static String categoryEditFullURL(Category category) {
+        return "/category/Edit.xhtml?id=" + Integer.toString(category.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }
 
     @FacesConverter(forClass = Category.class)

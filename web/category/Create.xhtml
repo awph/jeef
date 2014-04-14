@@ -1,17 +1,23 @@
 <ui:composition template="/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <f:metadata>
+        <f:viewAction action="#{categoryController.prepareCreate()}"/>
+    </f:metadata>    
     <ui:define name="title">
         <h:outputText value="#{localization.CreateCategoryTitle}"></h:outputText>
     </ui:define>
     <ui:define name="content">
-        <h:form class="pure-form pure-u-1" style="text-align: center;">
-            <h:inputText value="#{categoryController.selected.name}" p:placeholder="#{localization.Name}" required="true" requiredMessage="#{localization.RequiredMessage_name}"/>
-            <h:commandLink action="#{categoryController.create}" value="#{localization.Create}" class="button-success pure-button"/>
-            <br />
-            <br />
-            <h:commandLink action="#{categoryController.prepareList}" value="#{localization.EditCategoryShowAllLink}" class="pure-button pure-button-primary" immediate="true"/>
+        <h:form class="pure-form pure-g" style="text-align: center;">
+            <div class="pure-u-19-24">
+                <h:inputText value="#{categoryController.selected.name}" p:placeholder="#{localization.Name}" class="pure-input-1" required="true" requiredMessage="#{localization.RequiredMessage_name}"/>
+            </div>
+            <div class="pure-u-1-24"></div>
+            <div class="pure-u-4-24">
+                <h:commandLink action="#{categoryController.create}" value="#{localization.Create}" class="button-success pure-button pure-input-1"/>
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>

@@ -17,6 +17,8 @@
     <filter-mapping>
         <filter-name>AdministrationFilter</filter-name>
         <url-pattern>/user/List.xhtml</url-pattern>
+        <url-pattern>/category/Edit.xhtml</url-pattern>
+        <url-pattern>/category/Create.xhtml</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>LoggedFilter</filter-name>

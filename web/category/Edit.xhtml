@@ -1,18 +1,24 @@
 <ui:composition template="/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <f:metadata>
+        <f:viewAction action="#{categoryController.prepareEdit()}"/>
+    </f:metadata>
     <ui:define name="title">
         <h:outputText value="#{localization.Edit} #{categoryController.selected.name}"></h:outputText>
     </ui:define>
     <ui:define name="content">
-        <h:form class="pure-form pure-u-1" style="text-align: center;">
-            <h:inputText value="#{categoryController.selected.name}" p:placeholder="#{localization.Name}" required="true" requiredMessage="#{localization.RequiredMessage_name}"/>
-            <h:commandLink action="#{categoryController.update}" value="#{localization.Edit}" class="button-success pure-button"/>
-            <br />
-            <br />
-            <h:commandLink action="#{categoryController.prepareList}" value="#{localization.EditCategoryShowAllLink}" class="pure-button pure-button-primary" immediate="true"/>
+        <h:outputText rendered="#{categoryController.selected.name == null}" value="#{localization.UnknowCategory}" />
+        <h:form class="pure-form pure-g" style="text-align: center;" rendered="#{categoryController.selected.name != null}">
+            <div class="pure-u-19-24">
+                <h:inputText value="#{categoryController.selected.name}" p:placeholder="#{localization.Name}" class="pure-input-1" required="true" requiredMessage="#{localization.RequiredMessage_name}"/>
+            </div>
+            <div class="pure-u-1-24"></div>
+            <div class="pure-u-4-24">
+                <h:commandLink action="#{categoryController.update}" value="#{localization.Save}" class="button-success pure-button pure-input-1"/>
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>
