@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ch.hearc.jeef.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Topic.findByCategory", query = "SELECT t FROM Topic t WHERE t.category = :category"),
     @NamedQuery(name = "Topic.countByCategory", query = "SELECT COUNT(t) FROM Topic t WHERE t.category = :category")})
 public class Topic implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -138,7 +139,24 @@ public class Topic implements Serializable {
     public void setCategory(Category category) {
         this.category = category;
     }
-    
+
+    public User getAuthor() {
+        return getPostCollection().iterator().next().getCreator();
+    }
+
+    public int getAnswerQuantity() {
+        return getPostCollection().size() - 1;
+    }
+
+    public Date getLastPostDate() {
+        final Iterator<Post> iterator = getPostCollection().iterator();
+        Post lastPost = iterator.next();
+        while (iterator.hasNext()) {
+            lastPost = iterator.next();
+        }
+        return lastPost.getCreatedDate();
+    }
+
     @XmlTransient
     public Collection<Post> getPostCollection() {
         return postCollection;
@@ -172,5 +190,5 @@ public class Topic implements Serializable {
     public String toString() {
         return "ch.hearc.jeef.entities.Topic[ id=" + id + " title=" + title + " date=" + date + " locked=" + locked + " pinned=" + pinned + " category=" + category.getName() + " ]";
     }
-    
+
 }

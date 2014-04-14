@@ -1,7 +1,7 @@
 <ui:composition template="/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
     <ui:define name="title">
         <h:outputText rendered="#{categoryController.selected != null}" value="#{categoryController.selected.name}"/>
     </ui:define>
@@ -20,7 +20,10 @@
                     <thead>
                         <tr>
                             <th style="width: 100%"><h:outputText value="#{localization.Title}"/></th>
-                            <th style="width: 100%"><h:outputText value="#{localization.Date}"/></th>
+                            <th style="width: 100%"><h:outputText value="#{localization.Author}"/></th>
+                            <th style="width: 100%"><h:outputText value="#{localization.Replies}"/></th>
+                            <th style="width: 100%"><h:outputText value="#{localization.Created}"/></th>
+                            <th style="width: 100%"><h:outputText value="#{localization.LastPost}"/></th>
                             <th style="width: 100%"><h:outputText value="#{localization.Locked}"/></th>
                             <th style="width: 100%"><h:outputText value="#{localization.Pinned}"/></th>
                             <h:panelGroup rendered="#{admin}"><th><h:outputText value="#{localization.Manage}"/></th></h:panelGroup>
@@ -30,8 +33,15 @@
                         <ui:repeat value="#{topicController.getItems(categoryController.selected)}" var="topic">
                             <tr>
                                 <td><h:link outcome="/topic/View.xhtml?id=#{topic.id}" value="#{topic.title}" /></td>
+                                <td><h:link outcome="/user/View.xhtml?id=#{topic.author.id}" value="#{topic.author.username}" /></td>
+                                <td><h:outputText value="#{topic.answerQuantity}" /></td>
                                 <td>
                                     <h:outputText value="#{topic.date}">
+                                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                    </h:outputText>
+                                </td>
+                                <td>
+                                    <h:outputText value="#{topic.lastPostDate}">
                                         <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
                                     </h:outputText>
                                 </td>
@@ -43,14 +53,16 @@
                                         <h:outputText value=" "/>
                                         <h:commandLink action="#{topicController.lock(categoryController.selected)}" value="#{localization.Lock}"/>
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{topicController.destroy(categoryController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?')) return false"/>
+                                        <h:commandLink action="#{topicController.destroy(categoryController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
+                                                    return false"/>
                                     </td>
                                 </h:panelGroup>
                             </tr>
                         </ui:repeat>
                     </tbody>
                 </table>
-
+                <br />
+                <br />
                 <h:form>
                     <ul class="pure-paginator" style="text-align:center;">
                         <li><h:commandLink action="#{topicController.previous(categoryController.selected)}" value="#{localization.Previous}" class="prev pure-button pure-button-primary #{topicController.getPagination(categoryController.selected).hasPreviousPage ? '' : 'pure-button-disabled'}"/></li>
