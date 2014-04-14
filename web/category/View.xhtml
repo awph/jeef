@@ -61,20 +61,20 @@
                         </ui:repeat>
                     </tbody>
                 </table>
-                <br /><br />
-                <h:form>
-                    <ul class="pure-paginator" style="text-align:center;">
-                        <li><h:commandLink action="#{topicController.previous(categoryController.selected)}" value="#{localization.Previous}" class="prev pure-button pure-button-primary #{topicController.getPagination(categoryController.selected).hasPreviousPage ? '' : 'pure-button-disabled'}"/></li>
-                        <ui:repeat value="#{topicController.getPagination(categoryController.selected).previousPages}" var="page_number">
-                            <li><h:commandLink action="#{topicController.setPage(page_number, categoryController.selected)}" value="#{page_number}" class="pure-button pure-button-primary" /></li>
-                        </ui:repeat>
-                        <li><h:outputText value="#{topicController.getPagination(categoryController.selected).currentPage}" class="pure-button pure-button-active pure-button-primary" /></li>
-                        <ui:repeat value="#{topicController.getPagination(categoryController.selected).nextPages}" var="page_number">
-                            <li><h:commandLink action="#{topicController.setPage(page_number, categoryController.selected)}" value="#{page_number}" class="pure-button pure-button-primary" /></li>
-                        </ui:repeat>
-                        <li><h:commandLink action="#{topicController.next(categoryController.selected)}" value="#{localization.Next}" class="next pure-button pure-button-primary #{topicController.getPagination(categoryController.selected).hasNextPage ? '' : 'pure-button-disabled'}" /></li>
-                    </ul>
-                </h:form>
+            </h:form>
+            <br /><br />
+            <h:form>
+                <ul class="pure-paginator" style="text-align:center;">
+                    <li><h:commandLink action="#{topicController.previous(categoryController.selected)}" value="#{localization.Previous}" class="prev pure-button pure-button-primary #{topicController.getPagination(categoryController.selected).hasPreviousPage ? '' : 'pure-button-disabled'}"/></li>
+                    <ui:repeat value="#{topicController.getPagination(categoryController.selected).previousPages}" var="page_number">
+                        <li><h:commandLink action="#{topicController.setPage(page_number, categoryController.selected)}" value="#{page_number}" class="pure-button pure-button-primary" /></li>
+                    </ui:repeat>
+                    <li><h:outputText value="#{topicController.getPagination(categoryController.selected).currentPage}" class="pure-button pure-button-active pure-button-primary" /></li>
+                    <ui:repeat value="#{topicController.getPagination(categoryController.selected).nextPages}" var="page_number">
+                        <li><h:commandLink action="#{topicController.setPage(page_number, categoryController.selected)}" value="#{page_number}" class="pure-button pure-button-primary" /></li>
+                    </ui:repeat>
+                    <li><h:commandLink action="#{topicController.next(categoryController.selected)}" value="#{localization.Next}" class="next pure-button pure-button-primary #{topicController.getPagination(categoryController.selected).hasNextPage ? '' : 'pure-button-disabled'}" /></li>
+                </ul>
             </h:form>
         </h:panelGroup>
     </ui:define>
