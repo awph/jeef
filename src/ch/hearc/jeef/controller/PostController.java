@@ -27,6 +27,8 @@ import javax.inject.Named;
 @SessionScoped
 public class PostController implements Serializable {
 
+    private static final String ID_KEY = "postid";
+
     private Post current;
     private DataModel items = null;
     @EJB
@@ -43,7 +45,6 @@ public class PostController implements Serializable {
 
     public Post getSelected() {
         Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        final String ID_KEY = "id";
         if (parameterMap.containsKey(ID_KEY)) {
             current = getPost(Integer.valueOf(parameterMap.get(ID_KEY)));
         } else if (current == null) {
@@ -107,6 +108,7 @@ public class PostController implements Serializable {
         current = null;
         selectedItemIndex = -1;
     }
+
     public String update() {
         try {
             current.setLastEditor(loginBean.getUser());
@@ -205,13 +207,13 @@ public class PostController implements Serializable {
     public Post getPost(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
-    
+
     public boolean canEdit(Post post) {
         return post.getCreator().equals(loginBean.getUser()) || (loginBean.getUser() != null && loginBean.getUser().isModerator());
     }
 
     public static String postEditFullURL(Post post) {
-        return "/post/Edit.xhtml?id=" + Integer.toString(post.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
+        return "/post/Edit.xhtml?" + ID_KEY + "=" + Integer.toString(post.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }
 
     @FacesConverter(forClass = Post.class)

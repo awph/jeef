@@ -18,7 +18,7 @@
             <table class="pure-table pure-u-1 pure-table-horizontal">
                 <tbody>
                     <tr>
-                        <td><h:link outcome="/user/View.xhtml?id=#{post.creator.id}" value="#{post.creator.username}"/></td>
+                        <td><h:link outcome="#{userController.userViewFullURLJSF(post.creator)}" value="#{post.creator.username}"/></td>
                         <td>
                             <h:outputText value="##{post.id} - " />
                             <h:outputText value="#{post.createdDate}">

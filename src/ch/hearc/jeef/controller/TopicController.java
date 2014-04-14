@@ -34,6 +34,8 @@ import javax.inject.Inject;
 @SessionScoped
 public class TopicController implements Serializable {
 
+    private static final String ID_KEY = "topicid";
+
     private Post firstPost;
     private Topic current;
     private DataModel items = null;
@@ -53,7 +55,6 @@ public class TopicController implements Serializable {
 
     public Topic getSelected() {
         Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        final String ID_KEY = "id";
         if (parameterMap.containsKey(ID_KEY)) {
             current = getTopic(Integer.valueOf(parameterMap.get(ID_KEY)));
         } else if (current == null) {
@@ -104,7 +105,7 @@ public class TopicController implements Serializable {
     public void view(Topic topic) {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect(context.getRequestContextPath() + "View.xhtml?id=" + Integer.toString(topic.getId()));
+            context.redirect(topicViewFullURL(topic));
         } catch (IOException ex) {
             Logger.getLogger(TopicController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -219,8 +220,12 @@ public class TopicController implements Serializable {
         return getTopicFacade().find(id);
     }
 
+    public String topicViewFullURLJSF(Topic topic) {
+        return topicViewFullURL(topic);
+    }
+
     public static String topicViewFullURL(Topic topic) {
-        return "/topic/View.xhtml?id=" + Integer.toString(topic.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
+        return "/topic/View.xhtml?" + ID_KEY + "=" + Integer.toString(topic.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }
 
     @FacesConverter(forClass = Topic.class)

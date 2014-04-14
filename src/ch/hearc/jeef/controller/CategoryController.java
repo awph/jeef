@@ -21,6 +21,8 @@ import javax.inject.Named;
 @SessionScoped
 public class CategoryController implements Serializable {
 
+    private static final String ID_KEY = "categoryid";
+
     private Category current;
     private DataModel items = null;
     @EJB
@@ -33,12 +35,10 @@ public class CategoryController implements Serializable {
 
     public Category getSelected() {
         recreateModel();
-        final String ID_KEY = "id";
         String id = JsfUtil.getRequestParameter(ID_KEY);
         if (id != null) {
             current = getCategory(Integer.valueOf(id));
-        }
-        else if (current == null) {
+        } else if (current == null) {
             current = new Category();
             selectedItemIndex = -1;
         }
@@ -100,7 +100,7 @@ public class CategoryController implements Serializable {
             return categoryViewFullURL(current);
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-            return "/category/Edit.xhtml?id=" + Integer.toString(current.getId());
+            return categoryEditFullURL(current);
         }
     }
 
@@ -163,16 +163,28 @@ public class CategoryController implements Serializable {
         return categoryFacade.find(id);
     }
 
+    public String categoryCreateFullURLJSF() {
+        return categoryCreateFullURL();
+    }
+
     public static String categoryCreateFullURL() {
         return "/category/Create.xhtml";
     }
 
+    public String categoryViewFullURLJSF(Category category) {
+        return categoryViewFullURL(category);
+    }
+
     public static String categoryViewFullURL(Category category) {
-        return "/category/View.xhtml?id=" + Integer.toString(category.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
+        return "/category/View.xhtml?" + ID_KEY + "=" + Integer.toString(category.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
+    }
+
+    public String categoryEditFullURLJSF(Category category) {
+        return categoryEditFullURL(category);
     }
 
     public static String categoryEditFullURL(Category category) {
-        return "/category/Edit.xhtml?id=" + Integer.toString(category.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
+        return "/category/Edit.xhtml?" + ID_KEY + "=" + Integer.toString(category.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }
 
     @FacesConverter(forClass = Category.class)

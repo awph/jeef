@@ -32,8 +32,8 @@
                     <tbody>
                         <ui:repeat value="#{topicController.getItems(categoryController.selected)}" var="topic">
                             <tr>
-                                <td><h:link outcome="/topic/View.xhtml?id=#{topic.id}" value="#{topic.title}" /></td>
-                                <td><h:link outcome="/user/View.xhtml?id=#{topic.author.id}" value="#{topic.author.username}" /></td>
+                                <td><h:link outcome="#{topicController.topicViewFullURLJSF(topic)}" value="#{topic.title}" /></td>
+                                <td><h:link outcome="#{userController.userViewFullURLJSF(topic.author)}" value="#{topic.author.username}" /></td>
                                 <td><h:outputText value="#{topic.answerQuantity}" /></td>
                                 <td>
                                     <h:outputText value="#{topic.date}">

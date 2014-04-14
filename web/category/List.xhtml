@@ -25,11 +25,11 @@
                     <tbody>
                         <ui:repeat value="#{categoryController.items}" var="cat">
                             <tr>
-                                <td><h:link outcome="/category/View.xhtml?id=#{cat.id}" value="#{cat.name}" /></td>
+                                <td><h:link outcome="#{categoryController.categoryViewFullURLJSF(cat)}" value="#{cat.name}" /></td>
                                 <td><h:outputText value="#{cat.topicQuantity}"/></td>
                                 <h:panelGroup rendered="#{admin}">
                                     <td>
-                                        <h:link outcome="/category/Edit.xhtml?id=#{cat.id}" value="#{localization.Edit}" />
+                                        <h:link outcome="#{categoryController.categoryEditFullURLJSF(cat)}" value="#{localization.Edit}" />
                                         <h:outputText value=" "/>
                                         <h:commandLink action="#{categoryController.destroy}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?')) return false"/>
                                     </td>
