@@ -186,6 +186,10 @@ public class User implements Serializable {
     public void setRole(Role role) {
         this.role = role;
     }
+    
+    public boolean isModerator() {
+        return getRole().getId() < 2; //TODO: BETTER
+    }
 
     @Override
     public int hashCode() {

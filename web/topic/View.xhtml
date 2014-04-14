@@ -36,9 +36,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <h:outputText value="#{post.lastEditor.username}" />                            
+                            <h:link rendered="#{postController.canEdit(post)}" outcome="#{postController.postEditFullURL(post)}" value="#{localization.Edit}"/>
                         </td>
                         <td>
+                            <h:outputText value="#{post.lastEditor.username}" />
                             <h:outputText value="#{post.editedDate}">
                                 <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
                             </h:outputText>

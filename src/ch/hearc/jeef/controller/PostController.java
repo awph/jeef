@@ -9,6 +9,7 @@ import ch.hearc.jeef.util.JsfUtil;
 import ch.hearc.jeef.util.PaginationHelper;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -41,7 +42,11 @@ public class PostController implements Serializable {
     }
 
     public Post getSelected() {
-        if (current == null) {
+        Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        final String ID_KEY = "id";
+        if (parameterMap.containsKey(ID_KEY)) {
+            current = getPost(Integer.valueOf(parameterMap.get(ID_KEY)));
+        } else if (current == null) {
             current = new Post();
             selectedItemIndex = -1;
         }
@@ -102,17 +107,19 @@ public class PostController implements Serializable {
         return TopicController.topicViewFullURL(topic);
     }
 
-    public String prepareEdit(Topic topic) {
-        current = (Post) getItems(topic).getRowData();
-        selectedItemIndex = getPagination(topic).getPageFirstItem() + getItems(topic).getRowIndex();
-        return "Edit";
+    public void prepareEdit() {
+        //TODO: check permission
+        current = null;
+        selectedItemIndex = -1;
     }
-
     public String update() {
         try {
+            current.setLastEditor(loginBean.getUser());
+            current.setEditedDate(new Date());
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("PostUpdated"));
-            return "View";
+            getPagination(current.getTopic()).lastPage();
+            return TopicController.topicViewFullURL(current.getTopic());
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
             return null;
@@ -202,6 +209,14 @@ public class PostController implements Serializable {
 
     public Post getPost(java.lang.Integer id) {
         return ejbFacade.find(id);
+    }
+    
+    public boolean canEdit(Post post) {
+        return post.getCreator().equals(loginBean.getUser()) || loginBean.getUser().isModerator();
+    }
+
+    public static String postEditFullURL(Post post) {
+        return "/post/Edit.xhtml?id=" + Integer.toString(post.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }
 
     @FacesConverter(forClass = Post.class)
