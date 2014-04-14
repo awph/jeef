@@ -29,7 +29,7 @@
                                     <td>
                                         <h:link outcome="/category/Edit.xhtml?id=#{cat.id}" value="#{localization.Edit}" />
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{categoryController.destroy}" value="#{localization.Delete}"/>
+                                        <h:commandLink action="#{categoryController.destroy}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?')) return false"/>
                                     </td>
                                 </h:panelGroup>
                             </tr>

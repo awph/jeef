@@ -44,7 +44,7 @@
                                         <h:outputText value=" "/>
                                         <h:commandLink action="#{topicController.lock(categoryController.selected)}" value="#{localization.Lock}"/>
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{topicController.destroy(categoryController.selected)}" value="#{localization.Delete}"/>
+                                        <h:commandLink action="#{topicController.destroy(categoryController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?')) return false"/>
                                     </td>
                                 </h:panelGroup>
                             </tr>
