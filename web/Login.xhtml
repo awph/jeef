@@ -3,7 +3,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="title">
-        <h:outputText value="#{localization.Signin}"></h:outputText>
+        <h:outputText value="#{localization.Signin}"/>
     </ui:define>
     <ui:define name="content">
         <h:form id="signin" class="pure-form">
@@ -11,8 +11,6 @@
                 <h:inputText id="username" value="#{loginBean.username}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_username}" p:placeholder="#{localization.Username}" class="pure-input-1" />
                 <h:inputSecret id="password" value="#{loginBean.password}" required="true" requiredMessage="#{localization.CreateUserRequiredMessage_password}" p:placeholder="#{localization.Password}" class="pure-input-1" />
             </fieldset>
-            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            <br />
             <h:commandButton action="#{loginBean.login}" value="#{localization.Signin}" class="pure-button pure-input-1 pure-button-primary"/>
             <br />
             <br />

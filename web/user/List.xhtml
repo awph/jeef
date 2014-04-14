@@ -29,13 +29,10 @@
                         <h:outputText value="#{user.role.name}"/>
                     </h:column>
                     <h:column>
-                        <h:link outcome="/user/View.xhtml?id=#{user.id}" value="#{localization.View}" />
-                        <h:outputText value=" "/>
-                        <h:commandLink action="#{userController.prepareEdit}" value="#{localization.Edit}"/>
-                        <h:outputText value=" "/>
-                        <h:commandLink action="#{userController.destroy}" value="#{localization.Delete}"/>
+                        <h:link outcome="#{userController.userViewFullURLJSF(user)}" value="#{localization.View}" />
                     </h:column>
                 </h:dataTable>
+                
                 <ul class="pure-paginator">
                     <li><h:commandLink action="#{userController.previous}" value="#{localization.Previous}" rendered="#{userController.pagination.hasPreviousPage}"  class="pure-button prev"/></li>
                     <li><h:commandLink action="#{userController.next}" value="#{localization.Next}" rendered="#{userController.pagination.hasNextPage}"  class="pure-button next"/></li>

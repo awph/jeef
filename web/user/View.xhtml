@@ -2,24 +2,45 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
+    <f:metadata>
+        <f:viewAction action="#{userController.prepareView()}"/>
+    </f:metadata>
     <ui:define name="title">
         <h:outputText rendered="#{userController.selected != null}" value="#{userController.selected.username}"/>
     </ui:define>
     <ui:define name="content">
-        <h:form>
+        <h:outputText rendered="#{userController.selected.username == null}" value="#{localization.UnknowUser}" />
+
+        <h:panelGroup rendered="#{userController.selected.username != null}">
             <h:panelGrid columns="2">
-                <h:outputText value="#{localization.Username}#{localization.Conlon}"/>
-                <h:outputText value="#{userController.selected.username}" title="#{localization.ViewUserTitle_username}"/>
+                <h:graphicImage value="#{userController.selected.getGravatarURL(200)}" />
+                <h:outputText value=""/>
                 <h:outputText value="#{localization.Email}#{localization.Conlon}"/>
-                <h:outputText value="#{userController.selected.email}" title="#{localization.ViewUserTitle_email}"/>
+                <h:outputText value="#{userController.selected.email}"/>
                 <h:outputText value="#{localization.Role}#{localization.Conlon}"/>
-                <h:outputText value="#{userController.selected.role.name}" title="#{localization.ViewUserTitle_role}"/>
+                <h:outputText value="#{userController.selected.role.name}"/>
+                <h:outputText value="#{localization.Posts}#{localization.Conlon}"/>
+                <h:outputText value="#{userController.selected.postQuantity}"/>
+                <h:outputText value=""/>
+                <h:outputText value="#{localization.Banned}" rendered="#{userController.selected.banned}"/>
             </h:panelGrid>
             <br />
-            <h:commandLink action="#{userController.block}" value="#{localization.Ban}"/>
-            <br />
-            <br />
-            <h:link outcome="Edit" value="#{localization.ViewUserEditLink}"/>
-        </h:form>
+            <h:form rendered="#{current_user.equals(userController.selected)}">
+                <h:commandButton action="#{userController.userEditFullURLJSF(current_user)}" value="#{localization.Edit}" class="pure-button-primary pure-button pure-u-1"/>
+            </h:form>
+            <h:form class="pure-form" rendered="#{moderator}">
+                <fieldset>
+                    <legend>Manage</legend>
+                    <h:selectOneMenu id="roles" value="#{userController.selected.role}" required="true" class="pure-u-3-5">
+                        <f:selectItems value="#{roleController.itemsAvailableSelect}"/>
+                    </h:selectOneMenu>
+                    <h:commandButton action="#{userController.manage(userController.selected)}" value="#{localization.UpdateRole}" class="pure-button-primary pure-button pure-u-2-5"/>
+                    <br /><br />
+                    <h:commandButton action="#{userController.block(userController.selected)}" value="#{userController.selected.banned ? localization.Unban : localization.Ban}" class="#{userController.selected.banned ? 'button-success' : 'button-error'} pure-button pure-u-1"/>
+                    <br /><br />
+                    <h:commandButton action="#{userController.delete(userController.selected)}" value="#{localization.Delete}" class="button-error pure-button pure-u-1"/>
+                </fieldset>
+            </h:form>
+        </h:panelGroup>
     </ui:define>
 </ui:composition>

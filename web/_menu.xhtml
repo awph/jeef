@@ -26,7 +26,7 @@
                 <li><h:link value="Login" outcome="/Login.xhtml"/></li>
             </h:panelGroup>
             <h:panelGroup rendered="#{current_user != null}">
-                <li><h:link value="Edit profile" outcome="/user/Edit.xhtml"/></li>
+                <li><h:link value="Edit profile" outcome="#{userController.userEditFullURLJSF(current_user)}"/></li>
                 <li><h:form><h:commandLink action="#{loginBean.logout()}" value="Logout" /></h:form></li>
             </h:panelGroup>
         </ul>

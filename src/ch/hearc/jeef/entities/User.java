@@ -10,13 +10,10 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -78,9 +75,9 @@ public class User implements Serializable {
     @Column(name = "banned")
     private boolean banned;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lastEditor")
-    private Collection<Post> postCollection;
+    private Collection<Post> EditedPostCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator")
-    private Collection<Post> postCollection1;
+    private Collection<Post> postCollection;
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Role role;
@@ -162,6 +159,15 @@ public class User implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Post> getEditedPostCollection() {
+        return EditedPostCollection;
+    }
+
+    public void setEditedPostCollection(Collection<Post> EditedPostCollection) {
+        this.EditedPostCollection = EditedPostCollection;
+    }
+
+    @XmlTransient
     public Collection<Post> getPostCollection() {
         return postCollection;
     }
@@ -170,21 +176,16 @@ public class User implements Serializable {
         this.postCollection = postCollection;
     }
 
-    @XmlTransient
-    public Collection<Post> getPostCollection1() {
-        return postCollection1;
-    }
-
-    public void setPostCollection1(Collection<Post> postCollection1) {
-        this.postCollection1 = postCollection1;
-    }
-
     public Role getRole() {
         return role;
     }
 
     public void setRole(Role role) {
         this.role = role;
+    }
+    
+    public Integer getPostQuantity() {
+        return getPostCollection().size();
     }
     
     public boolean isModerator() {

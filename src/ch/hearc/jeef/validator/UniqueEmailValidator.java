@@ -5,6 +5,7 @@
  */
 package ch.hearc.jeef.validator;
 
+import ch.hearc.jeef.beans.LoginBean;
 import ch.hearc.jeef.facade.UserFacade;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -21,11 +22,13 @@ public class UniqueEmailValidator implements Validator {
     
     @Inject
     private UserFacade userFacade;
+    @Inject
+    private LoginBean loginBean;
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         String email = (String) value;
-        if (userFacade.userExistForEmail(email)) {
+        if (userFacade.userExistForEmail(email) && !(loginBean.getUser()!= null && loginBean.getUser().getEmail().equals(email))) {
             throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "This email is already used", null));
         }
     }
