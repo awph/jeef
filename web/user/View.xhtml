@@ -12,19 +12,29 @@
         <h:outputText rendered="#{userController.selected.username == null}" value="#{localization.UnknowUser}" />
 
         <h:panelGroup rendered="#{userController.selected.username != null}">
-            <h:panelGrid columns="2">
-                <h:graphicImage value="#{userController.selected.getGravatarURL(200)}" />
-                <h:outputText value=""/>
-                <h:outputText value="#{localization.Email}#{localization.Conlon}"/>
-                <h:outputText value="#{userController.selected.email}"/>
-                <h:outputText value="#{localization.Role}#{localization.Conlon}"/>
-                <h:outputText value="#{userController.selected.role.name}"/>
-                <h:outputText value="#{localization.Posts}#{localization.Conlon}"/>
-                <h:outputText value="#{userController.selected.postQuantity}"/>
-                <h:outputText value=""/>
-                <h:outputText value="#{localization.Banned}" rendered="#{userController.selected.banned}"/>
-            </h:panelGrid>
-            <br />
+            <table class="pure-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <td colspan="2" class="center" style="width: 100%; height: 300px;"><h:graphicImage value="#{userController.selected.getGravatarURL(200)}" class="circular-200" alt="#{localization.UserAvatar}"/></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width: 50%;"><h:outputText  class="pure-u-1" value="#{localization.Email}#{localization.Conlon}"/></td>
+                        <td style="width: 50%;"><h:outputText value="#{userController.selected.email}"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%;"><h:outputText value="#{localization.Role}#{localization.Conlon}"/></td>
+                        <td style="width: 50%;"><h:outputText value="#{userController.selected.role.name}"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%;"><h:outputText value="#{localization.Posts}#{localization.Conlon}"/></td>
+                        <td style="width: 50%;"><h:outputText value="#{userController.selected.postQuantity}"/></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h:outputText value="#{localization.Banned}" rendered="#{userController.selected.banned}"/>
+            <br /><br />
             <h:form rendered="#{current_user.equals(userController.selected)}">
                 <h:commandButton action="#{userController.userEditFullURLJSF(current_user)}" value="#{localization.Edit}" class="pure-button-primary pure-button pure-u-1"/>
             </h:form>

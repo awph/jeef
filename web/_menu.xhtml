@@ -5,29 +5,30 @@
     xmlns:ui="http://java.sun.com/jsf/facelets">
     <div class="pure-menu pure-menu-open" id="menu-items">
 
-        <h:outputLink class="pure-menu-heading" value="#{request.contextPath}">Jeef</h:outputLink>
+        <h:outputLink class="pure-menu-heading" value="#{request.contextPath}">#{localization.ProjectTitle}</h:outputLink>
         <ul>
             <li>
-                <h:link value="Categories" outcome="/category/List.xhtml"/>
+                <h:link value="#{localization.Categories}" outcome="/category/List.xhtml"/>
                 <!--<ul id="categories-items">
                     <li><a href="#">Cat1</a></li>
                 </ul>-->
             </li>
             <li><a href="#">Search</a></li>
             <h:panelGroup rendered="#{admin}">
-                <li class="pure-menu-heading"><h:outputText value="Administration" /></li>
+                <li class="pure-menu-heading"><h:outputText value="#{localization.Administration}" /></li>
                 <li><h:link outcome="/user/List.xhtml" value="#{localization.Users}"/></li>
             </h:panelGroup>
             <li class="pure-menu-heading">
-                <h:outputText rendered="#{current_user == null}" value="Profile" />
+                <h:outputText rendered="#{current_user == null}" value="#{localization.Profile}" />
                 <h:outputText rendered="#{current_user != null}" value="#{current_user.username}" />
             </li>
             <h:panelGroup rendered="#{current_user == null}">
-                <li><h:link value="Login" outcome="/Login.xhtml"/></li>
+                <li><h:link value="#{localization.Login}" outcome="/Login.xhtml"/></li>
             </h:panelGroup>
             <h:panelGroup rendered="#{current_user != null}">
-                <li><h:link value="Edit profile" outcome="#{userController.userEditFullURLJSF(current_user)}"/></li>
-                <li><h:form><h:commandLink action="#{loginBean.logout()}" value="Logout" /></h:form></li>
+                <li><h:link value="#{localization.ViewProfile}" outcome="#{userController.userViewFullURLJSF(current_user)}"/></li>
+                <li><h:link value="#{localization.EditProfile}" outcome="#{userController.userEditFullURLJSF(current_user)}"/></li>
+                <li><h:form><h:commandLink action="#{loginBean.logout()}" value="#{localization.Logout}" /></h:form></li>
             </h:panelGroup>
         </ul>
     </div>

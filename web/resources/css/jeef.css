@@ -32,3 +32,19 @@ and open the template in the editor.
 .button-secondary {
     background: rgb(66, 184, 221); /* this is a light blue */
 }
+
+.circular-200 {
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+}
+
+.circular img {
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.center {
+    text-align: center;
+    vertical-align: middle;
+}
