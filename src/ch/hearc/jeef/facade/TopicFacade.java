@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ch.hearc.jeef.facade;
 
 import ch.hearc.jeef.entities.Category;
 import ch.hearc.jeef.entities.Topic;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,6 +15,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class TopicFacade extends AbstractFacade<Topic> {
+
     @PersistenceContext(unitName = "jeefPU")
     private EntityManager em;
 
@@ -43,5 +39,33 @@ public class TopicFacade extends AbstractFacade<Topic> {
         Query query = getEntityManager().createNamedQuery("Topic.countByCategory").setParameter("category", category);
         return ((Long) query.getSingleResult()).intValue();
     }
+
+    public List<Topic> findRangeForKeywords(int[] range, List<String> keywords) {
+        Query query = getEntityManager().createNamedQuery("Topic.findForKeywords").setParameter("keywords", keywordsQuery(keywords));
+        query.setMaxResults(range[1] - range[0] + 1);
+        query.setFirstResult(range[0]);
+        return query.getResultList();
+    }
+
+    public int countForKeywords(List<String> keywords) {
+        Query query = getEntityManager().createNamedQuery("Topic.countForKeywords").setParameter("keywords", keywordsQuery(keywords));
+        return ((Long) query.getSingleResult()).intValue();
+    }
     
+    private String keywordsQuery(List<String> keywords) {
+        if(keywords == null) {
+            return null;
+        }
+        StringBuilder keywordsQuery = new StringBuilder();
+        Iterator<String> iterator = keywords.iterator();
+        while (iterator.hasNext()) {
+            keywordsQuery.append("%");
+            keywordsQuery.append(iterator.next());
+            keywordsQuery.append("%");
+            if (iterator.hasNext()) {
+                keywordsQuery.append(" AND ");
+            }
+        }
+        return keywordsQuery.toString();
+    }
 }

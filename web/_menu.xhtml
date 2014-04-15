@@ -13,7 +13,7 @@
                     <li><a href="#">Cat1</a></li>
                 </ul>-->
             </li>
-            <li><a href="#">Search</a></li>
+            <li><h:link value="#{localization.Search}" outcome="/topic/Search.xhtml"/></li>
             <h:panelGroup rendered="#{admin}">
                 <li class="pure-menu-heading"><h:outputText value="#{localization.Administration}" /></li>
                 <li><h:link outcome="/user/List.xhtml" value="#{localization.Users}"/></li>
