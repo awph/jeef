@@ -181,7 +181,7 @@ public class RoleController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelect() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll());
+        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
     public Role getRole(java.lang.Integer id) {

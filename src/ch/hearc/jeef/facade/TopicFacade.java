@@ -47,7 +47,7 @@ public class TopicFacade extends AbstractFacade<Topic> {
         query.setFirstResult(range[0]);
         return query.getResultList();
     }
-    
+
     public int countForKeywords(List<String> keywords) {
         Query query = getEntityManager().createNamedQuery("Topic.countForKeywords").setParameter("keywords", keywordsQuery(keywords));
         return ((Long) query.getSingleResult()).intValue();
@@ -71,24 +71,40 @@ public class TopicFacade extends AbstractFacade<Topic> {
     }
 
     public List<Topic> findRangeAdvanced(int[] range, List<String> keywords, String username, Category category, String sortby, Boolean desc) {
-        Query query = getEntityManager().createNamedQuery("Topic.findAdvanced");
+        Query query;
+        if (category != null) {
+            query = getEntityManager().createNamedQuery("Topic.findAdvancedWithCategory");
+        } else {
+            query = getEntityManager().createNamedQuery("Topic.findAdvanced");
+
+        }
         query.setParameter("keywords", keywordsQuery(keywords));
         query.setParameter("username", username);
-        query.setParameter("category", category);
+        if (category != null) {
+            query.setParameter("category", category);
+        }
         query.setMaxResults(range[1] - range[0] + 1); //TODO check
         query.setFirstResult(range[0]);
         List<Topic> results = query.getResultList();
-        if(desc) {
+        if (desc) {
             Collections.reverse(results);
         }
         return results;
     }
 
     public int countAdvanced(List<String> keywords, String username, Category category) {
-        Query query = getEntityManager().createNamedQuery("Topic.countAdvanced");
+        Query query;
+        if (category != null) {
+            query = getEntityManager().createNamedQuery("Topic.countAdvancedWithCategory");
+        } else {
+            query = getEntityManager().createNamedQuery("Topic.countAdvanced");
+
+        }
         query.setParameter("keywords", keywordsQuery(keywords));
         query.setParameter("username", username);
-        query.setParameter("category", category);
+        if (category != null) {
+            query.setParameter("category", category);
+        }
         return ((Long) query.getSingleResult()).intValue();
     }
 }

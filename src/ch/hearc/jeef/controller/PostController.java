@@ -201,7 +201,7 @@ public class PostController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelect() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll());
+        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
     public Post getPost(java.lang.Integer id) {

@@ -156,7 +156,11 @@ public class CategoryController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelect() {
-        return JsfUtil.getSelectItems(categoryFacade.findAll());
+        return JsfUtil.getSelectItems(categoryFacade.findAll(), true);
+    }
+
+    public SelectItem[] getItemsAvailableSelectWithNull() {
+        return JsfUtil.getSelectItems(categoryFacade.findAll(), false);
     }
 
     public Category getCategory(java.lang.Integer id) {

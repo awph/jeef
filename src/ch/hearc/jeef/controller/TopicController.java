@@ -213,7 +213,7 @@ public class TopicController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelect() {
-        return JsfUtil.getSelectItems(getTopicFacade().findAll());
+        return JsfUtil.getSelectItems(getTopicFacade().findAll(), true);
     }
 
     public Topic getTopic(java.lang.Integer id) {

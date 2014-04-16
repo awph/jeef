@@ -47,13 +47,20 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Topic.countByCategory", query = "SELECT COUNT(t) FROM Topic t WHERE t.category = :category"),
     @NamedQuery(name = "Topic.findForKeywords", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p WHERE (t.title LIKE :keywords) OR (p.content LIKE :keywords)"),
     @NamedQuery(name = "Topic.countForKeywords", query = "SELECT COUNT(DISTINCT t) FROM Topic t JOIN t.postCollection p WHERE (t.title LIKE :keywords) OR (p.content LIKE :keywords)"),
-    @NamedQuery(name = "Topic.findAdvanced", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
+    @NamedQuery(name = "Topic.findAdvancedWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
             + "OR (p.creator.username = :username AND t.category = :category) "
             + "ORDER BY p.createdDate"),
+    @NamedQuery(name = "Topic.findAdvanced", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
+            + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
+            + "OR (p.creator.username = :username) "
+            + "ORDER BY p.createdDate"),
+    @NamedQuery(name = "Topic.countAdvancedWithCategory", query = "SELECT COUNT(DISTINCT t) FROM Topic t JOIN t.postCollection p "
+            + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
+            + "OR (p.creator.username = :username AND t.category = :category)"),
     @NamedQuery(name = "Topic.countAdvanced", query = "SELECT COUNT(DISTINCT t) FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username AND t.category = :category)")
+            + "OR (p.creator.username = :username)")
 })
 public class Topic implements Serializable {
 
@@ -185,7 +192,6 @@ public class Topic implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Topic)) {
             return false;
         }

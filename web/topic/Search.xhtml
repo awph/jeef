@@ -34,7 +34,7 @@
                     <div class="pure-u-1 pure-u-md-2-3">
                         <h:outputLabel for="category" value="#{localization.Category}"/>
                         <h:selectOneMenu id="category" value="#{searchBean.category}">
-                            <f:selectItems value="#{categoryController.itemsAvailableSelect}"/>
+                            <f:selectItems value="#{categoryController.itemsAvailableSelectWithNull}"/>
                         </h:selectOneMenu>
                     </div>
 

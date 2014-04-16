@@ -186,7 +186,7 @@ public class UserController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelect() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll());
+        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
     public User getUser(java.lang.Integer id) {
