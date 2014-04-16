@@ -18,7 +18,7 @@ public abstract class PaginationHelper {
     public abstract DataModel createPageDataModel();
 
     public int getPageFirstItem() {
-        return page * pageSize;
+        return getPage() * pageSize;
     }
 
     public int getPageLastItem() {
@@ -34,7 +34,7 @@ public abstract class PaginationHelper {
     }
 
     public boolean isHasNextPage() {
-        return (page + 1) * pageSize + 1 <= getItemsCount();
+        return (getPage() + 1) * pageSize + 1 <= getItemsCount();
     }
 
     public void nextPage() {
@@ -44,11 +44,23 @@ public abstract class PaginationHelper {
     }
 
     public void setPage(int page) {
-        this.page = page - 1;
+        page--;
+        if (page > getNumberPages() - 1) {
+            lastPage();
+        } else if (page < 0) {
+            this.page = 0;
+        } else {
+            this.page = page;
+        }
+    }
+    
+    public int getPage() {
+        setPage(page + 1);
+        return page;
     }
 
     public boolean isHasPreviousPage() {
-        return page > 0;
+        return getPage() > 0;
     }
 
     public void previousPage() {
@@ -71,19 +83,19 @@ public abstract class PaginationHelper {
 
     public List<Integer> getPreviousPages() {
         List<Integer> pages = new ArrayList<>();
-        for (int i = 0, j = 0; i < page && j < 5; ++i, ++j) {
+        for (int i = 0, j = 0; i < getPage() && j < 5; ++i, ++j) {
             pages.add(i + 1);
         }
         return pages;
     }
 
     public int getCurrentPage() {
-        return page + 1;
+        return getPage() + 1;
     }
 
     public List<Integer> getNextPages() {
         List<Integer> pages = new ArrayList<>();
-        for (int i = page + 1, j = 0; i < getNumberPages() && j < 5; ++i, ++j) {
+        for (int i = getPage() + 1, j = 0; i < getNumberPages() && j < 5; ++i, ++j) {
             pages.add(i + 1);
         }
         return pages;
