@@ -47,13 +47,14 @@ public abstract class PaginationHelper {
         page--;
         if (page > getNumberPages() - 1) {
             lastPage();
-        } else if (page < 0) {
-            this.page = 0;
         } else {
             this.page = page;
         }
+        if (this.page < 0) {
+            this.page = 0;
+        }
     }
-    
+
     public int getPage() {
         setPage(page + 1);
         return page;
