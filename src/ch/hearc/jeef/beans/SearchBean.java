@@ -57,7 +57,6 @@ public class SearchBean {
     private List<String> getKeywordsList() {
         if (getDidSearch()) {
             List<String> keywords = Arrays.asList(getKeywords().split(SEPARATION));
-            //TODO clean input
             return keywords;
         }
         return null;
@@ -154,12 +153,11 @@ public class SearchBean {
     public String getSort() {
         return sort;
     }
-    
+
     public String getFilteredSort() {
-        if(Arrays.asList(SORT_LIST).contains(getSort())) {
+        if (Arrays.asList(SORT_LIST).contains(getSort())) {
             return getSort();
-        }
-        else {
+        } else {
             return DATE;
         }
     }

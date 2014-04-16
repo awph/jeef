@@ -241,6 +241,15 @@ public class Topic implements Serializable {
         return lastPost.getCreatedDate();
     }
 
+    public User getLastPostAuthor() {
+        final Iterator<Post> iterator = getPostCollection().iterator();
+        Post lastPost = iterator.next();
+        while (iterator.hasNext()) {
+            lastPost = iterator.next();
+        }
+        return lastPost.getCreator();
+    }
+
     @XmlTransient
     public Collection<Post> getPostCollection() {
         return postCollection;

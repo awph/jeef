@@ -1,7 +1,9 @@
 <ui:composition template="/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <ui:define name="title">
         <h:outputText rendered="#{categoryController.selected != null}" value="#{categoryController.selected.name}"/>
     </ui:define>
@@ -19,34 +21,29 @@
                 <table class="pure-table pure-u-1 pure-table-horizontal">
                     <thead>
                         <tr>
-                            <th style="width: 100%"><h:outputText value="#{localization.Title}"/></th>
-                            <th style="width: 100%"><h:outputText value="#{localization.Author}"/></th>
-                            <th style="width: 100%"><h:outputText value="#{localization.Replies}"/></th>
-                            <th style="width: 100%"><h:outputText value="#{localization.Created}"/></th>
-                            <th style="width: 100%"><h:outputText value="#{localization.LastPost}"/></th>
-                            <th style="width: 100%"><h:outputText value="#{localization.Locked}"/></th>
-                            <th style="width: 100%"><h:outputText value="#{localization.Pinned}"/></th>
+                            <th style="width: 60%"><h:outputText value="#{localization.Title}"/></th>
+                            <th style="width: 15%"><h:outputText value="#{localization.Author}"/></th>
+                            <th style="width: 8%"><h:outputText value="#{localization.Replies}"/></th>
+                            <th style="width: 20%"><h:outputText value="#{localization.LastPost}"/></th>
                             <h:panelGroup rendered="#{admin}"><th><h:outputText value="#{localization.Manage}"/></th></h:panelGroup>
                         </tr>
                     </thead>
                     <tbody>
                         <ui:repeat value="#{topicController.getItems(categoryController.selected)}" var="topic">
                             <tr>
-                                <td><h:link outcome="#{topicController.topicViewFullURLJSF(topic)}" value="#{topic.title}" /></td>
+                                <td>
+                                    <h:link outcome="#{topicController.topicViewFullURLJSF(topic)}" value="#{fn:substring(topic.title, 0, 30)}..." rendered="#{topic.title.length() > 30}"/>
+                                    <h:link outcome="#{topicController.topicViewFullURLJSF(topic)}" value="#{topic.title}" rendered="#{not (topic.title.length() > 30)}"/>
+                                </td>
                                 <td><h:link outcome="#{userController.userViewFullURLJSF(topic.author)}" value="#{topic.author.username}" /></td>
                                 <td><h:outputText value="#{topic.answerQuantity}" /></td>
                                 <td>
-                                    <h:outputText value="#{topic.date}">
-                                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                                    </h:outputText>
-                                </td>
-                                <td>
                                     <h:outputText value="#{topic.lastPostDate}">
-                                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                        <f:convertDateTime pattern="#{localization.DatePatern}" />
                                     </h:outputText>
+                                    <br />
+                                    #{localization.By} <h:link outcome="#{userController.userViewFullURLJSF(topic.lastPostAuthor)}" value="#{topic.lastPostAuthor.username}" /><br />
                                 </td>
-                                <td><h:outputText value="#{topic.locked}"/></td>
-                                <td><h:outputText value="#{topic.pinned}"/></td>
                                 <h:panelGroup rendered="#{moderator}">
                                     <td>
                                         <h:commandLink action="#{topicController.pin(topic)}" value="#{localization.Pin}"/>
