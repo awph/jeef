@@ -35,6 +35,9 @@
                                     <h:panelGroup rendered="#{topic.locked}">
                                         <span><i class="fa fa-lock"></i> </span>
                                     </h:panelGroup>
+                                    <h:panelGroup rendered="#{topic.pinned}">
+                                        <span><i class="fa fa-thumb-tack"></i> </span>
+                                    </h:panelGroup>
                                     <h:link outcome="#{topicController.topicViewFullURLJSF(topic)}" value="#{fn:substring(topic.title, 0, 30)}..." rendered="#{topic.title.length() > 30}"/>
                                     <h:link outcome="#{topicController.topicViewFullURLJSF(topic)}" value="#{topic.title}" rendered="#{not (topic.title.length() > 30)}"/>
                                 </td>
