@@ -1,62 +1,136 @@
 <ui:composition template="/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <f:metadata>
+        <f:viewAction action="#{postController.prepareEdit()}"/>
+    </f:metadata>
+    <ui:define name="pretitle">
+        <h:panelGroup rendered="#{topicController.selected.locked}">
+            <span><i class="fa fa-lock"></i> </span>
+        </h:panelGroup>
+    </ui:define>
     <ui:define name="title">
-        <h:outputText value="#{topicController.selected.category.name} > #{topicController.selected.title}"></h:outputText>
+        <h:outputText value="#{topicController.selected.title}"></h:outputText>
+    </ui:define>
+    <ui:define name="secondtitle">
+        <h:outputText value="#{topicController.selected.category.name}"></h:outputText>
     </ui:define>
     <ui:define name="content">
-        <h:panelGrid columns="2">
-            <h:outputText value="#{topicController.selected.date}">
-                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-            </h:outputText>
-            <h:outputText value="#{topicController.selected.locked}"/>
-            <h:outputText value="#{topicController.selected.pinned}"/>
-        </h:panelGrid>
-        <br />
         <ui:repeat value="#{postController.getItems(topicController.selected)}" var="post" varStatus="status">
-            <table class="pure-table pure-u-1 pure-table-horizontal">
-                <tbody>
-                    <tr>
-                        <td><h:link outcome="#{userController.userViewFullURLJSF(post.creator)}" value="#{post.creator.username}"/></td>
-                        <td>
-                            <h:outputText value="##{post.id} - " />
-                            <h:outputText value="#{post.createdDate}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                            </h:outputText>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:graphicImage value="#{post.creator.getGravatarURL(100)}" />
-                        </td>
-                        <td>
-                            <h:outputText value="#{post.content}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h:link rendered="#{postController.canEdit(post)}" outcome="#{postController.postEditFullURL(post)}" value="#{localization.Edit}"/>
-                        </td>
-                        <td>
-                            <h:outputText value="#{post.lastEditor.username}" />
-                            <h:outputText value="#{post.editedDate}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                            </h:outputText>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </ui:repeat>
-        <h:form rendered="#{logged}">
+            <h:panelGroup rendered="#{not post.creator.equals(current_user)}">
+                <table class="pure-table pure-u-1 pure-table-horizontal">
+                    <thead>
+                        <tr>
+                            <th><h:outputText value="#{localization.Author}"/></th>
+                            <th style="width: 100%"><h:outputText value="#{localization.Post}"/></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h:link outcome="#{userController.userViewFullURLJSF(post.creator)}" value="#{post.creator.username}"/>
+                            </td>
+                            <td>
+                                <h:outputText value="##{post.id} - " />
+                                <h:outputText value="#{post.createdDate}">
+                                    <f:convertDateTime pattern="#{localization.DatePatern}" />
+                                </h:outputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:graphicImage value="#{post.creator.getGravatarURL(100)}" class="circular-100"/>
+                            </td>
+                            <td>
+                                <h:outputText value="#{post.content}" />
+                            </td>
+                        </tr>
+                        <h:panelGroup rendered="#{postController.canManage(post) or post.edited}">
+                            <tr>
+                                <td>
+                                    <h:form rendered="#{postController.canManage(post)}">
+                                        <h:link outcome="#{postController.postEditFullURL(post)}" value="#{localization.Edit}"/>
+                                        <h:outputText rendered="#{post.getCanDelete(topicController.selected)}" value=" | "/>
+                                        <h:commandLink rendered="#{post.getCanDelete(topicController.selected)}" action="#{postController.delete(post, topicController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
+                                                    return false"/>
+                                    </h:form>
+                                </td>
+                                <td>
+                                    <h:panelGroup rendered="#{post.edited}">
+                                        <h:outputText value="#{localization.EditedBy} #{post.lastEditor.username} " />
+                                        <h:outputText value="#{post.editedDate}">
+                                            <f:convertDateTime pattern="#{localization.DatePatern}" />
+                                        </h:outputText>
+                                    </h:panelGroup>
+                                </td>
+                            </tr>
+                        </h:panelGroup>
+                    </tbody>
+                </table>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{post.creator.equals(current_user)}">
+                <table class="pure-table pure-u-1 pure-table-horizontal">
+                    <thead>
+                        <tr>
+                            <th style="width: 100%"><h:outputText value="#{localization.Post}"/></th>
+                            <th><h:outputText value="#{localization.Author}"/></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h:outputText value="##{post.id} - " />
+                                <h:outputText value="#{post.createdDate}">
+                                    <f:convertDateTime pattern="#{localization.DatePatern}" />
+                                </h:outputText>
+                            </td>
+
+                            <td>
+                                <h:link outcome="#{userController.userViewFullURLJSF(post.creator)}" value="#{post.creator.username}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText value="#{post.content}" />
+                            </td>
+
+                            <td>
+                                <h:graphicImage value="#{post.creator.getGravatarURL(100)}" class="circular-100"/>
+                            </td>
+                        </tr>
+                        <h:panelGroup rendered="#{postController.canManage(post) or post.edited}">
+                            <tr>
+                                <td>
+                                    <h:panelGroup rendered="#{post.edited}">
+                                        <h:outputText value="#{localization.EditedBy} #{post.lastEditor.username} " />
+                                        <h:outputText value="#{post.editedDate}">
+                                            <f:convertDateTime pattern="#{localization.DatePatern}" />
+                                        </h:outputText>
+                                    </h:panelGroup>
+                                </td>
+                                <td>
+                                    <h:form rendered="#{postController.canManage(post)}">
+                                        <h:link outcome="#{postController.postEditFullURL(post)}" value="#{localization.Edit}"/>
+                                        <h:outputText rendered="#{post.getCanDelete(topicController.selected)}" value=" | "/>
+                                        <h:commandLink rendered="#{post.getCanDelete(topicController.selected)}" action="#{postController.delete(post, topicController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
+                                                    return false"/>
+                                    </h:form>
+                                </td>
+                            </tr>
+                        </h:panelGroup>
+                    </tbody>
+                </table>
+            </h:panelGroup>
             <br /><br />
-            <h:panelGrid columns="3">
-                <h:outputLabel value="#{localization.Content}" for="content" />
-                <h:inputTextarea rows="4" cols="30" id="content" value="#{postController.selected.content}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_content}"/>
-                <h:commandLink action="#{postController.create(topicController.selected)}" value="#{localization.Post}" class="button-success pure-button"/>
-            </h:panelGrid>
+        </ui:repeat>
+        <h:form class="pure-form" rendered="#{logged and not topicController.selected.locked}">
+            <h:inputTextarea rows="4" id="content" value="#{postController.selected.content}" p:placeholder="#{localization.Content}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_content}" style="width: 100%;"/>
+            <br /><br />
+            <h:commandLink action="#{postController.create(topicController.selected)}" value="#{localization.Post}" class="button-success pure-button"/>
+            <br /><br />
         </h:form>
-        <br /><br />
         <h:form>
             <ul class="pure-paginator" style="text-align:center;">
                 <li><h:commandLink action="#{postController.previous(topicController.selected)}" value="#{localization.Previous}" class="prev pure-button pure-button-primary #{postController.getPagination(topicController.selected).hasPreviousPage ? '' : 'pure-button-disabled'}"/></li>

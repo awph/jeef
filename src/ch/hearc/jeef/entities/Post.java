@@ -142,6 +142,14 @@ public class Post implements Serializable {
     public void setCreator(User creator) {
         this.creator = creator;
     }
+    
+    public Boolean getEdited() {
+        return !createdDate.equals(editedDate);
+    }
+    
+    public Boolean getCanDelete(Topic topic) {
+        return !this.equals(topic.getPostCollection().iterator().next());
+    }
 
     @Override
     public int hashCode() {

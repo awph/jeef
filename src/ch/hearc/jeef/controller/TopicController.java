@@ -158,7 +158,7 @@ public class TopicController implements Serializable {
         return CategoryController.categoryViewFullURL(category);
     }
 
-    public String destroy(Topic topic) {
+    public String delete(Topic topic) {
         Category category = topic.getCategory();
         selectedItemIndex = getPagination(category).getPageFirstItem() + getItems(category).getRowIndex();
         getTopicFacade().remove(topic);

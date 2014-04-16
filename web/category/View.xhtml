@@ -23,7 +23,7 @@
                         <tr>
                             <th style="width: 60%"><h:outputText value="#{localization.Title}"/></th>
                             <th style="width: 15%"><h:outputText value="#{localization.Author}"/></th>
-                            <th style="width: 8%"><h:outputText value="#{localization.Replies}"/></th>
+                            <th style="width: 5%"><h:outputText value="#{localization.Replies}"/></th>
                             <th style="width: 20%"><h:outputText value="#{localization.LastPost}"/></th>
                             <h:panelGroup rendered="#{admin}"><th><h:outputText value="#{localization.Manage}"/></th></h:panelGroup>
                         </tr>
@@ -32,6 +32,9 @@
                         <ui:repeat value="#{topicController.getItems(categoryController.selected)}" var="topic">
                             <tr>
                                 <td>
+                                    <h:panelGroup rendered="#{topic.locked}">
+                                        <span><i class="fa fa-lock"></i> </span>
+                                    </h:panelGroup>
                                     <h:link outcome="#{topicController.topicViewFullURLJSF(topic)}" value="#{fn:substring(topic.title, 0, 30)}..." rendered="#{topic.title.length() > 30}"/>
                                     <h:link outcome="#{topicController.topicViewFullURLJSF(topic)}" value="#{topic.title}" rendered="#{not (topic.title.length() > 30)}"/>
                                 </td>
@@ -50,7 +53,7 @@
                                         <h:outputText value=" "/>
                                         <h:commandLink action="#{topicController.lock(topic)}" value="#{localization.Lock}"/>
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{topicController.destroy(topic)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
+                                        <h:commandLink action="#{topicController.delete(topic)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
                                                     return false"/>
                                     </td>
                                 </h:panelGroup>

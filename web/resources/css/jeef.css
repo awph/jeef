@@ -39,6 +39,12 @@ and open the template in the editor.
     border-radius: 100px;
 }
 
+.circular-100 {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
+
 .circular img {
     opacity: 0;
     filter: alpha(opacity=0);

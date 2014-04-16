@@ -11,6 +11,7 @@
         <h:outputStylesheet library="css" name="grids-responsive-min.css" />
         <h:outputStylesheet library="css" name="side-menu.css" />
         <h:outputStylesheet library="css" name="normalize.css" />
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
         <h:outputStylesheet library="css" name="jeef.css" />
         <title><ui:insert name="title">Default Title</ui:insert></title>
     </h:head>
@@ -32,8 +33,11 @@
             <div id="main">
                 <div class="header">
                     <h1>
-                        <ui:insert name="title">Default Title</ui:insert>
+                        <ui:insert name="pretitle"></ui:insert><ui:insert name="title">Default Title</ui:insert>
                     </h1>
+                    <h2>
+                        <ui:insert name="secondtitle"></ui:insert>
+                    </h2>
                     <h:panelGroup id="messagePanel" layout="block">
                         <h:messages globalOnly="true" errorStyle="color: red" infoStyle="color: green" layout="table"/>
                     </h:panelGroup>

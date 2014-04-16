@@ -4,16 +4,17 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <f:metadata>
-        <f:viewAction action="#{postController.prepareEdit()}"/>
+        <f:viewAction action="#{postController.prepareCreate()}"/>
     </f:metadata>
     <ui:define name="title">
         <h:outputText value="#{localization.Edit}"></h:outputText>
     </ui:define>
     <ui:define name="content">
         <h:outputText rendered="#{postController.selected.content == null}" value="#{localization.NoPostFound}" />
+        <h:outputText rendered="#{postController.selected.content != null}" value="#{postController.selected.content}" />
         <h:form class="pure-form pure-g" style="text-align: center;" rendered="#{postController.selected.content != null}">
             <div class="pure-u-19-24">
-                <h:inputText value="#{postController.selected.content}" p:placeholder="#{localization.Content}" class="pure-input-1" required="true" requiredMessage="#{localization.RequiredMessage_content}"/>
+                <h:inputTextarea value="#{postController.selected.content}" p:placeholder="#{localization.Content}" class="pure-input-1" required="true" requiredMessage="#{localization.RequiredMessage_content}"/>
             </div>
             <div class="pure-u-1-24"></div>
             <div class="pure-u-4-24">

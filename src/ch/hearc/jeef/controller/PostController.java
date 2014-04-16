@@ -104,7 +104,6 @@ public class PostController implements Serializable {
     }
 
     public void prepareEdit() {
-        //TODO: check permission
         current = null;
         selectedItemIndex = -1;
     }
@@ -123,50 +122,10 @@ public class PostController implements Serializable {
         }
     }
 
-    public String destroy(Topic topic) {
-        current = (Post) getItems(topic).getRowData();
-        selectedItemIndex = getPagination(topic).getPageFirstItem() + getItems(topic).getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return "List";
-    }
-
-    public String destroyAndView(Topic topic) {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem(topic);
-        if (selectedItemIndex >= 0) {
-            return "View";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "List";
-        }
-    }
-
-    private void performDestroy() {
-        try {
-            getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("PostDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-        }
-    }
-
-    private void updateCurrentItem(Topic topic) {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            if (getPagination(topic).getPageFirstItem() >= count) {
-                getPagination(topic).previousPage();
-            }
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
+    public String delete(Post post, Topic topic) {
+        getFacade().remove(post);
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("PostDeleted"));
+        return TopicController.topicViewFullURL(topic);
     }
 
     public DataModel<Post> getItems(Topic topic) {
@@ -208,7 +167,7 @@ public class PostController implements Serializable {
         return ejbFacade.find(id);
     }
 
-    public boolean canEdit(Post post) {
+    public boolean canManage(Post post) {
         return post.getCreator().equals(loginBean.getUser()) || (loginBean.getUser() != null && loginBean.getUser().isModerator());
     }
 
