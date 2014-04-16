@@ -22,7 +22,11 @@ import javax.faces.model.SelectItem;
 @SessionScoped
 public class SearchBean {
 
-    private static final String[] SORT_LIST = new String[]{"Date", "Username", "Topic", "Category"};
+    private static final String DATE = "Date";
+    private static final String USERNAME = "Username";
+    private static final String TOPIC = "Topic";
+    private static final String CATEGORY = "Category";
+    private static final String[] SORT_LIST = new String[]{DATE, USERNAME, TOPIC, CATEGORY};
     private static final String DESC = "Descending";
     private static final String ASC = "Ascending";
     private static final String[] ORDER_LIST = new String[]{DESC, ASC};
@@ -63,7 +67,7 @@ public class SearchBean {
         if (!advanced) {
             return getTopicFacade().countForKeywords(getKeywordsList());
         } else {
-            return getTopicFacade().countAdvanced(getKeywordsList(), username, category);
+            return getTopicFacade().countAdvanced(getKeywordsList(), getUsername(), getCategory());
         }
     }
 
@@ -71,7 +75,7 @@ public class SearchBean {
         if (!advanced) {
             return new ListDataModel(getTopicFacade().findRangeForKeywords(new int[]{pageFirstItem, pageLastItem}, getKeywordsList()));
         } else {
-            return new ListDataModel(getTopicFacade().findRangeAdvanced(new int[]{pageFirstItem, pageLastItem}, getKeywordsList(), username, category, sort, isDesc(order)));
+            return new ListDataModel(getTopicFacade().findRangeAdvanced(new int[]{pageFirstItem, pageLastItem}, getKeywordsList(), getUsername(), getCategory(), getFilteredSort(), isDesc(order)));
         }
     }
 
@@ -150,6 +154,15 @@ public class SearchBean {
     public String getSort() {
         return sort;
     }
+    
+    public String getFilteredSort() {
+        if(Arrays.asList(SORT_LIST).contains(getSort())) {
+            return getSort();
+        }
+        else {
+            return DATE;
+        }
+    }
 
     public void setSort(String sort) {
         this.sort = sort;
@@ -186,7 +199,7 @@ public class SearchBean {
     public void setUseDates(Boolean useDates) {
         this.useDates = useDates;
     }
-    
+
     public Boolean getDidSearch() {
         return getKeywords() != null && getKeywords().length() > 0;
     }

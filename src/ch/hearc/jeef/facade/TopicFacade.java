@@ -70,14 +70,20 @@ public class TopicFacade extends AbstractFacade<Topic> {
         return keywordsQuery.toString();
     }
 
-    public List<Topic> findRangeAdvanced(int[] range, List<String> keywords, String username, Category category, String sortby, Boolean desc) {
-        Query query;
-        if (category != null) {
-            query = getEntityManager().createNamedQuery("Topic.findAdvancedWithCategory");
-        } else {
-            query = getEntityManager().createNamedQuery("Topic.findAdvanced");
-
+    public List<Topic> findRangeAdvanced(int[] range, List<String> keywords, String username, Category category, String orderby, Boolean desc) {
+        StringBuilder queryName = new StringBuilder("Topic.findAdvancedBy");
+        queryName.append(orderby);
+        if(desc) {
+            queryName.append("DESC");
         }
+        else {
+            queryName.append("ASC");            
+        }
+        if (category != null) {
+            queryName.append("WithCategory");
+            
+        }
+        Query query = getEntityManager().createNamedQuery(queryName.toString());
         query.setParameter("keywords", keywordsQuery(keywords));
         query.setParameter("username", username);
         if (category != null) {
@@ -86,9 +92,6 @@ public class TopicFacade extends AbstractFacade<Topic> {
         query.setMaxResults(range[1] - range[0] + 1); //TODO check
         query.setFirstResult(range[0]);
         List<Topic> results = query.getResultList();
-        if (desc) {
-            Collections.reverse(results);
-        }
         return results;
     }
 
