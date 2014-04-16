@@ -7,16 +7,60 @@
         <h:outputText rendered="#{categoryController.selected != null}" value="#{categoryController.selected.name}"/>
     </ui:define>
     <ui:define name="content">
-        <h:form class="pure-form pure-g" style="text-align: center;" rendered="#{true}">
-            <div class="pure-u-19-24">
-                <h:inputText value="#{searchBean.keywords}" p:placeholder="#{localization.Keywords}" class="pure-input-1" required="true" requiredMessage="#{localization.RequiredMessage_name}"/>
-            </div>
-            <div class="pure-u-1-24"></div>
-            <div class="pure-u-4-24">
-                <h:commandLink action="#{searchBean.search}" value="#{localization.Search}" class="button-success pure-button pure-input-1"/>
-            </div>
+
+
+        <h:form class="pure-form pure-form-stacked" rendered="#{true}">
+            <fieldset>
+                <legend>#{localization.SearchInfos}</legend>
+                <div class="pure-g">
+                    <div class="pure-u-19-24">
+                        <h:inputText value="#{searchBean.keywords}" p:placeholder="#{localization.Keywords}" class="pure-input-1 pure-input-rounded"/>
+                    </div>
+                    <div class="pure-u-1-24"></div>
+                    <div class="pure-u-4-24">
+                        <h:commandButton action="#{searchBean.search}" value="#{localization.Search}" class="pure-button pure-input-1"/>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>#{localization.Advanced}</legend>
+
+                <div class="pure-g">
+                    <div class="pure-u-1 pure-u-md-1-3">
+                        <h:outputLabel for="username" value="#{localization.Username}"/>
+                        <h:inputText id="username" value="#{searchBean.username}" p:placeholder="#{localization.Username}"/>
+                    </div>
+
+                    <div class="pure-u-1 pure-u-md-2-3">
+                        <h:outputLabel for="category" value="#{localization.Category}"/>
+                        <h:selectOneMenu id="category" value="#{searchBean.category}">
+                            <f:selectItems value="#{categoryController.itemsAvailableSelect}"/>
+                        </h:selectOneMenu>
+                    </div>
+
+                    <div class="pure-u-1 pure-u-md-1-3">
+                        <h:outputLabel for="sort" value="#{localization.SortBy}"/>
+                        <h:selectOneMenu id="sort" value="#{searchBean.sort}">
+                            <f:selectItems value="#{searchBean.sortAvailableSelect}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="pure-u-1 pure-u-md-2-3">
+                        <h:outputLabel for="order" value="#{localization.OrderBy}"/>
+                        <h:selectOneMenu id="order" value="#{searchBean.order}">
+                            <f:selectItems value="#{searchBean.orderAvailableSelect}"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+
+                <h:outputLabel for="dates" class="pure-checkbox">
+                    <h:selectBooleanCheckbox value="#{searchBean.useDates}" />#{localization.UseDates}
+                </h:outputLabel>
+                
+                <h:commandButton action="#{searchBean.searchAdvanced}" value="#{localization.AdvancedSearch}" class="pure-button pure-input-1"/>
+            </fieldset>
         </h:form>
-        <h:outputText escape="false" value="#{localization.ListTopicEmpty}" rendered="#{not (searchBean.items.rowCount > 0)}"/>
+
+        <h:outputText escape="false" value="#{localization.NoTopicFound}" rendered="#{(not (searchBean.items.rowCount > 0)) and searchBean.didSearch}"/>
         <h:panelGroup rendered="#{searchBean.items.rowCount > 0}">
             <h:form rendered="#{true}">
                 <table class="pure-table pure-u-1 pure-table-horizontal">

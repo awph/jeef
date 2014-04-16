@@ -117,7 +117,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "ch.hearc.jeef.entities.Category[ id=" + id + " ]";
+        return name;
     }
     
 }

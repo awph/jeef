@@ -2,6 +2,7 @@ package ch.hearc.jeef.facade;
 
 import ch.hearc.jeef.entities.Category;
 import ch.hearc.jeef.entities.Topic;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -46,14 +47,14 @@ public class TopicFacade extends AbstractFacade<Topic> {
         query.setFirstResult(range[0]);
         return query.getResultList();
     }
-
+    
     public int countForKeywords(List<String> keywords) {
         Query query = getEntityManager().createNamedQuery("Topic.countForKeywords").setParameter("keywords", keywordsQuery(keywords));
         return ((Long) query.getSingleResult()).intValue();
     }
-    
+
     private String keywordsQuery(List<String> keywords) {
-        if(keywords == null) {
+        if (keywords == null) {
             return null;
         }
         StringBuilder keywordsQuery = new StringBuilder();
@@ -67,5 +68,27 @@ public class TopicFacade extends AbstractFacade<Topic> {
             }
         }
         return keywordsQuery.toString();
+    }
+
+    public List<Topic> findRangeAdvanced(int[] range, List<String> keywords, String username, Category category, String sortby, Boolean desc) {
+        Query query = getEntityManager().createNamedQuery("Topic.findAdvanced");
+        query.setParameter("keywords", keywordsQuery(keywords));
+        query.setParameter("username", username);
+        query.setParameter("category", category);
+        query.setMaxResults(range[1] - range[0] + 1); //TODO check
+        query.setFirstResult(range[0]);
+        List<Topic> results = query.getResultList();
+        if(desc) {
+            Collections.reverse(results);
+        }
+        return results;
+    }
+
+    public int countAdvanced(List<String> keywords, String username, Category category) {
+        Query query = getEntityManager().createNamedQuery("Topic.countAdvanced");
+        query.setParameter("keywords", keywordsQuery(keywords));
+        query.setParameter("username", username);
+        query.setParameter("category", category);
+        return ((Long) query.getSingleResult()).intValue();
     }
 }

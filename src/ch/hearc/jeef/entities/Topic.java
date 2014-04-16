@@ -45,8 +45,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Topic.findByPinned", query = "SELECT t FROM Topic t WHERE t.pinned = :pinned"),
     @NamedQuery(name = "Topic.findByCategory", query = "SELECT t FROM Topic t WHERE t.category = :category"),
     @NamedQuery(name = "Topic.countByCategory", query = "SELECT COUNT(t) FROM Topic t WHERE t.category = :category"),
-    @NamedQuery(name = "Topic.findForKeywords", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p WHERE t.title LIKE :keywords OR p.content LIKE :keywords"),
-    @NamedQuery(name = "Topic.countForKeywords", query = "SELECT COUNT(DISTINCT t) FROM Topic t JOIN t.postCollection p WHERE t.title LIKE :keywords OR p.content LIKE :keywords")
+    @NamedQuery(name = "Topic.findForKeywords", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p WHERE (t.title LIKE :keywords) OR (p.content LIKE :keywords)"),
+    @NamedQuery(name = "Topic.countForKeywords", query = "SELECT COUNT(DISTINCT t) FROM Topic t JOIN t.postCollection p WHERE (t.title LIKE :keywords) OR (p.content LIKE :keywords)"),
+    @NamedQuery(name = "Topic.findAdvanced", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
+            + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
+            + "OR (p.creator.username = :username AND t.category = :category) "
+            + "ORDER BY p.createdDate"),
+    @NamedQuery(name = "Topic.countAdvanced", query = "SELECT COUNT(DISTINCT t) FROM Topic t JOIN t.postCollection p "
+            + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
+            + "OR (p.creator.username = :username AND t.category = :category)")
 })
 public class Topic implements Serializable {
 
