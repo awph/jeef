@@ -54,3 +54,10 @@ and open the template in the editor.
     text-align: center;
     vertical-align: middle;
 }
+
+.emoji {
+    width: 1.5em;
+    height: 1.5em;
+    display: inline-block;
+    margin-bottom: -0.25em;
+}
