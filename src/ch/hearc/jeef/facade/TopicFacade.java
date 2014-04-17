@@ -88,10 +88,9 @@ public class TopicFacade extends AbstractFacade<Topic> {
         if (category != null) {
             query.setParameter("category", category);
         }
-        query.setMaxResults(range[1] - range[0] + 1); //TODO check
-        query.setFirstResult(range[0]);
-        List<Topic> results = query.getResultList();
-        return results;
+        List<Topic> topics = query.getResultList();
+        keepUniqueTopic(topics);
+        return retainRange(range, topics);
     }
 
     public int countAdvanced(List<String> keywords, String username, Category category) {
