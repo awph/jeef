@@ -41,14 +41,18 @@
             <h:form class="pure-form" rendered="#{moderator}">
                 <fieldset>
                     <legend>Manage</legend>
-                    <h:selectOneMenu id="roles" value="#{userController.selected.role}" required="true" class="pure-u-3-5">
-                        <f:selectItems value="#{roleController.itemsAvailableSelect}"/>
-                    </h:selectOneMenu>
-                    <h:commandButton action="#{userController.manage(userController.selected)}" value="#{localization.UpdateRole}" class="pure-button-primary pure-button pure-u-2-5"/>
-                    <br /><br />
+                    <h:panelGroup rendered="#{admin}">
+                        <h:selectOneMenu id="roles" value="#{userController.selected.role}" required="true" class="pure-u-3-5">
+                            <f:selectItems value="#{roleController.itemsAvailableSelect}"/>
+                        </h:selectOneMenu>
+                        <h:commandButton action="#{userController.manage(userController.selected)}" value="#{localization.UpdateRole}" class="pure-button-primary pure-button pure-u-2-5"/>
+                        <br /><br />
+                    </h:panelGroup>
                     <h:commandButton action="#{userController.block(userController.selected)}" value="#{userController.selected.banned ? localization.Unban : localization.Ban}" class="#{userController.selected.banned ? 'button-success' : 'button-error'} pure-button pure-u-1"/>
                     <br /><br />
-                    <h:commandButton action="#{userController.delete(userController.selected)}" value="#{localization.Delete}" class="button-error pure-button pure-u-1"/>
+                    <h:panelGroup rendered="#{false}">
+                        <h:commandButton action="#{userController.delete(userController.selected)}" value="#{localization.Delete}" class="button-error pure-button pure-u-1"/>
+                    </h:panelGroup>
                 </fieldset>
             </h:form>
         </h:panelGroup>

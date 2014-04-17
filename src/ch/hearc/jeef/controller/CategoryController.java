@@ -123,9 +123,7 @@ public class CategoryController implements Serializable {
     }
 
     public DataModel getItems() {
-        if (items == null) {
-            items = getPagination().createPageDataModel();
-        }
+        items = getPagination().createPageDataModel();
         return items;
     }
 
@@ -189,6 +187,13 @@ public class CategoryController implements Serializable {
 
     public static String categoryEditFullURL(Category category) {
         return "/category/Edit.xhtml?" + ID_KEY + "=" + Integer.toString(category.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
+    }
+
+    public void displayMessage() {
+        String message = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("msg");
+        if (message != null) {
+            JsfUtil.addErrorMessage(message);
+        }
     }
 
     @FacesConverter(forClass = Category.class)

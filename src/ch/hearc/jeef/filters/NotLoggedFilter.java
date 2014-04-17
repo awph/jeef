@@ -7,10 +7,7 @@ package ch.hearc.jeef.filters;
 
 import ch.hearc.jeef.beans.LoginBean;
 import ch.hearc.jeef.entities.User;
-import ch.hearc.jeef.util.JsfUtil;
-import com.sun.xml.rpc.processor.generator.nodes.JaxRpcMappingTagNames;
 import java.io.IOException;
-import java.util.ResourceBundle;
 import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -25,14 +22,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Alexandre
  */
-public class AdministrationFilter implements Filter {
+public class NotLoggedFilter implements Filter {
 
     private FilterConfig filterConfig;
 
     @Inject
     private LoginBean loginBean;
 
-    public AdministrationFilter() {
+    public NotLoggedFilter() {
     }
 
     @Override
@@ -44,10 +41,9 @@ public class AdministrationFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         User user = loginBean.getUser();
-        if (user != null && user.getRole().getId() == 1) {
+        if (user == null) {
             chain.doFilter(request, response);
         } else {
-            ((HttpServletRequest) request).getSession().setAttribute("msg", ResourceBundle.getBundle("/Localization").getString("NotAllow"));
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.sendRedirect("/");
         }

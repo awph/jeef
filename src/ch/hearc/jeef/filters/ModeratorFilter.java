@@ -25,14 +25,14 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Alexandre
  */
-public class AdministrationFilter implements Filter {
+public class ModeratorFilter implements Filter {
 
     private FilterConfig filterConfig;
 
     @Inject
     private LoginBean loginBean;
 
-    public AdministrationFilter() {
+    public ModeratorFilter() {
     }
 
     @Override
@@ -44,7 +44,7 @@ public class AdministrationFilter implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
         User user = loginBean.getUser();
-        if (user != null && user.getRole().getId() == 1) {
+        if (user != null && user.getRole().getId() < 3) {
             chain.doFilter(request, response);
         } else {
             ((HttpServletRequest) request).getSession().setAttribute("msg", ResourceBundle.getBundle("/Localization").getString("NotAllow"));

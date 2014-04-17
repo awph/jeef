@@ -8,10 +8,9 @@ import ch.hearc.jeef.facade.RoleFacade;
 import ch.hearc.jeef.util.HashUtil;
 import ch.hearc.jeef.util.JsfUtil;
 import ch.hearc.jeef.util.PaginationHelper;
+import java.io.IOException;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -46,7 +45,6 @@ public class UserController implements Serializable {
     @EJB
     private ch.hearc.jeef.facade.UserFacade ejbFacade;
     private PaginationHelper pagination;
-    private int selectedItemIndex;
 
     @Inject
     LoginBean loginBean;
@@ -55,14 +53,21 @@ public class UserController implements Serializable {
     }
 
     public User getSelected() {
-        Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        if (parameterMap.containsKey(ID_KEY)) {
-            current = getUser(Integer.valueOf(parameterMap.get(ID_KEY)));
+        Integer userID = getUserID();
+        if (userID != null) {
+            current = getUser(userID);
         } else if (current == null) {
             current = new User();
-            selectedItemIndex = -1;
         }
         return current;
+    }
+
+    private Integer getUserID() {
+        Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        if (parameterMap.containsKey(ID_KEY)) {
+            return Integer.valueOf(parameterMap.get(ID_KEY));
+        }
+        return null;
     }
 
     private UserFacade getFacade() {
@@ -113,6 +118,14 @@ public class UserController implements Serializable {
 
     public void prepareEdit() {
         clean();
+        if (!loginBean.getUser().getId().equals(getUserID())) { // We are sur that user is connected
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("msg", ResourceBundle.getBundle("/Localization").getString("NotAllow"));
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+            } catch (IOException ex) {
+                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public String manage(User user) {
@@ -168,11 +181,10 @@ public class UserController implements Serializable {
 
     private void clean() {
         current = new User();
-        selectedItemIndex = -1;
         checkPassword = null;
         newPassword = null;
     }
-    
+
     public String next() {
         getPagination().nextPage();
         recreateModel();

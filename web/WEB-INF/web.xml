@@ -10,9 +10,19 @@
         <filter-class>ch.hearc.jeef.filters.AdministrationFilter</filter-class>
     </filter>
     <filter>
+        <description>Moderator pages limitation</description>
+        <filter-name>ModeratorFilter</filter-name>
+        <filter-class>ch.hearc.jeef.filters.ModeratorFilter</filter-class>
+    </filter>
+    <filter>
         <description>Logged pages limitation</description>
         <filter-name>LoggedFilter</filter-name>
         <filter-class>ch.hearc.jeef.filters.LoggedFilter</filter-class>
+    </filter>
+    <filter>
+        <description>Not Logged pages limitation</description>
+        <filter-name>NotLoggedFilter</filter-name>
+        <filter-class>ch.hearc.jeef.filters.NotLoggedFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AdministrationFilter</filter-name>
@@ -21,8 +31,18 @@
         <url-pattern>/category/Create.xhtml</url-pattern>
     </filter-mapping>
     <filter-mapping>
+        <filter-name>ModeratorFilter</filter-name>
+        <url-pattern>/post/Edit.xhtml</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
         <filter-name>LoggedFilter</filter-name>
+        <url-pattern>/topic/Search.xhtml</url-pattern>
         <url-pattern>/topic/Create.xhtml</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>NotLoggedFilter</filter-name>
+        <url-pattern>/Login.xhtml</url-pattern>
+        <url-pattern>/Signup.xhtml</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

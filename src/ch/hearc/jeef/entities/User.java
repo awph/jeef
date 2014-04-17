@@ -189,7 +189,7 @@ public class User implements Serializable {
     }
     
     public boolean isModerator() {
-        return getRole().getId() < 2; //TODO: BETTER
+        return getRole().getId() < 3;
     }
 
     @Override

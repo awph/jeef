@@ -1,7 +1,11 @@
 <ui:composition template="/template.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <f:metadata>
+        <f:viewAction action="#{topicController.prepareCreate(categoryController.selected)}"/>
+    </f:metadata>
     <ui:define name="title">
         <h:outputText value="#{localization.CreateTopicTitle}"></h:outputText>
     </ui:define>
