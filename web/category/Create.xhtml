@@ -6,6 +6,11 @@
     <f:metadata>
         <f:viewAction action="#{categoryController.prepareCreate()}"/>
     </f:metadata>
+    <ui:define name="secondmessagepanel">
+        <h:panelGroup id="secondMessagePanel" layout="block">
+            <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+        </h:panelGroup>
+    </ui:define>
     <ui:define name="title">
         <h:outputText value="#{localization.CreateCategoryTitle}"></h:outputText>
     </ui:define>
