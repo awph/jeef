@@ -40,12 +40,12 @@
             </h:form>
             <h:form class="pure-form" rendered="#{moderator}">
                 <fieldset>
-                    <legend>Manage</legend>
+                    <legend>#{localization.Manage}</legend>
                     <h:panelGroup rendered="#{admin}">
-                        <h:selectOneMenu id="roles" value="#{userController.selected.role}" required="true" class="pure-u-3-5">
+                        <h:selectOneMenu id="roles" value="#{userController.selected.role}" required="true" class="pure-u-2-5">
                             <f:selectItems value="#{roleController.itemsAvailableSelect}"/>
                         </h:selectOneMenu>
-                        <h:commandButton action="#{userController.manage(userController.selected)}" value="#{localization.UpdateRole}" class="pure-button-primary pure-button pure-u-2-5"/>
+                        <h:commandButton action="#{userController.manage(userController.selected)}" value="#{localization.UpdateRole}" class="pure-button-primary pure-button pure-u-1-5" style="float: right;"/>
                         <br /><br />
                     </h:panelGroup>
                     <h:commandButton action="#{userController.block(userController.selected)}" value="#{userController.selected.banned ? localization.Unban : localization.Ban}" class="#{userController.selected.banned ? 'button-success' : 'button-error'} pure-button pure-u-1"/>
