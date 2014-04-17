@@ -43,8 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Topic.findByDate", query = "SELECT t FROM Topic t WHERE t.date = :date"),
     @NamedQuery(name = "Topic.findByLocked", query = "SELECT t FROM Topic t WHERE t.locked = :locked"),
     @NamedQuery(name = "Topic.findByPinned", query = "SELECT t FROM Topic t WHERE t.pinned = :pinned"),
-    @NamedQuery(name = "Topic.findByCategory", query = "SELECT t FROM Topic t WHERE t.category = :category"),
+    @NamedQuery(name = "Topic.findByCategory", query = "SELECT t FROM Topic t, IN (t.postCollection) p WHERE t.category = :category ORDER BY t.pinned DESC, p.createdDate DESC"),
     @NamedQuery(name = "Topic.countByCategory", query = "SELECT COUNT(t) FROM Topic t WHERE t.category = :category"),
+    // --- SEARCH ---
     @NamedQuery(name = "Topic.findForKeywords", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p WHERE (t.title LIKE :keywords) OR (p.content LIKE :keywords)"),
     @NamedQuery(name = "Topic.countForKeywords", query = "SELECT COUNT(DISTINCT t) FROM Topic t JOIN t.postCollection p WHERE (t.title LIKE :keywords) OR (p.content LIKE :keywords)"),
     // --- ADVANCED SEARCH ---
@@ -56,7 +57,7 @@ import javax.xml.bind.annotation.XmlTransient;
             + "OR (p.creator.username = :username AND t.category = :category) "
             + "ORDER BY p.createdDate ASC"),
     @NamedQuery(name = "Topic.findAdvancedByUsernameASCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
-            + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
+            + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) " 
             + "OR (p.creator.username = :username AND t.category = :category) "
             + "ORDER BY p.creator.username ASC"),
     @NamedQuery(name = "Topic.findAdvancedByTopicASCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "

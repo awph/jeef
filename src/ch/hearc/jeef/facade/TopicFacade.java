@@ -2,8 +2,8 @@ package ch.hearc.jeef.facade;
 
 import ch.hearc.jeef.entities.Category;
 import ch.hearc.jeef.entities.Topic;
-import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,9 +31,9 @@ public class TopicFacade extends AbstractFacade<Topic> {
 
     public List<Topic> findRangeForCategory(int[] range, Category category) {
         Query query = em.createNamedQuery("Topic.findByCategory").setParameter("category", category);
-        query.setMaxResults(range[1] - range[0] + 1);
-        query.setFirstResult(range[0]);
-        return query.getResultList();
+        List<Topic> topics = query.getResultList();
+        keepUniqueTopic(topics);
+        return retainRange(range, topics);
     }
 
     public int countForCategory(Category category) {
@@ -73,15 +73,14 @@ public class TopicFacade extends AbstractFacade<Topic> {
     public List<Topic> findRangeAdvanced(int[] range, List<String> keywords, String username, Category category, String orderby, Boolean desc) {
         StringBuilder queryName = new StringBuilder("Topic.findAdvancedBy");
         queryName.append(orderby);
-        if(desc) {
+        if (desc) {
             queryName.append("DESC");
-        }
-        else {
-            queryName.append("ASC");            
+        } else {
+            queryName.append("ASC");
         }
         if (category != null) {
             queryName.append("WithCategory");
-            
+
         }
         Query query = getEntityManager().createNamedQuery(queryName.toString());
         query.setParameter("keywords", keywordsQuery(keywords));
@@ -109,5 +108,19 @@ public class TopicFacade extends AbstractFacade<Topic> {
             query.setParameter("category", category);
         }
         return ((Long) query.getSingleResult()).intValue();
+    }
+
+    private static void keepUniqueTopic(List<Topic> topics) {
+        LinkedHashSet hs = new LinkedHashSet();
+        hs.addAll(topics);
+        topics.clear();
+        topics.addAll(hs);
+    }
+
+    private static List<Topic> retainRange(int[] range, List<Topic> topics) {
+        range[1]++;
+        range[0] = (range[0] < topics.size()) ? (range[0] < 0 ? 0 : range[0]) : topics.size();
+        range[1] = (range[1] < topics.size()) ? (range[1] < range[0] ? range[0] : range[1]) : topics.size();
+        return topics.subList(range[0], range[1]);
     }
 }
