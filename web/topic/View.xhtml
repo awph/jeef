@@ -30,6 +30,9 @@
                     <tbody>
                         <tr>
                             <td>
+                                <h:panelGroup rendered="#{post.creator.banned}">
+                                    <span><i class="fa fa-ban"></i> </span>
+                                </h:panelGroup>
                                 <h:link outcome="#{userController.userViewFullURLJSF(post.creator)}" value="#{post.creator.username}"/>
                             </td>
                             <td>
@@ -86,8 +89,10 @@
                                     <f:convertDateTime pattern="#{localization.DatePatern}" />
                                 </h:outputText>
                             </td>
-
                             <td>
+                                <h:panelGroup rendered="#{post.creator.banned}">
+                                    <span><i class="fa fa-ban"></i> </span>
+                                </h:panelGroup>
                                 <h:link outcome="#{userController.userViewFullURLJSF(post.creator)}" value="#{post.creator.username}"/>
                             </td>
                         </tr>
