@@ -61,3 +61,16 @@ and open the template in the editor.
     display: inline-block;
     margin-bottom: -0.25em;
 }
+
+a {
+    color: #129FEA;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#menu a:hover {
+    text-decoration: none;
+}
