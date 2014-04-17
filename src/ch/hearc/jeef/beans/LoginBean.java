@@ -9,6 +9,7 @@ import ch.hearc.jeef.entities.User;
 import ch.hearc.jeef.facade.UserFacade;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -39,9 +40,13 @@ public class LoginBean implements Serializable {
         ExternalContext externalContext = context.getExternalContext();
         user = userFacade.find(username, password);
         if (user != null) {
-            externalContext.redirect(getOriginalURL());
+            if (user.getBanned()) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("/Localization").getString("LoginBanned"), null));
+            } else {
+                externalContext.redirect(getOriginalURL());
+            }
         } else {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown login", null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("/Localization").getString("UnknownLogin"), null));
         }
     }
 
