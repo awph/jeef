@@ -55,10 +55,10 @@
                                 <h:outputText value="#{post.content}" />
                             </td>
                         </tr>
-                        <h:panelGroup rendered="#{postController.canManage(post) or post.edited}">
+                        <h:panelGroup rendered="#{moderator or post.edited}">
                             <tr>
                                 <td>
-                                    <h:form rendered="#{postController.canManage(post)}">
+                                    <h:form rendered="#{moderator}">
                                         <h:link outcome="#{postController.postEditFullURL(post)}" value="#{localization.Edit}"/>
                                         <h:outputText rendered="#{post.getCanDelete(topicController.selected)}" value=" | "/>
                                         <h:commandLink rendered="#{post.getCanDelete(topicController.selected)}" action="#{postController.delete(post, topicController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
@@ -110,7 +110,7 @@
                                 <h:graphicImage value="#{post.creator.getGravatarURL(100)}" class="circular-100"/>
                             </td>
                         </tr>
-                        <h:panelGroup rendered="#{postController.canManage(post) or post.edited}">
+                        <h:panelGroup rendered="#{moderator or post.edited}">
                             <tr>
                                 <td>
                                     <h:panelGroup rendered="#{post.edited}">
@@ -121,7 +121,7 @@
                                     </h:panelGroup>
                                 </td>
                                 <td>
-                                    <h:form rendered="#{postController.canManage(post)}">
+                                    <h:form rendered="#{moderator}">
                                         <h:link outcome="#{postController.postEditFullURL(post)}" value="#{localization.Edit}"/>
                                         <h:outputText rendered="#{post.getCanDelete(topicController.selected) or moderator}" value=" | "/>
                                         <h:commandLink rendered="#{post.getCanDelete(topicController.selected) or moderator}" action="#{postController.delete(post, topicController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
