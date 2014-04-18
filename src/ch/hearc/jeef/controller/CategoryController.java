@@ -189,6 +189,14 @@ public class CategoryController implements Serializable {
         return "/category/Edit.xhtml?" + ID_KEY + "=" + Integer.toString(category.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }
 
+    public String topicCreateFullURLJFS(Category category) {
+        return topicCreateFullURL(category);
+    }
+
+    public static String topicCreateFullURL(Category category) {
+        return "/topic/Create.xhtml?" + ID_KEY + "=" + Integer.toString(category.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
+    }
+
     public void displayMessage() {
         String message = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("msg");
         if (message != null) {

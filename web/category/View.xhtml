@@ -8,11 +8,11 @@
         <h:outputText rendered="#{categoryController.selected != null}" value="#{categoryController.selected.name}"/>
     </ui:define>
     <ui:define name="content">
-        <h:panelGroup rendered="#{categoryController.selected == null}"><h:outputText value="The category you requested does not exist." /></h:panelGroup>
+        <h:panelGroup rendered="#{categoryController.selected == null}"><h:outputText value="#{localization.CategoryNotExist}" /></h:panelGroup>
         <h:panelGroup rendered="#{categoryController.selected != null}">
-            <form class="pure-form">
-                <button type="submit" formaction="#{topicController.prepareCreate(categoryController.selected)}.xhtml" class="pure-button pure-input-1 pure-button-primary">#{localization.CreateTopicTitle}</button>
-            </form>
+            <h:form class="pure-form">
+                <h:commandButton action="#{categoryController.topicCreateFullURLJFS(categoryController.selected)}" value="#{localization.CreateTopicTitle}" class="pure-button pure-input-1 pure-button-primary"/>
+            </h:form>
             <br />
         </h:panelGroup>
         <h:outputText escape="false" value="#{localization.ListTopicEmpty}" rendered="#{categoryController.selected.isEmpty()}"/>
