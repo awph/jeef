@@ -66,7 +66,7 @@
                             <th style="width: 15%"><h:outputText value="#{localization.Author}"/></th>
                             <th style="width: 5%"><h:outputText value="#{localization.Replies}"/></th>
                             <th style="width: 20%"><h:outputText value="#{localization.LastPost}"/></th>
-                            <h:panelGroup rendered="#{admin}"><th><h:outputText value="#{localization.Manage}"/></th></h:panelGroup>
+                            <h:panelGroup rendered="#{moderator}"><th><h:outputText value="#{localization.Manage}"/></th></h:panelGroup>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,7 +93,7 @@
                                         <h:outputText value=" "/>
                                         <h:commandLink action="#{topicController.lock(topic)}" value="#{localization.Lock}"/>
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{topicController.destroy(topic)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
+                                        <h:commandLink action="#{topicController.delete(topic)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
                                                     return false"/>
                                     </td>
                                 </h:panelGroup>
