@@ -167,10 +167,6 @@ public class PostController implements Serializable {
         return ejbFacade.find(id);
     }
 
-    public boolean canManage(Post post) {
-        return post.getCreator().equals(loginBean.getUser()) || (loginBean.getUser() != null && loginBean.getUser().isModerator());
-    }
-
     public static String postEditFullURL(Post post) {
         return "/post/Edit.xhtml?" + ID_KEY + "=" + Integer.toString(post.getId()) + "&amp;faces-redirect=true&amp;includeViewParams=true";
     }

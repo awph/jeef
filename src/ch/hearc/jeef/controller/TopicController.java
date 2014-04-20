@@ -111,11 +111,19 @@ public class TopicController implements Serializable {
         }
     }
 
-    public String prepareCreate(Category category) {
+    public void prepareCreate(Category category) {
+        if (category == null || category.getId() == null) {
+            try {
+                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+                context.redirect("/");
+            } catch (IOException ex) {
+                Logger.getLogger(TopicController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         current = new Topic();
         current.setCategory(category);
+        firstPost = new Post();
         selectedItemIndex = -1;
-        return "/topic/Create";
     }
 
     public String create(Category category) {
@@ -136,9 +144,13 @@ public class TopicController implements Serializable {
             view(current);
             return null;
         } catch (Exception e) {
-            Logger.getLogger(TopicController.class.getName()).log(Level.SEVERE, null, e);
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
-            return CategoryController.categoryViewFullURL(current.getCategory());
+            Category currentCategory = current.getCategory();
+            if (currentCategory == null) {
+                return "/";
+            } else {
+                return CategoryController.categoryViewFullURL(currentCategory);
+            }
         }
     }
 
