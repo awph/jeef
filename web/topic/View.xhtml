@@ -135,7 +135,7 @@
             </h:panelGroup>
             <br /><br />
         </ui:repeat>
-        <h:form class="pure-form" rendered="#{logged and not topicController.selected.locked}">
+        <h:form class="pure-form" rendered="#{logged and not topicController.selected.locked}" id="formPost">
             <h:inputTextarea rows="4" id="content" value="#{postController.selected.content}" p:placeholder="#{localization.Content}" required="true" requiredMessage="#{localization.CreatePostRequiredMessage_content}" style="width: 100%;"/>
             <br /><br />
             <h:commandLink action="#{postController.create(topicController.selected)}" value="#{localization.Post}" class="button-success pure-button"/>

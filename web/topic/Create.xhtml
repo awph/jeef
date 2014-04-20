@@ -15,12 +15,12 @@
         <h:outputText value="#{localization.CreateTopicTitle}"></h:outputText>
     </ui:define>
     <ui:define name="content">
-        <h:form class="pure-form pure-u-1" style="text-align: center;">
-            <h:inputText value="#{topicController.selected.title}" p:placeholder="#{localization.Title}" class="pure-u-1" required="true" requiredMessage="#{localization.RequiredMessage_title}"/>
+        <h:form class="pure-form pure-u-1" style="text-align: center;" id="CreateTopic">
+            <h:inputText value="#{topicController.selected.title}" p:placeholder="#{localization.Title}" id="#{localization.Title}" class="pure-u-1" required="true" requiredMessage="#{localization.RequiredMessage_title}"/>
             <br /><br />
-            <h:inputTextarea value="#{topicController.firstPost.content}" p:placeholder="#{localization.Content}" class="pure-u-1" required="true" requiredMessage="#{localization.RequiredMessage_content}"/>
+            <h:inputTextarea value="#{topicController.firstPost.content}" p:placeholder="#{localization.Content}" id="#{localization.Content}" class="pure-u-1" required="true" requiredMessage="#{localization.RequiredMessage_content}"/>
             <br /><br />
-            <h:commandButton action="#{topicController.create(categoryController.selected)}" value="#{localization.Create}" class="button-success pure-button pure-u-1"/>
+            <h:commandButton action="#{topicController.create(categoryController.selected)}" value="#{localization.Create}" id="#{localization.Create}" class="button-success pure-button pure-u-1"/>
         </h:form>
     </ui:define>
 </ui:composition>

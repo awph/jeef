@@ -20,7 +20,7 @@
             </h:panelGroup>
             <li class="pure-menu-heading">
                 <h:outputText rendered="#{current_user == null}" value="#{localization.Profile}" />
-                <h:outputText rendered="#{current_user != null}" value="#{current_user.username}" />
+                <h:outputText rendered="#{current_user != null}" value="#{current_user.username}" id="currentUsername" />
             </li>
             <h:panelGroup rendered="#{current_user == null}">
                 <li><h:link value="#{localization.Login}" outcome="/Login.xhtml"/></li>
