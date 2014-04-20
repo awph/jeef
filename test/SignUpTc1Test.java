@@ -16,7 +16,7 @@ public class SignUpTc1Test {
   public void setUp() throws Exception {
     driver = new FirefoxDriver();
     baseUrl = "http://localhost:8080/";
-    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
   }
 
   @Test
@@ -35,22 +35,8 @@ public class SignUpTc1Test {
     //Thread.sleep(1000);
     
     driver.findElement(By.name("signup:btnSignup")).click();
-    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-    //Thread.sleep(100000);
-    /*try{
-    WebElement web = driver.findElement(By.id("messagePanel"));
-    }
-    catch(Exception e)
-    {
-        String ee = e.getMessage();
-        System.out.println("");
-    }*/
-    //WebElement web2 =  web.findElement(By.tagName("td"));
-    //String text =web2.getText();//.trim();
-    /*WebElement baseTable = driver.findElement(By.className("table gradient myPage"));
-    List<WebElement> tableRows = baseTable.findElements(By.tagName("tr"));
-    tableRows.get(index).getText();
-    assertTrue(text.equals("User was successfully created."));*/
+    driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+    assertTrue("User was successfully created.".equals(driver.findElement(By.id("messagePanel")).findElement(By.tagName("td")).getText().trim()));
     
   }
 
