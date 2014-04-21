@@ -38,6 +38,7 @@
         <filter-name>LoggedFilter</filter-name>
         <url-pattern>/topic/Search.xhtml</url-pattern>
         <url-pattern>/topic/Create.xhtml</url-pattern>
+        <url-pattern>/user/View.xhtml</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>NotLoggedFilter</filter-name>

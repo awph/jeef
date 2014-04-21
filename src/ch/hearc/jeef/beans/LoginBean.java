@@ -41,12 +41,13 @@ public class LoginBean implements Serializable {
         user = userFacade.find(username, password);
         if (user != null) {
             if (user.getBanned()) {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("/Localization").getString("LoginBanned"), null));
+                user = null;
+                context.addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("/Localization").getString("LoginBanned"), "hello"));
             } else {
                 externalContext.redirect(getOriginalURL());
             }
         } else {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("/Localization").getString("UnknownLogin"), null));
+            context.addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourceBundle.getBundle("/Localization").getString("UnknownLogin"), null));
         }
     }
 

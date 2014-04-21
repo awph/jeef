@@ -37,6 +37,7 @@
             <br /><br />
             <h:form rendered="#{current_user.equals(userController.selected)}">
                 <h:commandButton action="#{userController.userEditFullURLJSF(current_user)}" value="#{localization.Edit}" class="pure-button-primary pure-button pure-u-1"/>
+            <br /><br />
             </h:form>
             <h:form class="pure-form" rendered="#{moderator}">
                 <fieldset>
