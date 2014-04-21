@@ -54,81 +54,90 @@ import javax.xml.bind.annotation.XmlTransient;
     // --- ASC ---
     @NamedQuery(name = "Topic.findAdvancedByDateASCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username AND t.category = :category) "
+            + "AND t.category = :category "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY p.createdDate ASC"),
     @NamedQuery(name = "Topic.findAdvancedByUsernameASCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
-            + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) " 
-            + "OR (p.creator.username = :username AND t.category = :category) "
+            + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
+            + "AND t.category = :category "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY p.creator.username ASC"),
     @NamedQuery(name = "Topic.findAdvancedByTopicASCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username AND t.category = :category) "
+            + "AND t.category = :category "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY t.title ASC"),
     @NamedQuery(name = "Topic.findAdvancedByCategoryASCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username AND t.category = :category) "
+            + "AND t.category = :category "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY t.category.name ASC"),
     // --- DESC ---
     @NamedQuery(name = "Topic.findAdvancedByDateDESCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username AND t.category = :category) "
+            + "AND t.category = :category "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY p.createdDate DESC"),
     @NamedQuery(name = "Topic.findAdvancedByUsernameDESCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username AND t.category = :category) "
+            + "AND t.category = :category "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY p.creator.username DESC"),
     @NamedQuery(name = "Topic.findAdvancedByTopicDESCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username AND t.category = :category) "
+            + "AND t.category = :category "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY t.title DESC"),
     @NamedQuery(name = "Topic.findAdvancedByCategoryDESCWithCategory", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username AND t.category = :category) "
+            + "AND t.category = :category "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY t.category.name DESC"),
     // --- WITHOUT A CATEGORY ---
     // --- ASC ---
     @NamedQuery(name = "Topic.findAdvancedByDateASC", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username) "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY p.createdDate ASC"),
     @NamedQuery(name = "Topic.findAdvancedByUsernameASC", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username) "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY p.creator.username ASC"),
     @NamedQuery(name = "Topic.findAdvancedByTopicASC", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username) "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY t.title ASC"),
     @NamedQuery(name = "Topic.findAdvancedByCategoryASC", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username) "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY t.category.name ASC"),
     // --- DESC ---
     @NamedQuery(name = "Topic.findAdvancedByDateDESC", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username) "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY p.createdDate DESC"),
     @NamedQuery(name = "Topic.findAdvancedByUsernameDESC", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username) "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY p.creator.username DESC"),
     @NamedQuery(name = "Topic.findAdvancedByTopicDESC", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username) "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY t.title DESC"),
     @NamedQuery(name = "Topic.findAdvancedByCategoryDESC", query = "SELECT DISTINCT t FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username) "
+            + "AND p.creator.username LIKE :username "
             + "ORDER BY t.category.name DESC"),
     // --- COUNT ---
     // --- WITH A CATEGORY ---
     @NamedQuery(name = "Topic.countAdvancedWithCategory", query = "SELECT COUNT(DISTINCT t) FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username AND t.category = :category)"),
+            + "AND t.category = :category "
+            + "AND p.creator.username LIKE :username"),
     // --- WITHOUT A CATEGORY ---
     @NamedQuery(name = "Topic.countAdvanced", query = "SELECT COUNT(DISTINCT t) FROM Topic t JOIN t.postCollection p "
             + "WHERE (t.title LIKE :keywords OR p.content LIKE :keywords) "
-            + "OR (p.creator.username = :username)")
+            + "AND p.creator.username LIKE :username")
 })
 public class Topic implements Serializable {
 

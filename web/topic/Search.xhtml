@@ -89,9 +89,9 @@
                                 </td>
                                 <h:panelGroup rendered="#{moderator}">
                                     <td>
-                                        <h:commandLink action="#{topicController.pin(topic)}" value="#{localization.Pin}"/>
+                                        <h:commandLink action="#{topicController.pin(topic)}" value="#{topic.pinned ? localization.Unpin : localization.Pin}"/>
                                         <h:outputText value=" "/>
-                                        <h:commandLink action="#{topicController.lock(topic)}" value="#{localization.Lock}"/>
+                                        <h:commandLink action="#{topicController.lock(topic)}" value="#{topic.locked ? localization.Unlock : localization.Lock}"/>
                                         <h:outputText value=" "/>
                                         <h:commandLink action="#{topicController.delete(topic)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
                                                     return false"/>

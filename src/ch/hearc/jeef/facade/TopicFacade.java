@@ -84,6 +84,9 @@ public class TopicFacade extends AbstractFacade<Topic> {
         }
         Query query = getEntityManager().createNamedQuery(queryName.toString());
         query.setParameter("keywords", keywordsQuery(keywords));
+        if("".equals(username.trim())) {
+            username = "%";
+        }
         query.setParameter("username", username);
         if (category != null) {
             query.setParameter("category", category);
@@ -102,6 +105,9 @@ public class TopicFacade extends AbstractFacade<Topic> {
 
         }
         query.setParameter("keywords", keywordsQuery(keywords));
+        if("".equals(username.trim())) {
+            username = "%";
+        }
         query.setParameter("username", username);
         if (category != null) {
             query.setParameter("category", category);
