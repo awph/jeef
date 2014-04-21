@@ -29,6 +29,7 @@ public class PinTopicTc1Test {
     driver.findElement(By.linkText("Categorie1")).click();
     driver.findElement(By.linkText("Pin")).click();
     driver.findElement(By.linkText("Unpin")).click();
+    driver.findElement(By.linkText("Pin")).click();
   }
 
   @After

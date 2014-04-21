@@ -22,10 +22,10 @@ public class SignUpTc2Test {
     driver.get(baseUrl + "/");
     driver.findElement(By.linkText("Login")).click();
     driver.findElement(By.id("signin:username")).clear();
-    driver.findElement(By.id("signin:username")).sendKeys("user2");
+    driver.findElement(By.id("signin:username")).sendKeys("user3");
     driver.findElement(By.xpath("//button[@type='submit']")).click();
     driver.findElement(By.id("signup:username")).clear();
-    driver.findElement(By.id("signup:username")).sendKeys("user2");
+    driver.findElement(By.id("signup:username")).sendKeys("user3");
   }
 
   @After

@@ -10,8 +10,8 @@
     <ui:define name="content">
         <h:panelGroup rendered="#{categoryController.selected == null}"><h:outputText value="#{localization.CategoryNotExist}" /></h:panelGroup>
         <h:panelGroup rendered="#{categoryController.selected != null}">
-            <h:form class="pure-form">
-                <h:commandButton action="#{categoryController.topicCreateFullURLJFS(categoryController.selected)}" value="#{localization.CreateTopicTitle}" class="pure-button pure-input-1 pure-button-primary"/>
+            <h:form class="pure-form" id="formNewTopic">
+                <h:commandButton action="#{categoryController.topicCreateFullURLJFS(categoryController.selected)}" value="#{localization.CreateTopicTitle}" id="createNewTopic" class="pure-button pure-input-1 pure-button-primary"/>
             </h:form>
             <br />
         </h:panelGroup>

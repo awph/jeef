@@ -27,7 +27,7 @@ public class CreateTopicTc1Test {
     driver.findElement(By.id("signin:password")).sendKeys("123456");
     driver.findElement(By.id("signin:btnSignin")).click();
     driver.findElement(By.linkText("Categorie1")).click();
-    driver.findElement(By.xpath("//button[@type='submit']")).click();
+    driver.findElement(By.id("formNewTopic:createNewTopic")).click();
     driver.findElement(By.id("CreateTopic:Title")).clear();
     driver.findElement(By.id("CreateTopic:Title")).sendKeys("MyTopic");
     driver.findElement(By.id("CreateTopic:Content")).clear();

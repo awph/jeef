@@ -25,9 +25,9 @@ public class SignUpTc1Test {
     driver.findElement(By.linkText("Login")).click();
     driver.findElement(By.xpath("//button[@type='submit']")).click();
     driver.findElement(By.id("signup:username")).clear();
-    driver.findElement(By.id("signup:username")).sendKeys("user2435332334433");
+    driver.findElement(By.id("signup:username")).sendKeys("user2");
     driver.findElement(By.id("signup:email")).clear();
-    driver.findElement(By.id("signup:email")).sendKeys("user343345364242@user1.com");
+    driver.findElement(By.id("signup:email")).sendKeys("user2@user2.com");
     driver.findElement(By.id("signup:password")).clear();
     driver.findElement(By.id("signup:password")).sendKeys("123456");
     driver.findElement(By.id("signup:confirm")).clear();
