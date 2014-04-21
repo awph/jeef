@@ -82,7 +82,7 @@
                                 <td><h:outputText value="#{topic.answerQuantity}" /></td>
                                 <td>
                                     <h:outputText value="#{topic.lastPostDate}">
-                                        <f:convertDateTime pattern="#{localization.DatePatern}" />
+                                        <f:convertDateTime pattern="#{localization.DatePatern}" timeZone="Europe/Zurich" locale="locale.US"/>
                                     </h:outputText>
                                     <br />
                                     #{localization.By} <h:link outcome="#{userController.userViewFullURLJSF(topic.lastPostAuthor)}" value="#{topic.lastPostAuthor.username}" /><br />

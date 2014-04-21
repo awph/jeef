@@ -43,7 +43,7 @@
                             <td>
                                 <h:outputText value="##{post.id} - " />
                                 <h:outputText value="#{post.createdDate}">
-                                    <f:convertDateTime pattern="#{localization.DatePatern}" />
+                                    <f:convertDateTime pattern="#{localization.DatePatern}" timeZone="Europe/Zurich" locale="locale.US"/>
                                 </h:outputText>
                             </td>
                         </tr>
@@ -69,7 +69,7 @@
                                     <h:panelGroup rendered="#{post.edited}">
                                         <h:outputText value="#{localization.EditedBy} #{post.lastEditor.username} " />
                                         <h:outputText value="#{post.editedDate}">
-                                            <f:convertDateTime pattern="#{localization.DatePatern}" />
+                                            <f:convertDateTime pattern="#{localization.DatePatern}" timeZone="Europe/Zurich" locale="locale.US"/>
                                         </h:outputText>
                                     </h:panelGroup>
                                 </td>
@@ -91,7 +91,7 @@
                             <td>
                                 <h:outputText value="##{post.id} - " />
                                 <h:outputText value="#{post.createdDate}">
-                                    <f:convertDateTime pattern="#{localization.DatePatern}" />
+                                    <f:convertDateTime pattern="#{localization.DatePatern}" timeZone="Europe/Zurich" locale="locale.US"/>
                                 </h:outputText>
                             </td>
                             <td>
@@ -116,7 +116,7 @@
                                     <h:panelGroup rendered="#{post.edited}">
                                         <h:outputText value="#{localization.EditedBy} #{post.lastEditor.username} " />
                                         <h:outputText value="#{post.editedDate}">
-                                            <f:convertDateTime pattern="#{localization.DatePatern}" />
+                                            <f:convertDateTime pattern="#{localization.DatePatern}" timeZone="Europe/Zurich" locale="locale.US"/>
                                         </h:outputText>
                                     </h:panelGroup>
                                 </td>
