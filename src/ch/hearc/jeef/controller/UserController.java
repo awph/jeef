@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -108,7 +109,10 @@ public class UserController implements Serializable {
             current.setSalt(HashUtil.generateSalt(128));
             current.setPassword(HashUtil.hashSHA512(current.getPassword().concat(current.getSalt())));
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Localization").getString("UserCreated"));
+            clean();
+            String msg = ResourceBundle.getBundle("/Localization").getString("UserCreated");
+            FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
+            FacesContext.getCurrentInstance().addMessage("", facesMsg);
             return "Login";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Localization").getString("PersistenceErrorOccured"));
