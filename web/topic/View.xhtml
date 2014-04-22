@@ -123,8 +123,8 @@
                                 <td>
                                     <h:form rendered="#{moderator}">
                                         <h:link outcome="#{postController.postEditFullURL(post)}" value="#{localization.Edit}"/>
-                                        <h:outputText rendered="#{post.getCanDelete(topicController.selected) or moderator}" value=" | "/>
-                                        <h:commandLink rendered="#{post.getCanDelete(topicController.selected) or moderator}" action="#{postController.delete(post, topicController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
+                                        <h:outputText rendered="#{post.getCanDelete(topicController.selected)}" value=" | "/>
+                                        <h:commandLink rendered="#{post.getCanDelete(topicController.selected)}" action="#{postController.delete(post, topicController.selected)}" value="#{localization.Delete}" onclick="if (!confirm('Are you sure?'))
                                                     return false"/>
                                     </h:form>
                                 </td>
